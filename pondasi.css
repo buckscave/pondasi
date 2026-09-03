@@ -1,0 +1,1201 @@
+/* ==========================================================================
+   PONDASI.CSS — Ditulis oleh KOPIES 2010-2026
+   Target: HTML 4/5, CSS 2.1 - 3.0, layout block/inline-block (tanpa flex/grid)
+   ========================================================================== */
+
+/*--- NORMALISASI PERAMBAN --- */
+html {
+    font-family: "Open Sans Regular", sans-serif;
+    font-size: 16px;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+*,
+body,
+*:after,
+*:before {
+    border: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
+    display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+optgroup {
+    font-weight: bold;
+}
+
+button,
+input {
+    overflow: visible;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+textarea {
+    overflow: auto;
+}
+
+b,
+strong {
+    font-weight: bolder;
+}
+
+figure {
+    margin: 1rem 40px;
+}
+
+sub {
+    bottom: -0.25rem;
+}
+
+sup {
+    top: -0.5rem;
+}
+
+img {
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+}
+
+svg:not(:root) { 
+    overflow: hidden; 
+}
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, monospace;
+    font-size: 0.75rem;
+}
+
+mark {
+    background-color: #ff0;
+    color: #000;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+    margin: 0;
+}
+
+progress {
+    vertical-align: baseline;
+}
+
+template,
+[hidden] {
+    display: none;
+}
+
+a:active,
+a:hover {
+    outline-width: 0;
+}
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+abbr[title] {
+    border-bottom: none;
+    text-decoration: underline dotted;
+}
+
+button,
+html [type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    cursor: pointer;
+}
+
+button[disabled],
+input[disabled],
+select[disabled],
+textarea[disabled] {
+    cursor: default;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+    border-style: none; padding: 0;
+}
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+    outline: 1px dotted ButtonText;
+}
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    box-sizing: border-box;
+    font-size: 0;
+    margin: 0 2px;
+    padding: 0.35rem 0.75rem 0.75rem;
+}
+
+legend {
+    box-sizing: border-box;
+    color: inherit;
+    display: table;
+    font-size: .7rem;
+    max-width: 100%;
+    padding: 0;
+    white-space: normal;
+}
+
+[type="checkbox"],
+[type="radio"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+    height: auto;
+}
+
+[type="search"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    outline-offset: -2px;
+}
+
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+::-webkit-input-placeholder {
+    color: inherit;
+    opacity: 0.54;
+}
+
+:-moz-placeholder {
+    color: inherit;
+    opacity: 0.54;
+}
+
+::-moz-placeholder {
+    color: inherit;
+    opacity: 0.54;
+}
+
+:-ms-input-placeholder {
+    color: inherit;
+    opacity: 0.54;
+}
+
+::placeholder {
+    color: inherit;
+    opacity: 0.54;
+}
+
+::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    font: inherit;
+}
+
+::-moz-selection {
+    background: #00AAD4;
+    color: #FFF;
+}
+
+::selection {
+    background: #00AAD4;
+    color: #FFF;
+}
+
+/* ==========================================================================
+   PENGGUNAAN HURUF
+   ======================================================================= */
+@font-face {
+    font-family: "Open Sans Regular";
+    src: url('../aset/fonts/OpenSans-Regular.woff2') format('woff2');
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Open Sans Bold";
+    src: url('../aset/fonts/OpenSans-Bold.woff2') format('woff2');
+    font-style: normal;
+    font-weight: bold;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Open Sans Italic";
+    src: url('../aset/fonts/OpenSans-Italic.woff2') format('woff2');
+    font-style: italic;
+    font-weight: normal;
+    font-display: swap;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Open Sans Bold", sans-serif;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 2.5rem;
+    line-height: 1.0;
+    margin: 0.67rem 0;
+}
+
+h2 {
+    font-size: 2.0rem;
+    line-height: 1.1;
+}
+
+h3 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+}
+
+h4 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+}
+
+h5 {
+    font-size: 1.0rem;
+    line-height: 1.4;
+}
+
+h6 {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+p {
+    font-family: "Open Sans Regular", sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: .35rem 0;
+}
+
+a  {
+    color: #00AAD4;
+    background-color: transparent;
+    text-decoration: none;
+    -webkit-text-decoration-skip: objects;
+}
+
+a:hover { 
+    color: #00B482; 
+}
+
+a:focus { 
+    outline: 2px dotted #00AAD4; 
+    outline-offset: 2px; 
+}
+
+span {
+    font-size: .85rem;
+    line-height: 1.5;
+    padding: .25rem;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+    margin: .25rem auto;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 1px solid;
+    border-bottom-color: inherit;
+    border-left: 0;
+}
+
+label {
+    font-size: 0.75rem;
+    line-height: 1.5rem;
+    cursor: pointer;
+}
+
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+    margin: .5rem 0 .5rem 1.5rem;
+}
+
+ul {
+    list-style: disc inside;
+}
+
+ol {
+    list-style: decimal inside;
+}
+
+ol,
+ul {
+    padding-left: 0;
+    margin-top: 0;
+}
+
+li {
+    margin-bottom: .5rem;
+}
+
+.sejajar span,
+.sejajar div,
+.sejajar li,
+.sejajar {
+    display: inline-block;
+}
+
+blockquote {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 1rem 0;
+    padding: .5rem 1rem;
+    border-left: 6px solid #00AAD4;
+}
+
+cite {
+    font-size: .85rem;
+    font-style: italic;
+    font-weight: bold;
+    color: #666;
+    margin-top: .5rem;
+}
+
+code,
+kbd {
+    padding: .2rem .5rem;
+    margin: 0 0.25rem;
+    font-size: .75rem;
+    white-space: nowrap;
+    background: #F1F1F1;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+pre > code {
+    display: block;
+    padding: 1rem 1.5rem;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+kbd { border: 0; }
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+/*--- TABEL --- */
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th, 
+td {
+    text-align: left;
+    vertical-align: top;
+}
+
+caption {
+    text-align: left;
+    font-size: 0.7rem;
+    font-style: italic;
+    font-weight: normal;
+    padding: 0.5rem;
+    color: #666;
+}
+
+/*--- FORMULIR --- */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="color"],
+select,
+textarea {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: inline-block;
+    min-height: 2.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #333;
+    background-color: transparent;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    -webkit-transition: border-color .15s ease, box-shadow .15s ease;
+    -moz-transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+input[type="color"] {
+    padding: 0.15rem;
+}
+
+input[type="range"] {
+    padding: 0;
+    min-height: auto;
+    background: transparent;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    min-height: auto;
+    padding: 0;
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #00AAD4;
+    outline: 0;
+    -webkit-box-shadow: 0 0 4px rgba(0, 170, 212, 0.4);
+    -moz-box-shadow: 0 0 4px rgba(0, 170, 212, 0.4);
+    box-shadow: 0 0 4px rgba(0, 170, 212, 0.4);
+}
+
+input:invalid,
+select:invalid,
+textarea:invalid {
+    border-color: #FF8080;
+}
+
+.input-block {
+    width: 100%;
+    display: block;
+}
+
+.tebal { 
+    font-weight: bold; 
+}
+
+.miring { 
+    font-style: italic; 
+}
+
+.coret { 
+    text-decoration: line-through; 
+}
+
+.bergaris { 
+    text-decoration: underline; 
+}
+
+.samar { 
+    opacity: 0.5; 
+}
+
+.teks_kecil { 
+    font-size: 0.75rem; 
+}
+
+.teks_sedang { 
+    font-size: 0.9rem; 
+}
+
+.teks_besar { 
+    font-size: 1rem; 
+}
+
+/*--- TOMBOL --- */
+.tombol,
+.tombol-o {
+    position: relative;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding: .5rem 1rem;
+    color: #FFF;
+    background-color: #00AAD4;
+    outline: 0;
+    text-align: center;
+    margin: 0 .25rem;
+    cursor: pointer;
+    -webkit-transition: background-color .2s ease, color .2s ease;
+    -moz-transition: background-color .2s ease, color .2s ease;
+    -o-transition: background-color .2s ease, color .2s ease;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.tombol-o {
+    background-color: rgba(255,255,255,0);
+    background-color: transparent\9;   /* IE8 */
+    color: #666;
+    border: 1px solid #666;
+}
+
+.tombol:hover {
+    background-color: #00B482;
+}
+
+.tombol-o:hover {
+    border-color: #00AAD4;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.tombol:active,
+.tombol-o:active {
+    -webkit-transform: translateY(1px);
+    -moz-transform: translateY(1px);
+    -ms-transform: translateY(1px);
+    -o-transform: translateY(1px);
+    transform: translateY(1px);
+}
+
+.tombol:focus,
+.tombol-o:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+.tombol[disabled],
+.tombol-o[disabled] {
+    background-color: #CCC;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+
+/*--- KOTAK HALUS --- */
+.sudut-3 {
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+.sudut-6 {
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+}
+
+.sudut-9 {
+    border-radius: 9px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+}
+
+.tumpul  {
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+}
+
+.bulat {
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+
+/* ==========================================================================
+   PENGGUNAAN WARNA (MEJIKUHIBINIU/PELANGI)
+   ======================================================================= */
+
+/*--- WARNA TEKS --- */
+.teks_merah { color: #FF3232; }
+.teks_jingga { color: #FF6432; }
+.teks_kuning { color: #FFC832; }
+.teks_hijau { color: #80C832; }
+.teks_biru { color: #32A5E1; }
+.teks_nila { color: #823CDC; }
+.teks_ungu { color: #B978C8; }
+.teks_putih { color: #E6F0FA; }
+.teks_abu { color: #5A646E; }
+.teks_kelabu { color: #3C4650; }
+.teks_gelap { color: #1E2832; }
+.teks_hitam { color: #0A141E; }
+
+/*--- WARNA LATAR --- */
+.latar_merah { background-color: #FF3232; }
+.latar_jingga { background-color: #FF6432; }
+.latar_kuning { background-color: #FFC832; }
+.latar_hijau { background-color: #80C832; }
+.latar_biru { background-color: #32A5E1; }
+.latar_nila { background-color: #823CDC; }
+.latar_ungu { background-color: #B978C8; }
+.latar_putih { background-color: #E6F0FA; }
+.latar_abu { background-color: #5A646E; }
+.latar_kelabu { background-color: #3C4650; }
+.latar_gelap { background-color: #1E2832; }
+.latar_hitam { background-color: #0A141E; }
+
+/*--- WARNA GARIS --- */
+.garis_merah { border-color: #FF3232; }
+.garis_jingga { border-color: #FF6432; }
+.garis_kuning { border-color: #FFC832; }
+.garis_hijau { border-color: #80C832; }
+.garis_biru { border-color: #32A5E1; }
+.garis_nila { border-color: #823CDC; }
+.garis_ungu { border-color: #B978C8; }
+.garis_putih { border-color: #E6F0FA; }
+.garis_abu { border-color: #5A646E; }
+.garis_kelabu { border-color: #3C4650; }
+.garis_gelap { border-color: #1E2832; }
+.garis_hitam { border-color: #0A141E; }
+
+.garis_merah,
+.garis_jingga,
+.garis_kuning,
+.garis_hijau, 
+.garis_biru,
+.garis_nila,
+.garis_ungu,
+.garis_putih, 
+.garis_abu,
+.garis_kelabu,
+.garis_gelap,
+.garis_hitam,
+.garis {
+    border-width: 1px;
+    border-style: solid;
+}
+
+/*--- BAYANGAN --- */
+.bayangan {
+    -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+}
+
+/*--- TRANSISI --- */
+.transisi {
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+/*--- GRADASI --- */
+.gradasi_biru {
+    background-color: #00AAD4;
+    background-image: -webkit-gradient(linear,
+        left top,
+        left bottom,
+        from(#00AAD4),
+        to(#007BA0));
+    background-image: -webkit-linear-gradient(top, #00AAD4, #007BA0);
+    background-image: -moz-linear-gradient(top, #00AAD4, #007BA0);
+    background-image: -o-linear-gradient(top, #00AAD4, #007BA0);
+    background-image: -ms-linear-gradient(top, #00AAD4, #007BA0);
+    background-image: linear-gradient(to bottom, #00AAD4, #007BA0);
+}
+
+/*--- UKURAN LATAR PENUH --- */
+.latar_penuh {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/*--- WORD WRAP --- */
+.bungkus_kata {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/*--- PEMOTONGAN TEXT ---*/
+.potong-teks {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================================================================
+   SISTEM TATA LETAK ELEMEN (BLOCK / INLINE-BLOCK)
+   ========================================================================= */
+.tampil {
+    display: block;
+}
+
+.sembunyi {
+    display: none;
+}
+
+.baris,
+.sub-baris {
+    position: relative;
+    display: block;
+    font-size: 0;
+    margin: 0 auto;
+    max-width: 75rem; /* 1200px */
+    text-align: left;
+    overflow: hidden;
+}
+
+.perluas { width: 100%; }
+
+[class*='kolom-'] {
+    position: relative;
+    display: inline-block;
+    font-size: .85rem;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    vertical-align: top;
+    *display: inline;
+    *zoom: 1;
+}
+
+[class*='kolom-'].sub-baris { 
+    font-size: 0;
+}
+
+.jarak [class*='kolom-'] {
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.baris.jarak,
+.sub-baris.jarak {
+    max-width: calc(100% + 2%);
+}
+
+.baris.perluas,
+.sub-baris.perluas,
+.baris.jarak.perluas,
+.sub-baris.jarak.perluas {
+    max-width: 100%;
+}
+
+.jarak .sub-baris [class*='kolom-'] {
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.jarak .sub-baris *[class*='kolom-']:first-child,
+.jarak [class*='kolom-']:first-of-type {
+    margin-left: 0;
+}
+
+.jarak .sub-baris *[class*='kolom-']:last-child,
+.jarak [class*='kolom-']:last-of-type {
+    margin-right: 0;
+}
+
+.tanpajarak [class*='kolom-'] {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* TABLET DAN DESKTOP, MIN. 800PX --- */
+@media screen and (min-width: 50rem) {
+.baris.jarak.perluas {
+    max-width: none;
+}
+
+/* PEMBAGIAN 12 KOLOM TANPA JARAK */
+/* 12 bisa dibagi sama rata menjadi 2, 3, 4, 6 kolom */
+.kolom-1  { width: 8.333%; }
+.kolom-2  { width: 16.666%; }
+.kolom-3  { width: 24.999%; }
+.kolom-4  { width: 33.333%; }
+.kolom-5  { width: 41.666%; }
+.kolom-6  { width: 49.999%; }
+.kolom-7  { width: 58.333%; }
+.kolom-8  { width: 66.666%; }
+.kolom-9  { width: 74.999%; }
+.kolom-10 { width: 83.333%; }
+.kolom-11 { width: 91.666%; }
+.kolom-12 { width: 99.999%; }
+
+/* PEMBAGIAN KOLOM GANJIL TANPA JARAK */
+/* pembagian sama rata untuk 5, 7, 8, 9, 10 dan 11 kolom */
+.kolom-sebelas { width: 9.090%; }
+.kolom-sepuluh { width: 10%; }
+.kolom-sembilan { width: 11.111%; }
+.kolom-delapan { width: 12.5%; }
+.kolom-tujuh { width: 14.285%; }
+.kolom-lima { width: 20%; }
+
+/* PEMBAGIAN 12 KOLOM DENGAN JARAK */
+.jarak .kolom-1  { width: 6.5%; }
+.jarak .kolom-2  { width: 15%; }
+.jarak .kolom-3  { width: 23.5%; }
+.jarak .kolom-4  { width: 32%; }
+.jarak .kolom-5  { width: 40.5%; }
+.jarak .kolom-6  { width: 49%; }
+.jarak .kolom-7  { width: 57.5%; }
+.jarak .kolom-8  { width: 66%; }
+.jarak .kolom-9  { width: 74.5%; }
+.jarak .kolom-10 { width: 83%; }
+.jarak .kolom-11 { width: 91.5%; }
+.jarak .kolom-12 { width: 100%; }
+
+.jarak .kolom-sebelas { width: 7.272%; }
+.jarak .kolom-sepuluh { width: 8.2%; }
+.jarak .kolom-sembilan { width: 9.333%; }
+.jarak .kolom-delapan { width: 10.75%; }
+.jarak .kolom-tujuh { width: 12.571%; }
+.jarak .kolom-lima { width: 18.4%; }
+}
+
+/* MOBILE, MAX. 768PX --- */
+@media screen and (max-width: 48rem) {
+.baris.jarak.perluas {
+    max-width: none;
+}
+
+html { padding: 0 1rem; }
+
+.kolom-1, 
+.kolom-2, 
+.kolom-3,
+.kolom-lima, 
+.kolom-tujuh, 
+.kolom-delapan,
+.kolom-sembilan, 
+.kolom-sepuluh, 
+.kolom-sebelas {
+    width: 25%;
+}
+
+.kolom-4, 
+.kolom-5, 
+.kolom-6,
+.kolom-7, 
+.kolom-8 {
+    width: 50%;
+}
+
+.kolom-9, 
+.kolom-10, 
+.kolom-11 {
+    width: 75%;
+}
+
+.kolom-12 {
+    width: 100%;
+}
+
+.jarak .kolom-1, 
+.jarak .kolom-2, 
+.jarak .kolom-3,
+.jarak .kolom-lima, 
+.jarak .kolom-tujuh, 
+.jarak .kolom-delapan,
+.jarak .kolom-sembilan, 
+.jarak .kolom-sepuluh, 
+.jarak .kolom-sebelas { 
+    width: 23.5%; 
+}
+
+.jarak .kolom-4, 
+.jarak .kolom-5, 
+.jarak .kolom-6, 
+.jarak .kolom-7, 
+.jarak .kolom-8 {
+    width: 49%; 
+}
+
+.jarak .kolom-9, 
+.jarak .kolom-10, 
+.jarak .kolom-11 {
+    width: 74.5%; 
+}
+
+.jarak .kolom-12 {
+    width: 100%;
+}
+
+.jarak .kolom-1:nth-of-type(4n), 
+.jarak .kolom-2:nth-of-type(4n), 
+.jarak .kolom-3:nth-of-type(4n),
+.jarak .kolom-4:nth-of-type(2n),
+.jarak .kolom-5:nth-of-type(2n),
+.jarak .kolom-6:nth-of-type(2n),
+.jarak .kolom-7:nth-of-type(2n),
+.jarak .kolom-8:nth-of-type(2n),
+.jarak .kolom-lima:nth-of-type(4n), 
+.jarak .kolom-tujuh:nth-of-type(4n), 
+.jarak .kolom-delapan:nth-of-type(4n), 
+.jarak .kolom-sembilan:nth-of-type(4n), 
+.jarak .kolom-sepuluh:nth-of-type(4n),
+.jarak .kolom-sebelas:nth-of-type(4n) { 
+    margin-right: 0;
+}
+
+.jarak .kolom-1:nth-of-type(4n+1), 
+.jarak .kolom-2:nth-of-type(4n+1), 
+.jarak .kolom-3:nth-of-type(4n+1), 
+.jarak .kolom-4:nth-of-type(2n+1), 
+.jarak .kolom-5:nth-of-type(2n+1), 
+.jarak .kolom-6:nth-of-type(2n+1), 
+.jarak .kolom-7:nth-of-type(2n+1), 
+.jarak .kolom-8:nth-of-type(2n+1), 
+.jarak .kolom-lima:nth-of-type(4n+1), 
+.jarak .kolom-tujuh:nth-of-type(4n+1), 
+.jarak .kolom-delapan:nth-of-type(4n+1), 
+.jarak .kolom-sembilan:nth-of-type(4n+1), 
+.jarak .kolom-sepuluh:nth-of-type(4n+1),
+.jarak .kolom-sebelas:nth-of-type(4n+1) { 
+    margin-left: 0;
+}
+
+[class*='kolom-'].penuh { 
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+}
+
+/*--- PERATAAN ELEMEN DAN TEKS --- */
+.teratas {
+    position: absolute;
+}
+
+.tetap {
+    position: fixed;
+}
+
+.relatif {
+    position: relative;
+}
+
+.mengambang {
+    position: sticky;
+    -webkit-position: sticky;
+}
+
+.atas {
+    vertical-align: top;
+}
+
+.nengah {
+    vertical-align: middle;
+}
+
+.bawah {
+    vertical-align: bottom;
+}
+
+.kiri {
+    text-align: left;
+}
+
+.kanan {
+    text-align: right;
+}
+
+.tengah {
+    text-align: center;
+}
+
+.samarata {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+/*--- PENGATURAN JARAK LUAR ---*/
+.jarak-0 { margin: 0; }
+.jarak-1 { margin: 0.5rem; }
+.jarak-2 { margin: 1.0rem; }
+.jarak-3 { margin: 1.5rem; }
+.jarak-4 { margin: 2.0rem; }
+
+.jarak-vertikal-0 { margin-top: 0; margin-bottom: 0; }
+.jarak-vertikal-1 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+.jarak-vertikal-2 { margin-top: 1.0rem; margin-bottom: 1.0rem; }
+.jarak-vertikal-3 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+.jarak-vertikal-4 { margin-top: 2.0rem; margin-bottom: 2.0rem; }
+
+.jarak-bawah-0 { margin-bottom: 0; }
+.jarak-bawah-1 { margin-bottom: 0.5rem; }
+.jarak-bawah-2 { margin-bottom: 1.0rem; }
+.jarak-bawah-3 { margin-bottom: 1.5rem; }
+.jarak-bawah-4 { margin-bottom: 2.0rem; }
+
+.jarak-atas-0 { margin-top: 0; }
+.jarak-atas-1 { margin-top: 0.5rem; }
+.jarak-atas-2 { margin-top: 1.0rem; }
+.jarak-atas-3 { margin-top: 1.5rem; }
+.jarak-atas-4 { margin-top: 2.0rem; }
+
+.jarak-horisontal-0 { margin-right: 0; margin-left: 0; }
+.jarak-horisontal-1 { margin-right: 0.5rem; margin-left: 0.5rem; }
+.jarak-horisontal-2 { margin-right: 1.0rem; margin-left: 1.0rem; }
+.jarak-horisontal-3 { margin-right: 1.5rem; margin-left: 1.5rem; }
+.jarak-horisontal-4 { margin-right: 2.0rem; margin-left: 2.0rem; }
+
+.jarak-kiri-0 { margin-left: 0; }
+.jarak-kiri-1 { margin-left: 0.5rem; }
+.jarak-kiri-2 { margin-left: 1.0rem; }
+.jarak-kiri-3 { margin-left: 1.5rem; }
+.jarak-kiri-4 { margin-left: 2.0rem; }
+
+.jarak-kanan-0 { margin-right: 0; }
+.jarak-kanan-1 { margin-right: 0.5rem; }
+.jarak-kanan-2 { margin-right: 1.0rem; }
+.jarak-kanan-3 { margin-right: 1.5rem; }
+.jarak-kanan-4 { margin-right: 2.0rem; }
+
+/*--- PENGATURAN JARAK DALAM ---*/
+.tepian-0 { padding: 0; }
+.tepian-1 { padding: 0.5rem; }
+.tepian-2 { padding: 1.0rem; }
+.tepian-3 { padding: 1.5rem; }
+.tepian-4 { padding: 2.0rem; }
+
+.tepi-atas-0 { padding-top: 0; }
+.tepi-atas-1 { padding-top: 0.5rem; }
+.tepi-atas-2 { padding-top: 1.0rem; }
+.tepi-atas-3 { padding-top: 1.5rem; }
+.tepi-atas-4 { padding-top: 2.0rem; }
+
+.tepi-bawah-0 { padding-bottom: 0; }
+.tepi-bawah-1 { padding-bottom: 0.5rem; }
+.tepi-bawah-2 { padding-bottom: 1.0rem; }
+.tepi-bawah-3 { padding-bottom: 1.5rem; }
+.tepi-bawah-4 { padding-bottom: 2.0rem; }
+
+.tepi-kiri-0 { padding-left: 0; }
+.tepi-kiri-1 { padding-left: 0.5rem; }
+.tepi-kiri-2 { padding-left: 1.0rem; }
+.tepi-kiri-3 { padding-left: 1.5rem; }
+.tepi-kiri-4 { padding-left: 2.0rem; }
+
+.tepi-kanan-0 { padding-right: 0rem; }
+.tepi-kanan-1 { padding-right: 0.5rem; }
+.tepi-kanan-2 { padding-right: 1.0rem; }
+.tepi-kanan-3 { padding-right: 1.5rem; }
+.tepi-kanan-4 { padding-right: 2.0rem; }
+
+/*--- SUSUNAN LAPISAN ELEMEN ---*/
+.taruh-terbawah { z-index: -99; }
+.taruh-bawah    { z-index: -1; }
+.taruh-normal   { z-index: 1; }
+.taruh-atas     { z-index: 10; }
+.taruh-teratas  { z-index: 100; }
+
+/*--- BINGKAI MEDIA RESPONSIF ---*/
+.rasio-16-9,
+.rasio-4-3,
+.rasio-1-1 {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+}
+
+.rasio-16-9 { padding-top: 56.25%; } /* 16:9 */
+.rasio-4-3  { padding-top: 75%; }    /* 4:3 */
+.rasio-1-1  { padding-top: 100%; }   /* 1:1 */
+
+.rasio-16-9 iframe,
+.rasio-16-9 embed,
+.rasio-16-9 object,
+.rasio-16-9 video,
+.rasio-4-3 iframe,
+.rasio-4-3 embed,
+.rasio-4-3 object,
+.rasio-4-3 video,
+.rasio-1-1 iframe,
+.rasio-1-1 embed,
+.rasio-1-1 object,
+.rasio-1-1 video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ==========================================================================
+   PONDASI.CSS — KOPIES 2010-2026
+   ========================================================================== */
