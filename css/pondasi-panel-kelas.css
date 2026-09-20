@@ -1,0 +1,785 @@
+/* ==========================================================================
+   PANEL-KELAS.CSS — Styling untuk panel properti berbasis kelas
+   - Section judul (Kelas Terpakai / Konten & Tampilan)
+   - Kelas grup (per kelas dalam 1 komponen)
+   - Pseudo-class tabs (Normal / :hover / :focus / :active / ...)
+   - Tombol "+ Tambah properti"
+   - Modal tambah properti
+   ========================================================================== */
+
+/* === SEKSI COLLAPSIBLE === */
+
+/* BREADCRUMB — struktur kelas */
+.pondasi-breadcrumb-wrapper {
+    display: block;
+    padding: 6px 8px;
+    background-color: #2A343E;
+    border-bottom: 1px solid #3C4650;
+}
+
+.pondasi-breadcrumb-label {
+    display: block;
+    color: #5A646E;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.pondasi-breadcrumb {
+    display: block;
+    font-size: 11px;
+    line-height: 1.6;
+    overflow: visible;
+    word-wrap: break-word;
+}
+
+.pondasi-breadcrumb-chip {
+    display: inline;
+    color: #A0AAB4;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    line-height: 1.4;
+    font-family: "Courier New", Courier, monospace;
+    transition: color 0.1s ease;
+    -webkit-transition: color 0.1s ease;
+    -moz-transition: color 0.1s ease;
+    -o-transition: color 0.1s ease;
+    border: 0;
+    background: none;
+}
+
+.pondasi-breadcrumb-chip:hover {
+    color: #FFFFFF;
+}
+
+.pondasi-breadcrumb-chip-aktif {
+    color: #00AAD4;
+}
+
+.pondasi-breadcrumb-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 3px;
+    font-size: 8px;
+    opacity: 0.7;
+}
+
+.pondasi-breadcrumb-nama {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.pondasi-breadcrumb-sep {
+    display: inline-block;
+    vertical-align: middle;
+    color: #5A646E;
+    font-size: 10px;
+    margin: 0 3px;
+    line-height: 1.4;
+}
+
+.pondasi-properti-seksi {
+    display: block;
+    border-bottom: 1px solid #2A343E;
+}
+
+.pondasi-properti-seksi:last-child {
+    border-bottom: 0;
+}
+
+.pondasi-properti-seksi-header {
+    display: block;
+    padding: 8px 12px;
+    background-color: #2A343E;
+    cursor: pointer;
+    font-size: 0;
+    line-height: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    transition: background-color 0.1s ease;
+    -webkit-transition: background-color 0.1s ease;
+    -moz-transition: background-color 0.1s ease;
+    -o-transition: background-color 0.1s ease;
+    outline: 0;
+    /* tabindex adalah HTML attribute, bukan CSS property — set via JS, bukan CSS */
+}
+
+.pondasi-properti-seksi-header:focus {
+    background-color: #3C4650;
+    outline: 1px solid #00AAD4;
+    outline-offset: -1px;
+}
+
+.pondasi-properti-seksi-header:hover {
+    background-color: #3C4650;
+}
+
+/* Highlight full-block saat fokus — seragam untuk header & field */
+.pondasi-properti-baris:focus-within,
+.pondasi-properti-baris-inline:focus-within {
+    background-color: rgba(0, 170, 212, 0.12);
+    outline: 0;
+}
+
+.pondasi-properti-seksi-header:focus,
+summary:focus,
+.pondasi-properti-input:focus,
+.pondasi-properti-num:focus,
+.pondasi-properti-select:focus,
+.pondasi-properti-textarea:focus,
+.pondasi-properti-warna-btn:focus,
+.pondasi-state-tab:focus {
+    outline: 0;
+}
+
+.pondasi-properti-seksi-header:focus {
+    background-color: rgba(0, 170, 212, 0.15);
+}
+
+summary:focus {
+    background-color: rgba(0, 170, 212, 0.12);
+}
+
+.pondasi-properti-input:focus,
+.pondasi-properti-num:focus,
+.pondasi-properti-select:focus,
+.pondasi-properti-textarea:focus {
+    border-color: #00AAD4;
+}
+
+.pondasi-properti-warna-btn:focus {
+    border-color: #00AAD4;
+}
+
+.pondasi-state-tab:focus {
+    background-color: rgba(0, 170, 212, 0.1);
+}
+
+.pondasi-properti-seksi-judul {
+    display: inline-block;
+    vertical-align: middle;
+    color: #5AC8FA;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    width: calc(100% - 20px);
+}
+
+.pondasi-properti-seksi-arrow {
+    display: inline-block;
+    vertical-align: middle;
+    color: #5A646E;
+    font-size: 12px;
+    line-height: 1.4;
+    transition: transform 0.15s ease;
+    -webkit-transition: transform 0.15s ease;
+    -moz-transition: transform 0.15s ease;
+    -o-transition: transform 0.15s ease;
+}
+
+.pondasi-properti-seksi:not(.pondasi-properti-seksi-tutup) .pondasi-properti-seksi-arrow {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+}
+
+.pondasi-properti-seksi-isi {
+    display: block;
+}
+
+.pondasi-properti-seksi-tutup .pondasi-properti-seksi-isi {
+    display: none;
+}
+
+/* === STATE TABS (pseudo-class) === */
+.pondasi-state-tabs-wrapper {
+    display: block;
+    margin: 0 0 4px;
+}
+
+.pondasi-state-tab-bar {
+    display: block;
+    padding: 4px 8px 0;
+    font-size: 0;
+    line-height: 0;
+    border-bottom: 1px solid #2A343E;
+    background-color: #1E2832;
+}
+
+.pondasi-state-tab {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: #A0AAB4;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 8px;
+    margin: 0 1px 0 0;
+    cursor: pointer;
+    line-height: 1.4;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    font-family: "Courier New", Courier, monospace;
+    transition: color 0.1s ease, border-color 0.1s ease;
+    -webkit-transition: color 0.1s ease, border-color 0.1s ease;
+    -moz-transition: color 0.1s ease, border-color 0.1s ease;
+    -o-transition: color 0.1s ease, border-color 0.1s ease;
+}
+
+.pondasi-state-tab:hover {
+    color: #FFFFFF;
+    background-color: rgba(0, 170, 212, 0.1);
+}
+
+.pondasi-state-tab-aktif {
+    color: #00AAD4 !important;
+    border-bottom-color: #00AAD4 !important;
+    background-color: rgba(0, 170, 212, 0.05);
+}
+
+.pondasi-state-panel {
+    display: none;
+    padding: 4px 0;
+}
+
+.pondasi-state-panel-aktif {
+    display: block;
+}
+
+.pondasi-state-info {
+    display: block;
+    padding: 6px 12px;
+    color: #5A646E;
+    font-size: 10px;
+    font-style: italic;
+    line-height: 1.4;
+    background-color: rgba(0, 170, 212, 0.03);
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin: 4px 8px;
+}
+
+.pondasi-properti-read-only {
+    display: inline-block;
+    vertical-align: middle;
+    width: 55%;
+    color: #E8EDF2;
+    font-size: 11px;
+    font-family: "Courier New", monospace;
+    line-height: 1.4;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-warna-btn[disabled] {
+    opacity: 0.7;
+    cursor: default;
+}
+
+/* Section judul (lama — tetap dipakai untuk region panel) */
+.pondasi-properti-section-judul {
+    display: block;
+    padding: 8px 12px 4px;
+    color: #5AC8FA;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    background-color: #1E2832;
+    border-bottom: 1px solid #2A343E;
+}
+
+/* Kelas grup — details per kelas */
+.pondasi-properti-kelas-grup {
+    border-bottom: 1px solid #2A343E;
+}
+
+.pondasi-properti-kelas-grup > summary {
+    display: block;
+    padding: 6px 12px;
+    color: #00AAD4;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1.4;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    background-color: #2A343E;
+    border: 0;
+    list-style: none;
+}
+
+.pondasi-properti-kelas-grup > summary::-webkit-details-marker { display: none; }
+.pondasi-properti-kelas-grup > summary::after {
+    content: "\25BC";
+    float: right;
+    font-size: 8px;
+    color: #5A646E;
+    transition: transform 0.15s ease;
+    -webkit-transition: transform 0.15s ease;
+    -moz-transition: transform 0.15s ease;
+    -o-transition: transform 0.15s ease;
+}
+
+.pondasi-properti-kelas-grup[open] > summary::after {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+}
+
+.pondasi-properti-kelas-grup > summary:hover {
+    background-color: #3C4650;
+    color: #5AC8FA;
+}
+
+.pondasi-properti-kelas-nama {
+    display: inline;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.pondasi-properti-kelas-jumlah {
+    display: inline-block;
+    float: right;
+    color: #5A646E;
+    font-size: 9px;
+    margin-right: 12px;
+    line-height: 1.4;
+}
+
+/* === PSEUDO-CLASS TABS === */
+.pondasi-pseudo-tabs {
+    display: block;
+    padding: 4px 8px 0;
+    font-size: 0;
+    line-height: 0;
+    border-bottom: 1px solid #2A343E;
+    background-color: #1E2832;
+}
+
+.pondasi-pseudo-tab {
+    display: inline-block;
+    vertical-align: middle;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: #A0AAB4;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 8px;
+    margin: 0 1px 0 0;
+    cursor: pointer;
+    line-height: 1.4;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    font-family: "Courier New", Courier, monospace;
+    transition: color 0.1s ease, border-color 0.1s ease;
+    -webkit-transition: color 0.1s ease, border-color 0.1s ease;
+    -moz-transition: color 0.1s ease, border-color 0.1s ease;
+    -o-transition: color 0.1s ease, border-color 0.1s ease;
+}
+
+.pondasi-pseudo-tab:hover {
+    color: #FFFFFF;
+    background-color: rgba(0, 170, 212, 0.1);
+}
+
+.pondasi-pseudo-tab-aktif {
+    color: #00AAD4 !important;
+    border-bottom-color: #00AAD4 !important;
+    background-color: rgba(0, 170, 212, 0.05);
+}
+
+/* Panel rules per pseudo — hanya yang aktif yang tampil */
+.pondasi-pseudo-rules-panel {
+    display: none;
+}
+
+.pondasi-pseudo-rules-panel-aktif {
+    display: block;
+}
+
+/* === TOMBOL "+ TAMBAH PROPERTI" === */
+.pondasi-properti-tambah-prop {
+    display: block;
+    padding: 4px 8px 8px;
+}
+
+.pondasi-properti-tambah-btn {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    background-color: transparent;
+    border: 1px dashed #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    color: #A0AAB4;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1.4;
+    text-align: center;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+    -webkit-transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+    -moz-transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+    -o-transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.pondasi-properti-tambah-btn:hover {
+    border-color: #00AAD4;
+    color: #00AAD4;
+    background-color: rgba(0, 170, 212, 0.05);
+}
+
+.pondasi-properti-tambah-btn i {
+    margin-right: 4px;
+}
+
+/* === MODAL TAMBAH PROPERTI === */
+.pondasi-tambah-prop-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* z-index 10600 = di atas sidebar (10500) supaya modal tambah-properti tetap tampil saat sidebar terbuka */
+    z-index: 10600;
+    display: block;
+    text-align: center;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-tambah-prop-modal:before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.pondasi-tambah-prop-box {
+    display: inline-block;
+    vertical-align: middle;
+    width: 320px;
+    max-width: 90vw;
+    max-height: 60vh;
+    background-color: #1E2832;
+    border: 1px solid #3C4650;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow: hidden;
+}
+
+.pondasi-tambah-prop-head {
+    display: block;
+    padding: 8px 12px;
+    background-color: #2A343E;
+    border-bottom: 1px solid #3C4650;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-tambah-prop-head span {
+    display: inline-block;
+    vertical-align: middle;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
+    width: calc(100% - 24px);
+    line-height: 1.4;
+}
+
+.pondasi-tambah-prop-head code {
+    color: #00AAD4;
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+}
+
+.pondasi-tambah-prop-close {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: 0;
+    color: #A0AAB4;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.pondasi-tambah-prop-close:hover {
+    background-color: #E53935;
+    color: #FFFFFF;
+}
+
+.pondasi-tambah-prop-body {
+    display: block;
+    padding: 8px;
+    max-height: calc(60vh - 80px);
+    overflow: hidden;
+}
+
+.pondasi-tambah-prop-cari {
+    display: block;
+    width: 100%;
+    height: 28px;
+    padding: 0 8px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 12px;
+    line-height: 26px;
+    outline: 0;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.pondasi-tambah-prop-cari:focus {
+    border-color: #00AAD4;
+}
+
+.pondasi-tambah-prop-list {
+    display: block;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-tambah-prop-item {
+    display: block;
+    width: 100%;
+    padding: 6px 8px;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid #2A343E;
+    color: #E8EDF2;
+    font-size: 11px;
+    cursor: pointer;
+    line-height: 1.4;
+    text-align: left;
+    font-family: "Courier New", monospace;
+    transition: background-color 0.1s ease;
+    -webkit-transition: background-color 0.1s ease;
+    -moz-transition: background-color 0.1s ease;
+    -o-transition: background-color 0.1s ease;
+}
+
+.pondasi-tambah-prop-item:hover {
+    background-color: #0073B4;
+    color: #FFFFFF;
+}
+
+.pondasi-tambah-prop-item:last-child {
+    border-bottom: 0;
+}
+
+.pondasi-tambah-prop-nama {
+    display: inline;
+}
+
+.pondasi-tambah-prop-kat {
+    display: inline-block;
+    float: right;
+    color: #5A646E;
+    font-size: 9px;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pondasi-tambah-prop-item:hover .pondasi-tambah-prop-kat {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Baris kosong (kalau kelas tidak punya properti) */
+.pondasi-properti-baris-kosong {
+    display: block;
+    padding: 8px 12px;
+    color: #5A646E;
+    font-size: 11px;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* === SUBGRUP DALAM KELAS (kategori properti) === */
+.pondasi-properti-kelas-subgrup {
+    display: block;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid rgba(60, 70, 80, 0.3);
+}
+
+.pondasi-properti-kelas-subgrup:last-child {
+    border-bottom: 0;
+}
+
+.pondasi-properti-kelas-subgrup-judul {
+    display: block;
+    padding: 4px 12px 2px;
+    color: #5A646E;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+/* === AUTOCOMPLETE TAMBAH PROPERTI — 2 INPUT (properti + value) === */
+.pondasi-properti-tambah-row {
+    display: block;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-properti-tambah-row .pondasi-properti-input-autocomplete,
+.pondasi-properti-tambah-row .pondasi-properti-input-value {
+    display: inline-block;
+    vertical-align: middle;
+    width: calc(50% - 32px) !important;
+    height: 26px;
+    margin: 0 2px 0 0;
+    padding: 0 6px;
+    background-color: #2A343E;
+    color: #FFFFFF !important;
+    border: 1px solid #00AAD4;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 11px;
+    line-height: 24px;
+    outline: 0;
+    font-family: "Courier New", monospace;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-tambah-row .pondasi-properti-input-value {
+    border-color: #5A646E;
+}
+
+.pondasi-properti-tambah-row .pondasi-properti-input-value:focus {
+    border-color: #00AAD4;
+}
+
+.pondasi-properti-baris-rule-baru {
+    display: block;
+    padding: 4px 8px 4px;
+    margin: 0;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-properti-baris-rule-baru .pondasi-properti-label-full {
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+    margin: 0 0 4px 0 !important;
+    padding: 0 !important;
+    color: #00AAD4;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.pondasi-properti-tambah-confirm,
+.pondasi-properti-tambah-cancel {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 26px;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    margin: 0 0 0 2px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 12px;
+    line-height: 26px;
+    text-align: center;
+}
+
+.pondasi-properti-tambah-confirm {
+    color: #00B482;
+}
+
+.pondasi-properti-tambah-confirm:hover {
+    background-color: #00B482;
+    color: #FFFFFF;
+}
+
+.pondasi-properti-tambah-cancel {
+    color: #A0AAB4;
+}
+
+.pondasi-properti-tambah-cancel:hover {
+    background-color: #E53935;
+    color: #FFFFFF;
+}
+
+/* === TEMA GELAP === */
+body[data-tema="gelap"] .pondasi-properti-section-judul {
+    background-color: #121212;
+    border-bottom-color: #1E2832;
+}
+
+body[data-tema="gelap"] .pondasi-properti-kelas-grup {
+    border-bottom-color: #1E2832;
+}
+
+body[data-tema="gelap"] .pondasi-properti-kelas-grup > summary {
+    background-color: #1E2832;
+}
+
+body[data-tema="gelap"] .pondasi-pseudo-tabs {
+    background-color: #121212;
+    border-bottom-color: #1E2832;
+}
+
+body[data-tema="gelap"] .pondasi-tambah-prop-box {
+    background-color: #121212;
+    border-color: #2A343E;
+}
+
+body[data-tema="gelap"] .pondasi-tambah-prop-head {
+    background-color: #1E2832;
+    border-bottom-color: #2A343E;
+}

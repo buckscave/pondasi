@@ -1,0 +1,28 @@
+{
+    "nama": "Pondasi Default",
+    "deskripsi": "Tema default pondasi — Material Design, flat, modern, clean & minimalis",
+    "versi": "1.0",
+    "induk": "tampilan.css",
+    "warnaUtama": "#00AAD4",
+    "warnaSekunder": "#00B482",
+    "berkas": [
+        "pondasi.css",
+        "tampilan.css",
+        "tampilan-teks.css",
+        "tampilan-teks-tambahan.css",
+        "tampilan-daftar.css",
+        "tampilan-media.css",
+        "tampilan-tabel.css",
+        "tampilan-tombol.css",
+        "tampilan-form.css",
+        "tampilan-kontainer.css",
+        "tampilan-navigasi.css",
+        "tampilan-feedback.css",
+        "tampilan-lainnya.css",
+        "tampilan-tambahan.css"
+    ],
+    "kategori": [
+        "Teks", "Daftar", "Media", "Tabel",
+        "Tombol", "Form", "Kontainer", "Navigasi", "Feedback", "Lainnya"
+    ]
+}

@@ -1,0 +1,354 @@
+
+/* @kategori: Navigasi */
+/* ==========================================================================
+   8. NAVIGASI — bilah aplikasi (app bar), tab, bilah bawah, breadcrumb
+   ========================================================================== */
+
+/* --- Bilah aplikasi (app bar) --- */
+.bilah-aplikasi {
+    display: block;
+    position: relative;
+    padding: 0 1rem;
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    min-height: 3.5rem;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    box-sizing: border-box;
+}
+/* Judul bilah aplikasi */
+.bilah-aplikasi .bilah-judul {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 3.5rem;
+    padding: 0;
+    margin: 0;
+}
+/* Ikon kiri */
+.bilah-aplikasi .bilah-ikon {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: 3rem;
+    height: 3.5rem;
+    line-height: 3.5rem;
+    text-align: center;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin-left: -0.5rem;
+}
+.bilah-aplikasi .bilah-ikon:hover {
+    background-color: rgba(255,255,255,0.15);
+}
+/* Aksi kanan */
+.bilah-aplikasi .bilah-aksi {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    float: right;
+    vertical-align: middle;
+    height: 3.5rem;
+}
+.bilah-aplikasi .bilah-aksi .tombol-ikon {
+    color: #FFFFFF;
+}
+.bilah-aplikasi .bilah-aksi .tombol-ikon:hover {
+    background-color: rgba(255,255,255,0.15);
+    color: #FFFFFF;
+}
+
+/* Bilah aplikasi tema gelap */
+[data-tema="gelap"] .bilah-aplikasi {
+    background-color: #1E2832;
+    color: #FFFFFF;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.55), 0 3px 6px rgba(0,0,0,0.6);
+    -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.55), 0 3px 6px rgba(0,0,0,0.6);
+    -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.55), 0 3px 6px rgba(0,0,0,0.6);
+}
+[data-tema="gelap"] .bilah-aplikasi .bilah-ikon {
+    color: #FFFFFF;
+}
+
+/* --- Tab --- */
+.tab-bilah {
+    display: block;
+    background-color: #00AAD4;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    font-size: 0;
+    white-space: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.tab {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    cursor: pointer;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background-color: transparent;
+    outline: 0;
+    -webkit-transition: color .15s ease, border-color .15s ease;
+    -moz-transition: color .15s ease, border-color .15s ease;
+    -o-transition: color .15s ease, border-color .15s ease;
+    transition: color .15s ease, border-color .15s ease;
+}
+.tab:hover {
+    color: #FFFFFF;
+    border-bottom-color: rgba(255,255,255,0.5);
+}
+.tab.tab-aktif {
+    color: #FFFFFF;
+    border-bottom-color: #FFFFFF;
+}
+.tab:focus {
+    outline: 2px solid #FFFFFF;
+    outline-offset: -2px;
+}
+
+/* Tab tema gelap */
+[data-tema="gelap"] .tab-bilah {
+    background-color: #1E2832;
+}
+[data-tema="gelap"] .tab {
+    color: rgba(255,255,255,0.6);
+}
+[data-tema="gelap"] .tab:hover {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .tab.tab-aktif {
+    color: #00AAD4;
+    border-bottom-color: #00AAD4;
+}
+
+/* --- Bilah bawah (bottom nav) --- */
+.bilah-bawah {
+    display: block;
+    background-color: #FFFFFF;
+    box-shadow: 0 -1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-box-shadow: 0 -1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 -1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    font-size: 0;
+    white-space: nowrap;
+    overflow-x: auto;
+    text-align: center;
+    -webkit-overflow-scrolling: touch;
+}
+.bilah-bawah-item {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    width: 80px;
+    padding: 0.5rem 0;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: #5A646E;
+    -webkit-transition: color .15s ease;
+    -moz-transition: color .15s ease;
+    -o-transition: color .15s ease;
+    transition: color .15s ease;
+}
+.bilah-bawah-item:hover {
+    color: #00AAD4;
+}
+.bilah-bawah-item.bilah-bawah-aktif {
+    color: #00AAD4;
+}
+.bilah-bawah-item .bilah-bawah-ikon {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+.bilah-bawah-item .bilah-bawah-teks {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+/* Bilah bawah tema gelap */
+[data-tema="gelap"] .bilah-bawah {
+    background-color: #1E2832;
+}
+[data-tema="gelap"] .bilah-bawah-item {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .bilah-bawah-item:hover,
+[data-tema="gelap"] .bilah-bawah-item.bilah-bawah-aktif {
+    color: #00AAD4;
+}
+
+/* ==========================================================================
+   16. MENU — dropdown menu
+   ========================================================================== */
+.menu {
+    display: none;
+    position: absolute;
+    min-width: 10rem;
+    max-width: 20rem;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    z-index: 200;
+    overflow: hidden;
+    padding: 0.5rem 0;
+}
+.menu.menu-tampil {
+    display: block;
+}
+.menu-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #1E2832;
+    cursor: pointer;
+    text-decoration: none;
+    border: 0;
+    background-color: transparent;
+    width: 100%;
+    text-align: left;
+    -webkit-transition: background-color .1s ease;
+    -moz-transition: background-color .1s ease;
+    -o-transition: background-color .1s ease;
+    transition: background-color .1s ease;
+    box-sizing: border-box;
+}
+.menu-item:hover {
+    background-color: #F5F7FA;
+}
+.menu-item.menu-aktif {
+    color: #00AAD4;
+    font-weight: 500;
+}
+/* Pemisah dalam menu */
+.menu-pemisah {
+    display: block;
+    height: 1px;
+    margin: 0.5rem 0;
+    background-color: #E1E6EB;
+}
+/* Ikon dalam menu item */
+.menu-item .menu-ikon {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 20px;
+    margin-right: 1rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* Menu tema gelap */
+[data-tema="gelap"] .menu {
+    background-color: #2C3640;
+}
+[data-tema="gelap"] .menu-item {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .menu-item:hover {
+    background-color: #3C4650;
+}
+[data-tema="gelap"] .menu-pemisah {
+    background-color: #5A646E;
+}
+
+/* ==========================================================================
+   23. MENU MENDATAR — navigasi horisontal (horizontal nav)
+   ========================================================================== */
+.menu-mendatar {
+    display: block;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E1E6EB;
+    font-size: 0;
+    white-space: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+/* Item menu mendatar */
+.menu-mendatar-item {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #5A646E;
+    text-decoration: none;
+    cursor: pointer;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background-color: transparent;
+    outline: 0;
+    -webkit-transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+    -moz-transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+    -o-transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+    transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+}
+.menu-mendatar-item:hover {
+    color: #00AAD4;
+    border-bottom-color: #A0AAB4;
+    background-color: #F5F7FA;
+}
+.menu-mendatar-item.menu-aktif {
+    color: #00AAD4;
+    border-bottom-color: #00AAD4;
+}
+.menu-mendatar-item:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: -2px;
+}
+/* Ikon dalam item */
+.menu-mendatar-item .menu-mendatar-ikon {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+/* Item kanan (float right) */
+.menu-mendatar-kanan {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    float: right;
+}
+
+/* Menu mendatar tema gelap */
+[data-tema="gelap"] .menu-mendatar {
+    background-color: #1E2832;
+    border-bottom-color: #3C4650;
+}
+[data-tema="gelap"] .menu-mendatar-item {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .menu-mendatar-item:hover {
+    color: #00AAD4;
+    background-color: #2C3640;
+}
+[data-tema="gelap"] .menu-mendatar-item.menu-aktif {
+    color: #00AAD4;
+}
+

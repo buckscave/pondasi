@@ -1,0 +1,543 @@
+/* TAMPILAN-TAMBAHAN.CSS
+   Kelas-kelas stub untuk komponen yang BELUM punya definisi CSS di tampilan-*.css.
+   Dipakai oleh skema block di js/pondasi-blok-*.js (kelasDefault).
+   Styling minimal — wireframe style — supaya block tidak muncul sebagai plain div.
+
+   Ketika komponen sudah punya CSS lengkap di file tema utama, kelas di sini
+   bisa di-override. File ini di-load setelah semua tampilan-*.css.
+*/
+
+/* ==========================================================================
+   KUTIPAN & KODE — block quote + code block
+   ========================================================================== */
+.kutipan {
+    display: block;
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border-left: 4px solid #00AAD4;
+    background-color: #F4F6F8;
+    color: #1E2832;
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+}
+.kutipan cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-style: normal;
+    color: #5A646E;
+}
+.kode {
+    display: block;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: #1E2832;
+    color: #E1F6FA;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 4px;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+/* ==========================================================================
+   HERO — banner besar bagian atas halaman
+   ========================================================================== */
+.hero {
+    display: block;
+    padding: 4rem 2rem;
+    margin: 0 0 2rem;
+    background-color: #E1F6FA;
+    color: #1E2832;
+    text-align: center;
+    border-radius: 4px;
+}
+.hero h1,
+.hero h2,
+.hero h3 {
+    margin: 0 0 1rem;
+    color: #0073B4;
+}
+.hero p {
+    margin: 0 0 1rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   MODAL — dialog overlay (struktur, butuh JS untuk toggle)
+   ========================================================================== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(10, 20, 30, 0.55);
+    z-index: 10600;
+    overflow-y: auto;
+}
+.modal.modal-tampil {
+    display: block;
+}
+.modal-badan {
+    position: relative;
+    width: 90%;
+    max-width: 32rem;
+    margin: 10% auto;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    overflow: hidden;
+}
+.modal-kepala {
+    display: block;
+    padding: 1.5rem 1.5rem 1rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1E2832;
+}
+.modal-badan-isi {
+    display: block;
+    padding: 0 1.5rem 1.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #5A646E;
+}
+.modal-kaki {
+    display: block;
+    padding: 0.5rem;
+    text-align: right;
+}
+.modal-kaki .tombol {
+    margin-left: 0.5rem;
+}
+
+/* ==========================================================================
+   DRAWER — panel geser dari samping (struktur, butuh JS untuk toggle)
+   ========================================================================== */
+.drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 18rem;
+    max-width: 90%;
+    background-color: #1E2832;
+    color: #FFFFFF;
+    z-index: 10500;
+    overflow-y: auto;
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-transition: -webkit-transform .25s ease;
+    -moz-transition: -moz-transform .25s ease;
+    -o-transition: -o-transform .25s ease;
+    transition: transform .25s ease;
+}
+.drawer.drawer-tampil {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+}
+.drawer-kanan {
+    right: 0;
+    left: auto;
+    -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    -o-transform: translateX(100%);
+    transform: translateX(100%);
+}
+.drawer-kanan.drawer-tampil {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+}
+.drawer-kepala {
+    display: block;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid #3C4650;
+}
+.drawer-badan {
+    display: block;
+    padding: 1rem 1.5rem;
+}
+
+/* ==========================================================================
+   BANNER — block iklan / pengumuman
+   ========================================================================== */
+.banner {
+    display: block;
+    padding: 1.5rem 2rem;
+    margin: 1rem 0;
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-radius: 4px;
+    text-align: center;
+}
+.banner h1, .banner h2, .banner h3 {
+    margin: 0 0 0.5rem;
+    color: inherit;
+}
+.banner p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   TOAST — notifikasi sementara (mirip snackbar, tapi sebagai block)
+   ========================================================================== */
+.toast {
+    display: block;
+    padding: 0.875rem 1.5rem;
+    margin: 0.5rem 0;
+    background-color: #3C4650;
+    color: #FFFFFF;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.23), 0 3px 6px rgba(0,0,0,0.16);
+}
+.toast.toast-info { background-color: #00AAD4; }
+.toast.toast-sukses { background-color: #80C832; }
+.toast.toast-peringatan { background-color: #FFC832; color: #1E2832; }
+.toast.toast-error { background-color: #FF3232; }
+
+/* ==========================================================================
+   SPINNER — indikator loading
+   ========================================================================== */
+.spinner {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid #E1F6FA;
+    border-top-color: #00AAD4;
+    border-radius: 50%;
+    -webkit-animation: pondasi-spin 0.8s linear infinite;
+    -moz-animation: pondasi-spin 0.8s linear infinite;
+    -o-animation: pondasi-spin 0.8s linear infinite;
+    animation: pondasi-spin 0.8s linear infinite;
+    vertical-align: middle;
+}
+@-webkit-keyframes pondasi-spin {
+    to { -webkit-transform: rotate(360deg); }
+}
+@-moz-keyframes pondasi-spin {
+    to { -moz-transform: rotate(360deg); }
+}
+@-o-keyframes pondasi-spin {
+    to { -o-transform: rotate(360deg); }
+}
+@keyframes pondasi-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   BREADCRUMB — navigasi jalur (Home > Section > Page)
+   ========================================================================== */
+.breadcrumb {
+    display: block;
+    padding: 0.75rem 1rem;
+    margin: 0 0 1rem;
+    background-color: #F4F6F8;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+.breadcrumb ul,
+.breadcrumb ol {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.breadcrumb li {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    padding: 0;
+    margin: 0;
+}
+.breadcrumb li::after {
+    content: ' ›';
+    margin: 0 0.5rem;
+    color: #A0AAB4;
+}
+.breadcrumb li:last-child::after {
+    content: '';
+}
+.breadcrumb a {
+    color: #00AAD4;
+    text-decoration: none;
+}
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+.breadcrumb li:last-child {
+    color: #5A646E;
+}
+
+/* ==========================================================================
+   PAGINATION — navigasi halaman (1 2 3 ... Next)
+   ========================================================================== */
+.pagination {
+    display: block;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+.pagination ul,
+.pagination ol {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.pagination li {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin: 0 0.125rem;
+}
+.pagination a,
+.pagination span {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #C8D2DC;
+    border-radius: 4px;
+    color: #00AAD4;
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+.pagination a:hover {
+    background-color: #E1F6FA;
+    border-color: #00AAD4;
+}
+.pagination .aktif,
+.pagination .aktif span {
+    background-color: #00AAD4;
+    border-color: #00AAD4;
+    color: #FFFFFF;
+    cursor: default;
+}
+.pagination .disabled a {
+    color: #A0AAB4;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   MEGA-MENU — dropdown navigasi besar
+   ========================================================================== */
+.mega-menu {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+.mega-menu-kepala {
+    display: block;
+    padding: 0.75rem 1rem;
+    background-color: #1E2832;
+    color: #FFFFFF;
+    font-weight: 500;
+    cursor: pointer;
+}
+.mega-menu-isi {
+    display: none;
+    position: absolute;
+    padding: 1rem;
+    background-color: #FFFFFF;
+    border: 1px solid #C8D2DC;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    min-width: 24rem;
+    z-index: 1000;
+}
+.mega-menu.mega-menu-tampil .mega-menu-isi,
+.mega-menu:hover .mega-menu-isi {
+    display: block;
+}
+
+/* ==========================================================================
+   DAFTAR-KOMPONEN — list dengan styling khusus (kartu mini per item)
+   ========================================================================== */
+.daftar-komponen {
+    display: block;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.daftar-komponen > li {
+    display: block;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background-color: #F4F6F8;
+    border-left: 3px solid #00AAD4;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   TIMELINE — daftar peristiwa berurutan
+   ========================================================================== */
+.timeline {
+    display: block;
+    padding: 0 0 0 1.5rem;
+    margin: 1rem 0;
+    border-left: 2px solid #C8D2DC;
+    list-style: none;
+}
+.timeline > li {
+    display: block;
+    position: relative;
+    padding: 0.5rem 0 1rem 1rem;
+    margin: 0;
+}
+.timeline > li::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 0.6rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: #00AAD4;
+    border-radius: 50%;
+    margin-left: -0.375rem;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 0 2px #00AAD4;
+}
+
+/* ==========================================================================
+   TREE-VIEW — pohon hierarki (collapsible)
+   ========================================================================== */
+.tree-view {
+    display: block;
+    padding: 0.5rem;
+    margin: 0;
+    background-color: #F4F6F8;
+    border-radius: 4px;
+    list-style: none;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+.tree-view ul {
+    list-style: none;
+    padding-left: 1.25rem;
+    margin: 0;
+}
+.tree-view li {
+    display: block;
+    padding: 0.125rem 0;
+}
+.tree-view li::before {
+    content: '▸ ';
+    color: #A0AAB4;
+}
+.tree-view li.tree-view-terbuka::before {
+    content: '▾ ';
+}
+.tree-view li.tree-view-daun::before {
+    content: '• ';
+    color: #00AAD4;
+}
+
+/* ==========================================================================
+   HEADER / FOOTER — container semantik (di luar element selector)
+   ========================================================================== */
+.header,
+.footer {
+    display: block;
+    padding: 1rem 1.5rem;
+    margin: 0;
+    background-color: #1E2832;
+    color: #FFFFFF;
+}
+.footer {
+    margin-top: 2rem;
+    border-top: 1px solid #3C4650;
+}
+
+/* ==========================================================================
+   TEMA GELAP — override untuk komponen baru di atas
+   ========================================================================== */
+[data-tema="gelap"] .kutipan {
+    background-color: #1A2A34;
+    color: #E1F6FA;
+    border-left-color: #00AAD4;
+}
+[data-tema="gelap"] .kode {
+    background-color: #0A141E;
+    color: #E1F6FA;
+}
+[data-tema="gelap"] .hero {
+    background-color: #1A2A34;
+    color: #E1F6FA;
+}
+[data-tema="gelap"] .hero h1,
+[data-tema="gelap"] .hero h2,
+[data-tema="gelap"] .hero h3 {
+    color: #78C8F0;
+}
+[data-tema="gelap"] .modal-badan {
+    background-color: #1E2832;
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .modal-kepala {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .modal-badan-isi {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .banner {
+    background-color: #0073B4;
+}
+[data-tema="gelap"] .breadcrumb {
+    background-color: #1A2A34;
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .breadcrumb li:last-child {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .pagination a,
+[data-tema="gelap"] .pagination span {
+    border-color: #3C4650;
+    color: #78C8F0;
+}
+[data-tema="gelap"] .pagination a:hover {
+    background-color: #1A2A34;
+}
+[data-tema="gelap"] .mega-menu-kepala {
+    background-color: #0A141E;
+}
+[data-tema="gelap"] .mega-menu-isi {
+    background-color: #1E2832;
+    border-color: #3C4650;
+}
+[data-tema="gelap"] .daftar-komponen > li {
+    background-color: #1A2A34;
+    border-left-color: #00AAD4;
+    color: #E1F6FA;
+}
+[data-tema="gelap"] .timeline {
+    border-left-color: #3C4650;
+}
+[data-tema="gelap"] .tree-view {
+    background-color: #1A2A34;
+    color: #E1F6FA;
+}
+[data-tema="gelap"] .header,
+[data-tema="gelap"] .footer {
+    background-color: #0A141E;
+}

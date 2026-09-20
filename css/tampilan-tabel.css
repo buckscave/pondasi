@@ -1,0 +1,73 @@
+
+/* @kategori: Tabel */
+/* ==========================================================================
+   12. TABEL — data table dengan header, baris, zebra, hover
+   ========================================================================== */
+.tabel {
+    display: block;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    overflow: hidden;
+}
+.tabel thead th {
+    display: table-cell;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    color: #5A646E;
+    text-align: left;
+    border-bottom: 1px solid #E1E6EB;
+    background-color: #FAFAFA;
+}
+.tabel tbody td {
+    display: table-cell;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #1E2832;
+    border-bottom: 1px solid #E1E6EB;
+}
+.tabel tbody tr:hover td {
+    background-color: #F5F7FA;
+}
+.tabel tbody tr:last-child td {
+    border-bottom: 0;
+}
+/* Zebra striping */
+.tabel.tabel-zebra tbody tr:nth-child(odd) td {
+    background-color: #FAFAFA;
+}
+/* Tabel rapat */
+.tabel.tabel-padat thead th,
+.tabel.tabel-padat tbody td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+/* Tabel tema gelap */
+[data-tema="gelap"] .tabel {
+    background-color: #1E2832;
+}
+[data-tema="gelap"] .tabel thead th {
+    color: #A0AAB4;
+    border-bottom-color: #3C4650;
+    background-color: #2C3640;
+}
+[data-tema="gelap"] .tabel tbody td {
+    color: #FFFFFF;
+    border-bottom-color: #3C4650;
+}
+[data-tema="gelap"] .tabel tbody tr:hover td {
+    background-color: #2C3640;
+}
+[data-tema="gelap"] .tabel.tabel-zebra tbody tr:nth-child(odd) td {
+    background-color: #2C3640;
+}
+

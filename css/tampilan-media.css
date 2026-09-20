@@ -1,0 +1,165 @@
+/* @kategori: Media */
+/* ==========================================================================
+   TAMPILAN-MEDIA.CSS — Komponen media (img, figure, galeri, hr, spacer)
+   ========================================================================== */
+
+/* --- Gambar responsif --- */
+.gambar {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+/* --- Figure + Caption --- */
+.gambar-bingkai {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #F5F5F5;
+}
+.gambar-bingkai img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.gambar-bingkai figcaption {
+    display: block;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    color: #5A646E;
+    background-color: #F5F5F5;
+    text-align: center;
+}
+
+/* --- Galeri gambar (grid sederhana via inline-block) --- */
+.galeri {
+    display: block;
+    font-size: 0;  /* hilangkan whitespace antar inline-block */
+    margin: 0 -4px;
+}
+.galeri .galeri-item {
+    display: inline-block;
+    vertical-align: top;
+    width: 25%;
+    padding: 4px;
+    box-sizing: border-box;
+}
+.galeri .galeri-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* --- Garis pemisah (hr) --- */
+.pemisah {
+    display: block;
+    border: 0;
+    border-top: 1px solid #E0E0E0;
+    margin: 16px 0;
+    padding: 0;
+    height: 0;
+}
+.pemisah-tebal {
+    border-top-width: 2px;
+}
+.pemisah-titik {
+    border-top-style: dotted;
+}
+.pemisah-putus {
+    border-top-style: dashed;
+}
+
+/* --- Spacer (ruang kosong) --- */
+.spacer {
+    display: block;
+    width: 100%;
+    height: 16px;
+}
+.spacer-sm { height: 8px; }
+.spacer-md { height: 24px; }
+.spacer-lg { height: 32px; }
+.spacer-xl { height: 48px; }
+
+/* --- Empty state (ilustrasi kosong) --- */
+.kosong {
+    display: block;
+    padding: 32px 16px;
+    text-align: center;
+    color: #A0AAB4;
+    background-color: #FAFAFA;
+    border: 1px dashed #C8D0DA;
+    border-radius: 4px;
+}
+.kosong .kosong-ikon {
+    display: block;
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: #C8D0DA;
+}
+.kosong .kosong-judul {
+    display: block;
+    font-size: 1rem;
+    color: #5A646E;
+    margin-bottom: 4px;
+}
+.kosong .kosong-teks {
+    display: block;
+    font-size: 0.875rem;
+    color: #A0AAB4;
+}
+
+/* --- Skeleton loader (placeholder konten loading) --- */
+.skeleton {
+    display: block;
+    background-color: #E0E0E0;
+    border-radius: 4px;
+    height: 16px;
+    margin: 8px 0;
+}
+.skeleton.sm { width: 25%; }
+.skeleton.md { width: 50%; }
+.skeleton.lg { width: 75%; }
+.skeleton.xl { width: 100%; }
+.skeleton.circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+/* Animasi pulse untuk skeleton */
+@keyframes skeleton-pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+.skeleton {
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* === Tema gelap untuk media === */
+body[data-tema="gelap"] .gambar-bingkai figcaption {
+    color: #A0AAB4;
+    background-color: #1E2832;
+}
+body[data-tema="gelap"] .pemisah {
+    border-top-color: #3C4650;
+}
+body[data-tema="gelap"] .kosong {
+    background-color: #1E2832;
+    border-color: #3C4650;
+    color: #5A646E;
+}
+body[data-tema="gelap"] .kosong .kosong-ikon {
+    color: #3C4650;
+}
+body[data-tema="gelap"] .kosong .kosong-judul {
+    color: #A0AAB4;
+}
+body[data-tema="gelap"] .skeleton {
+    background-color: #3C4650;
+}

@@ -1,0 +1,276 @@
+
+/* @kategori: Tombol */
+
+/* ==========================================================================
+   4. TOMBOL — berisi, garis, datar, melayang, ikon
+   ========================================================================== */
+
+/* --- Base tombol --- */
+.tombol {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.02rem;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .15s ease, box-shadow .15s ease, color .15s ease, border-color .15s ease;
+    -moz-transition: background-color .15s ease, box-shadow .15s ease, color .15s ease, border-color .15s ease;
+    -o-transition: background-color .15s ease, box-shadow .15s ease, color .15s ease, border-color .15s ease;
+    transition: background-color .15s ease, box-shadow .15s ease, color .15s ease, border-color .15s ease;
+    box-sizing: border-box;
+}
+
+/* --- Tombol berisi (contained) — default --- */
+.tombol.tombol-berisi {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.tombol.tombol-berisi:hover {
+    background-color: #0073B4;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.tombol.tombol-berisi:active {
+    background-color: #0073B4;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.tombol.tombol-berisi:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+/* --- Tombol garis (outlined) --- */
+.tombol.tombol-garis {
+    background-color: transparent;
+    color: #00AAD4;
+    border: 1px solid #00AAD4;
+}
+.tombol.tombol-garis:hover {
+    background-color: rgba(0, 170, 212, 0.08);
+}
+.tombol.tombol-garis:active {
+    background-color: rgba(0, 170, 212, 0.16);
+}
+.tombol.tombol-garis:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+/* --- Tombol datar (text) --- */
+.tombol.tombol-datar {
+    background-color: transparent;
+    color: #00AAD4;
+    border: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+.tombol.tombol-datar:hover {
+    background-color: rgba(0, 170, 212, 0.08);
+}
+.tombol.tombol-datar:active {
+    background-color: rgba(0, 170, 212, 0.16);
+}
+.tombol.tombol-datar:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+/* --- Tombol sekunder (warna hijau) --- */
+.tombol.tombol-berisi.tombol-sekunder {
+    background-color: #00B482;
+}
+.tombol.tombol-berisi.tombol-sekunder:hover {
+    background-color: #4B9600;
+}
+.tombol.tombol-berisi.tombol-sekunder:active {
+    background-color: #4B9600;
+}
+.tombol.tombol-garis.tombol-sekunder {
+    color: #00B482;
+    border-color: #00B482;
+}
+.tombol.tombol-datar.tombol-sekunder {
+    color: #00B482;
+}
+.tombol.tombol-sekunder:hover {
+    background-color: rgba(0, 180, 130, 0.08);
+}
+
+/* --- Tombol merah (bahaya/error) --- */
+.tombol.tombol-berisi.tombol-bahaya {
+    background-color: #FF3232;
+}
+.tombol.tombol-berisi.tombol-bahaya:hover {
+    background-color: #B30000;
+    box-shadow: 0 3px 6px rgba(255,50,50,0.3);
+    -webkit-box-shadow: 0 3px 6px rgba(255,50,50,0.3);
+    -moz-box-shadow: 0 3px 6px rgba(255,50,50,0.3);
+}
+.tombol.tombol-garis.tombol-bahaya {
+    color: #FF3232;
+    border-color: #FF3232;
+}
+.tombol.tombol-datar.tombol-bahaya {
+    color: #FF3232;
+}
+
+/* --- Tombol nonaktif (disabled) --- */
+.tombol[disabled],
+.tombol.tombol-nonaktif {
+    background-color: #E1E6EB;
+    color: #A0AAB4;
+    border-color: #E1E6EB;
+    cursor: not-allowed;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+.tombol[disabled]:hover,
+.tombol.tombol-nonaktif:hover {
+    background-color: #E1E6EB;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+/* --- Tombol melayang (FAB) --- */
+.tombol-melayang {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    margin: 0.5rem;
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border: 0;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 56px;
+    text-align: center;
+    cursor: pointer;
+    outline: 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -webkit-transition: background-color .15s ease, box-shadow .15s ease;
+    -moz-transition: background-color .15s ease, box-shadow .15s ease;
+    -o-transition: background-color .15s ease, box-shadow .15s ease;
+    transition: background-color .15s ease, box-shadow .15s ease;
+    box-sizing: border-box;
+}
+.tombol-melayang:hover {
+    background-color: #0073B4;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+.tombol-melayang:active {
+    background-color: #0073B4;
+}
+.tombol-melayang:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+.tombol-melayang.tombol-sekunder {
+    background-color: #00B482;
+}
+.tombol-melayang.tombol-sekunder:hover {
+    background-color: #4B9600;
+}
+
+/* --- Tombol ikon --- */
+.tombol-ikon {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0.125rem;
+    background-color: transparent;
+    color: #5A646E;
+    border: 0;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    font-size: 1.25rem;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .15s ease, color .15s ease;
+    -moz-transition: background-color .15s ease, color .15s ease;
+    -o-transition: background-color .15s ease, color .15s ease;
+    transition: background-color .15s ease, color .15s ease;
+    box-sizing: border-box;
+}
+.tombol-ikon:hover {
+    background-color: rgba(0, 170, 212, 0.12);
+    color: #00AAD4;
+}
+.tombol-ikon:active {
+    background-color: rgba(0, 170, 212, 0.24);
+}
+.tombol-ikon:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+/* --- Tombol tema gelap --- */
+[data-tema="gelap"] .tombol.tombol-berisi {
+    background-color: #00AAD4;
+    color: #0A141E;
+}
+[data-tema="gelap"] .tombol.tombol-berisi:hover {
+    background-color: #33BBDD;
+}
+[data-tema="gelap"] .tombol.tombol-garis {
+    color: #00AAD4;
+    border-color: #00AAD4;
+}
+[data-tema="gelap"] .tombol.tombol-datar {
+    color: #00AAD4;
+}
+[data-tema="gelap"] .tombol[disabled],
+[data-tema="gelap"] .tombol.tombol-nonaktif {
+    background-color: #3C4650;
+    color: #5A646E;
+    border-color: #3C4650;
+}
+[data-tema="gelap"] .tombol-melayang {
+    background-color: #00AAD4;
+    color: #0A141E;
+}
+[data-tema="gelap"] .tombol-ikon {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .tombol-ikon:hover {
+    color: #00AAD4;
+}
+

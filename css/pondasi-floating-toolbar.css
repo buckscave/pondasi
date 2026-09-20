@@ -1,0 +1,107 @@
+/* ==========================================================================
+   FLOATING TOOLBAR — Inline text formatting (B, I, U, S, sub, sup)
+   Muncul saat user seleksi teks di block yang sedang di-edit (contentEditable)
+   ========================================================================== */
+
+.pondasi-floating-toolbar {
+    position: absolute;
+    /* z-index 10600 — di atas sidebar (10500) supaya toolbar tetap tampil saat sidebar terbuka */
+z-index: 10600;
+    display: block;
+    background-color: #1E2832;
+    border: 1px solid #3C4650;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    padding: 2px;
+    font-size: 0;
+    line-height: 0;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    /* Clearfix untuk float */
+    overflow: hidden;
+}
+
+.pondasi-floating-toolbar:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.pondasi-floating-toolbar button {
+    float: left;
+    background-color: transparent;
+    border: 0;
+    color: #E8EDF2;
+    padding: 4px 8px;
+    margin: 0;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 1.4;
+    cursor: pointer;
+    font-family: inherit;
+    min-width: 24px;
+    min-height: 24px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.pondasi-floating-toolbar button:hover {
+    background-color: #0073B4;
+    color: #FFFFFF;
+}
+
+.pondasi-floating-toolbar button:focus {
+    outline: 0;
+    background-color: #0073B4;
+    color: #FFFFFF;
+}
+
+.pondasi-floating-toolbar button.pondasi-floating-toolbar-aktif {
+    background-color: #00AAD4;
+    color: #1E2832;
+}
+
+.pondasi-floating-toolbar button b,
+.pondasi-floating-toolbar button i,
+.pondasi-floating-toolbar button u,
+.pondasi-floating-toolbar button s {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.pondasi-floating-toolbar-pemisah {
+    float: left;
+    width: 1px;
+    height: 18px;
+    background-color: #3C4650;
+    margin: 3px 2px;
+}
+
+/* === Tema gelap === */
+body[data-tema="gelap"] .pondasi-floating-toolbar {
+    background-color: #121212;
+    border-color: #2A343E;
+}
+
+body[data-tema="gelap"] .pondasi-floating-toolbar button {
+    color: #A0AAB4;
+}
+
+body[data-tema="gelap"] .pondasi-floating-toolbar button:hover {
+    background-color: #1E2832;
+    color: #FFFFFF;
+}
+
+body[data-tema="gelap"] .pondasi-floating-toolbar button.pondasi-floating-toolbar-aktif {
+    background-color: #5AC8FA;
+    color: #121212;
+}
+
+body[data-tema="gelap"] .pondasi-floating-toolbar-pemisah {
+    background-color: #2A343E;
+}

@@ -1,0 +1,82 @@
+/* @kategori: Teks */
+/* ==========================================================================
+   TAMPILAN-TEKS.CSS — Tambahan untuk komponen teks inline baru
+   kode-inline, sorotan, keyboard, singkatan
+   ========================================================================== */
+
+/* --- Kode inline (code) --- */
+.kode-inline {
+    display: inline;
+    padding: 2px 6px;
+    background-color: #F5F5F5;
+    color: #C7254E;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.875em;
+    border: 1px solid #E0E0E0;
+}
+
+/* --- Sorotan (mark) --- */
+.sorotan {
+    background-color: #FFEB3B;
+    color: #1E2832;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+/* --- Tombol keyboard (kbd) --- */
+.keyboard {
+    display: inline;
+    padding: 2px 6px;
+    background-color: #FFFFFF;
+    color: #1E2832;
+    border: 1px solid #C8D0DA;
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.875em;
+    line-height: 1;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Singkatan (abbr) --- */
+.singkatan {
+    cursor: help;
+    border-bottom: 1px dotted #5A646E;
+    text-decoration: none;
+}
+.singkatan:hover,
+.singkatan:focus {
+    color: #00AAD4;
+    border-bottom-color: #00AAD4;
+}
+
+/* --- Kode blok (pre) yang sudah ada di tampilan-teks.css utama --- */
+/* Styling dasar untuk <pre> dengan .kode sudah ada */
+
+/* === Tema gelap untuk teks inline baru === */
+body[data-tema="gelap"] .kode-inline {
+    background-color: #1E2832;
+    color: #FF8A80;
+    border-color: #3C4650;
+}
+
+body[data-tema="gelap"] .sorotan {
+    background-color: #FFC107;
+    color: #1E2832;
+}
+
+body[data-tema="gelap"] .keyboard {
+    background-color: #2A343E;
+    color: #FFFFFF;
+    border-color: #5A646E;
+}
+
+body[data-tema="gelap"] .singkatan {
+    border-bottom-color: #A0AAB4;
+}
+body[data-tema="gelap"] .singkatan:hover,
+body[data-tema="gelap"] .singkatan:focus {
+    color: #5AC8FA;
+    border-bottom-color: #5AC8FA;
+}

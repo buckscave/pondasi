@@ -1,0 +1,122 @@
+
+/* @kategori: Teks */
+/* ==========================================================================
+   3. TIPOGRAFI — skala tipografi Material Design
+   ========================================================================== */
+
+/* Headline 1 — paling besar */
+.judul-1 {
+    font-size: 4rem;
+    line-height: 1.1;
+    font-weight: 300;
+    letter-spacing: -0.05rem;
+}
+
+/* Headline 2 */
+.judul-2 {
+    font-size: 3rem;
+    line-height: 1.1;
+    font-weight: 300;
+    letter-spacing: -0.03rem;
+}
+
+/* Headline 3 */
+.judul-3 {
+    font-size: 2.5rem;
+    line-height: 1.15;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+/* Headline 4 */
+.judul-4 {
+    font-size: 2rem;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: 0.01rem;
+}
+
+/* Headline 5 */
+.judul-5 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+/* Headline 6 */
+.judul-6 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.01rem;
+}
+
+/* Subtitle 1 */
+.subjudul-1 {
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: 0.01rem;
+}
+
+/* Subtitle 2 */
+.subjudul-2 {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-weight: 500;
+    letter-spacing: 0.01rem;
+}
+
+/* Body 1 — teks isi utama */
+.isi-1 {
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: 0.02rem;
+}
+
+/* Body 2 — teks isi sekunder */
+.isi-2 {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: 0.01rem;
+}
+
+/* Caption — keterangan kecil */
+.keterangan {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    font-weight: 400;
+    letter-spacing: 0.02rem;
+}
+
+/* Overline — label di atas */
+.label-atas {
+    font-size: 0.625rem;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+}
+
+/* Warna teks tema terang (default) */
+.isi-1, .isi-2, .subjudul-1, .subjudul-2 {
+    color: #1E2832;
+}
+.keterangan, .label-atas {
+    color: #5A646E;
+}
+
+/* Warna teks tema gelap */
+[data-tema="gelap"] .isi-1,
+[data-tema="gelap"] .isi-2,
+[data-tema="gelap"] .subjudul-1,
+[data-tema="gelap"] .subjudul-2 {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .keterangan,
+[data-tema="gelap"] .label-atas {
+    color: #A0AAB4;
+}

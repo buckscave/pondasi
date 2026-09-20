@@ -1,0 +1,863 @@
+
+/* @kategori: Form */
+/* ==========================================================================
+   6. FORM — input, textarea, select, checkbox, radio, switch, slider, file
+   ========================================================================== */
+
+/* --- Field input berlabel melayang (floating label) --- */
+.ruas-input {
+    display: block;
+    position: relative;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+/* Input dalam ruas */
+.ruas-input input[type="text"],
+.ruas-input input[type="password"],
+.ruas-input input[type="email"],
+.ruas-input input[type="url"],
+.ruas-input input[type="search"],
+.ruas-input input[type="tel"],
+.ruas-input input[type="number"] {
+    display: block;
+    width: 100%;
+    padding: 1rem 0.75rem 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1E2832;
+    background-color: #F5F7FA;
+    border: 0;
+    border-bottom: 1px solid #A0AAB4;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    outline: 0;
+    box-sizing: border-box;
+    -webkit-transition: border-color .15s ease, background-color .15s ease;
+    -moz-transition: border-color .15s ease, background-color .15s ease;
+    -o-transition: border-color .15s ease, background-color .15s ease;
+    transition: border-color .15s ease, background-color .15s ease;
+}
+.ruas-input input:focus {
+    border-bottom: 2px solid #00AAD4;
+    background-color: #E1F6FA;
+}
+
+/* Label melayang */
+.ruas-input label {
+    display: block;
+    position: absolute;
+    top: 1rem;
+    left: 0.75rem;
+    font-size: 1rem;
+    color: #5A646E;
+    pointer-events: none;
+    -webkit-transition: top .15s ease, font-size .15s ease, color .15s ease;
+    -moz-transition: top .15s ease, font-size .15s ease, color .15s ease;
+    -o-transition: top .15s ease, font-size .15s ease, color .15s ease;
+    transition: top .15s ease, font-size .15s ease, color .15s ease;
+}
+.ruas-input input:focus + label,
+.ruas-input input:not(:placeholder-shown) + label {
+    top: 0.25rem;
+    font-size: 0.75rem;
+    color: #00AAD4;
+}
+
+/* Garis bawah saat fokus */
+.ruas-input .ruas-garis-bawah {
+    display: block;
+    position: relative;
+    height: 0;
+}
+.ruas-input .ruas-garis-bawah:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 0;
+    height: 2px;
+    background-color: #00AAD4;
+    -webkit-transition: left .15s ease, right .15s ease;
+    -moz-transition: left .15s ease, right .15s ease;
+    -o-transition: left .15s ease, right .15s ease;
+    transition: left .15s ease, right .15s ease;
+}
+
+/* --- Input garis (outlined) --- */
+.ruas-input.ruas-garis input[type="text"],
+.ruas-input.ruas-garis input[type="password"],
+.ruas-input.ruas-garis input[type="email"],
+.ruas-input.ruas-garis input[type="number"] {
+    background-color: transparent;
+    border: 1px solid #A0AAB4;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding: 0.75rem;
+}
+.ruas-input.ruas-garis input:focus {
+    border: 2px solid #00AAD4;
+    padding: calc(0.75rem - 1px);
+}
+
+/* --- Textarea --- */
+.ruas-input textarea {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1E2832;
+    background-color: #F5F7FA;
+    border: 0;
+    border-bottom: 1px solid #A0AAB4;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    outline: 0;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 4rem;
+}
+.ruas-input textarea:focus {
+    border-bottom: 2px solid #00AAD4;
+}
+
+/* --- Select --- */
+.ruas-input select {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1E2832;
+    background-color: #F5F7FA;
+    border: 0;
+    border-bottom: 1px solid #A0AAB4;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    outline: 0;
+    cursor: pointer;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.ruas-input select:focus {
+    border-bottom: 2px solid #00AAD4;
+}
+
+/* Panah select custom */
+.ruas-pilih {
+    position: relative;
+    display: block;
+}
+.ruas-pilih:after {
+    content: "";
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    margin-top: -2px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #5A646E;
+    pointer-events: none;
+}
+
+/* --- Checkbox kustom --- */
+.centang {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    position: relative;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: 2px solid #5A646E;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: border-color .15s ease, background-color .15s ease;
+    -moz-transition: border-color .15s ease, background-color .15s ease;
+    -o-transition: border-color .15s ease, background-color .15s ease;
+    transition: border-color .15s ease, background-color .15s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+}
+.centang:checked {
+    background-color: #00AAD4;
+    border-color: #00AAD4;
+}
+.centang:checked:after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    width: 5px;
+    height: 10px;
+    border: solid #FFFFFF;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.centang:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+/* --- Radio kustom --- */
+.radio {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    position: relative;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: 2px solid #5A646E;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: border-color .15s ease;
+    -moz-transition: border-color .15s ease;
+    -o-transition: border-color .15s ease;
+    transition: border-color .15s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+}
+.radio:checked {
+    border-color: #00AAD4;
+}
+.radio:checked:after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 10px;
+    height: 10px;
+    background-color: #00AAD4;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+.radio:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+/* --- Switch / Saklar --- */
+.saklar {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    position: relative;
+    width: 36px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    background-color: #A0AAB4;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .2s ease;
+    -moz-transition: background-color .2s ease;
+    -o-transition: background-color .2s ease;
+    transition: background-color .2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+.saklar:before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-transition: -webkit-transform .2s ease;
+    -moz-transition: -moz-transform .2s ease;
+    -o-transition: -o-transform .2s ease;
+    transition: transform .2s ease;
+}
+.saklar:checked {
+    background-color: #00AAD4;
+}
+.saklar:checked:before {
+    -webkit-transform: translateX(16px);
+    -moz-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    -o-transform: translateX(16px);
+    transform: translateX(16px);
+}
+
+/* --- Slider (range) --- */
+.deret {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background-color: #E1E6EB;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    outline: 0;
+    cursor: pointer;
+}
+.deret::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background-color: #00AAD4;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    cursor: pointer;
+    border: 0;
+}
+.deret::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background-color: #00AAD4;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    cursor: pointer;
+    border: 0;
+}
+
+/* --- Pilihan file --- */
+.ruas-unggah {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    padding: 0.5rem 1rem;
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+.ruas-unggah:hover {
+    background-color: #0073B4;
+}
+.ruas-unggah input[type="file"] {
+    display: none;
+}
+
+/* --- Pesan bantuan / error di bawah input --- */
+.ruas-bantuan {
+    display: block;
+    padding: 0.25rem 0.75rem 0;
+    font-size: 0.75rem;
+    color: #5A646E;
+    line-height: 1.4;
+}
+.ruas-error {
+    display: block;
+    padding: 0.25rem 0.75rem 0;
+    font-size: 0.75rem;
+    color: #FF3232;
+    line-height: 1.4;
+}
+.ruas-input.ruas-error input,
+.ruas-input.ruas-error textarea,
+.ruas-input.ruas-error select {
+    border-bottom-color: #FF3232;
+}
+
+/* --- Form tema gelap --- */
+[data-tema="gelap"] .ruas-input input,
+[data-tema="gelap"] .ruas-input textarea,
+[data-tema="gelap"] .ruas-input select {
+    background-color: #2C3640;
+    color: #FFFFFF;
+    border-bottom-color: #5A646E;
+}
+[data-tema="gelap"] .ruas-input input:focus,
+[data-tema="gelap"] .ruas-input textarea:focus,
+[data-tema="gelap"] .ruas-input select:focus {
+    background-color: #1A2A34;
+    border-bottom-color: #00AAD4;
+}
+[data-tema="gelap"] .ruas-input label {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .ruas-bantuan {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .saklar {
+    background-color: #5A646E;
+}
+
+/* ==========================================================================
+   24. INPUT ANGKA — input number dengan tombol +/− (stepper)
+   ========================================================================== */
+.langkah-angka {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    position: relative;
+    width: auto;
+}
+.langkah-angka input[type="number"] {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 4rem;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1E2832;
+    background-color: #F5F7FA;
+    border: 1px solid #A0AAB4;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    outline: 0;
+    text-align: center;
+    box-sizing: border-box;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+.langkah-angka input[type="number"]::-webkit-inner-spin-button,
+.langkah-angka input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.langkah-angka input[type="number"]:focus {
+    border-color: #00AAD4;
+    background-color: #E1F6FA;
+}
+/* Tombol + dan − */
+.langkah-tombol {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    position: absolute;
+    right: 4px;
+    width: 24px;
+    height: 20px;
+    padding: 0;
+    background-color: #E1E6EB;
+    color: #1E2832;
+    border: 0;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .15s ease, color .15s ease;
+    -moz-transition: background-color .15s ease, color .15s ease;
+    -o-transition: background-color .15s ease, color .15s ease;
+    transition: background-color .15s ease, color .15s ease;
+}
+.langkah-tombol:hover {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+}
+.langkah-tombol:active {
+    background-color: #0073B4;
+}
+.langkah-tombol.langkah-naik {
+    top: 4px;
+}
+.langkah-tombol.langkah-turun {
+    bottom: 4px;
+}
+
+/* Stepper tema gelap */
+[data-tema="gelap"] .langkah-angka input[type="number"] {
+    background-color: #2C3640;
+    color: #FFFFFF;
+    border-color: #5A646E;
+}
+[data-tema="gelap"] .langkah-tombol {
+    background-color: #3C4650;
+    color: #FFFFFF;
+}
+
+/* ==========================================================================
+   25. GRUP SEGMENT — pilihan terpisah (segmented control)
+   ========================================================================== */
+.segment {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    border: 1px solid #A0AAB4;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    overflow: hidden;
+    font-size: 0;
+    white-space: nowrap;
+}
+.segment-item {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #5A646E;
+    background-color: transparent;
+    border: 0;
+    border-right: 1px solid #A0AAB4;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .15s ease, color .15s ease;
+    -moz-transition: background-color .15s ease, color .15s ease;
+    -o-transition: background-color .15s ease, color .15s ease;
+    transition: background-color .15s ease, color .15s ease;
+    box-sizing: border-box;
+}
+.segment-item:last-child {
+    border-right: 0;
+}
+.segment-item:hover {
+    background-color: #F5F7FA;
+}
+.segment-item.segment-aktif {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+}
+.segment-item:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: -2px;
+}
+
+/* Segment tema gelap */
+[data-tema="gelap"] .segment {
+    border-color: #5A646E;
+}
+[data-tema="gelap"] .segment-item {
+    color: #A0AAB4;
+    border-right-color: #5A646E;
+}
+[data-tema="gelap"] .segment-item:hover {
+    background-color: #2C3640;
+}
+[data-tema="gelap"] .segment-item.segment-aktif {
+    background-color: #00AAD4;
+    color: #0A141E;
+}
+
+/* ==========================================================================
+   26. GRUP TOMBOL — kelompok tombol bersanding (button group)
+   ========================================================================== */
+.grup-tombol {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    font-size: 0;
+    white-space: nowrap;
+}
+.grup-tombol .tombol {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    margin: 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+.grup-tombol .tombol:first-child {
+    border-radius: 4px 0 0 4px;
+    -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+}
+.grup-tombol .tombol:last-child {
+    border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    border-right: 0;
+}
+.grup-tombol .tombol:only-child {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+
+/* ==========================================================================
+   27. BIDANG WARNA — input type="color" dengan label
+   ========================================================================== */
+.bidang-warna {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    position: relative;
+}
+.bidang-warna input[type="color"] {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 48px;
+    height: 36px;
+    padding: 2px;
+    border: 1px solid #A0AAB4;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    outline: 0;
+    box-sizing: border-box;
+}
+.bidang-warna input[type="color"]:focus {
+    border-color: #00AAD4;
+}
+.bidang-warna input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+.bidang-warna input[type="color"]::-webkit-color-swatch {
+    border: 0;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+.bidang-warna input[type="color"]::-moz-color-swatch {
+    border: 0;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+/* Label hex di samping */
+.bidang-warna-label {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    font-family: "Courier New", monospace;
+    font-size: 0.875rem;
+    color: #1E2832;
+}
+
+/* Bidang warna tema gelap */
+[data-tema="gelap"] .bidang-warna input[type="color"] {
+    border-color: #5A646E;
+    background-color: #1E2832;
+}
+[data-tema="gelap"] .bidang-warna-label {
+    color: #FFFFFF;
+}
+
+/* ==========================================================================
+   28. KOMPONEN TAMBAHAN — date, time, search dengan ikon
+   ========================================================================== */
+
+/* --- Input tanggal/waktu — sesuaikan dengan tema --- */
+.ruas-input input[type="date"],
+.ruas-input input[type="time"],
+.ruas-input input[type="month"],
+.ruas-input input[type="week"],
+.ruas-input input[type="datetime-local"] {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1E2832;
+    background-color: #F5F7FA;
+    border: 0;
+    border-bottom: 1px solid #A0AAB4;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+.ruas-input input[type="date"]:focus,
+.ruas-input input[type="time"]:focus,
+.ruas-input input[type="month"]:focus,
+.ruas-input input[type="week"]:focus,
+.ruas-input input[type="datetime-local"]:focus {
+    border-bottom: 2px solid #00AAD4;
+}
+
+[data-tema="gelap"] .ruas-input input[type="date"],
+[data-tema="gelap"] .ruas-input input[type="time"],
+[data-tema="gelap"] .ruas-input input[type="month"],
+[data-tema="gelap"] .ruas-input input[type="week"],
+[data-tema="gelap"] .ruas-input input[type="datetime-local"] {
+    background-color: #2C3640;
+    color: #FFFFFF;
+    border-bottom-color: #5A646E;
+}
+
+/* --- Input pencarian dengan ikon --- */
+.ruas-cari {
+    display: block;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+.ruas-cari input[type="search"] {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1E2832;
+    background-color: #F5F7FA;
+    border: 1px solid #A0AAB4;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    outline: 0;
+    box-sizing: border-box;
+}
+.ruas-cari input[type="search"]:focus {
+    border-color: #00AAD4;
+    background-color: #E1F6FA;
+}
+.ruas-cari:before {
+    content: "";
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    margin-top: -8px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #5A646E;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+.ruas-cari:after {
+    content: "";
+    position: absolute;
+    left: 1.75rem;
+    top: 50%;
+    margin-top: 1px;
+    width: 6px;
+    height: 2px;
+    background-color: #5A646E;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+/* Pencarian tema gelap */
+[data-tema="gelap"] .ruas-cari input[type="search"] {
+    background-color: #2C3640;
+    color: #FFFFFF;
+    border-color: #5A646E;
+}
+[data-tema="gelap"] .ruas-cari:before {
+    border-color: #A0AAB4;
+}
+[data-tema="gelap"] .ruas-cari:after {
+    background-color: #A0AAB4;
+}
+
+/* --- Toggle group (radio button sebagai toggle) --- */
+.toggle-grup {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    background-color: #E1E6EB;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding: 2px;
+    font-size: 0;
+    white-space: nowrap;
+}
+.toggle-grup-item {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    padding: 0.4rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #5A646E;
+    background-color: transparent;
+    border: 0;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .15s ease, color .15s ease;
+    -moz-transition: background-color .15s ease, color .15s ease;
+    -o-transition: background-color .15s ease, color .15s ease;
+    transition: background-color .15s ease, color .15s ease;
+}
+.toggle-grup-item:hover {
+    color: #1E2832;
+}
+.toggle-grup-item.toggle-aktif {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+}
+.toggle-grup-item:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: -2px;
+}
+
+/* Toggle group tema gelap */
+[data-tema="gelap"] .toggle-grup {
+    background-color: #1E2832;
+}
+[data-tema="gelap"] .toggle-grup-item {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .toggle-grup-item:hover {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .toggle-grup-item.toggle-aktif {
+    background-color: #00AAD4;
+    color: #0A141E;
+}
+
+/* ==========================================================================
+   TAMPILAN.CSS — KOPIES 2010-2026
+   ========================================================================== */

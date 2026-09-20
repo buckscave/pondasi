@@ -1,0 +1,179 @@
+
+/* @kategori: Lainnya */
+/* ==========================================================================
+   11. CHIP — tag, pilihan, filter
+   ========================================================================== */
+.chip {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    padding: 0.25rem 0.75rem;
+    margin: 0.25rem;
+    background-color: #E1E6EB;
+    color: #1E2832;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 16px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .15s ease, color .15s ease;
+    -moz-transition: background-color .15s ease, color .15s ease;
+    -o-transition: background-color .15s ease, color .15s ease;
+    transition: background-color .15s ease, color .15s ease;
+}
+.chip:hover {
+    background-color: #A0AAB4;
+}
+.chip.chip-aktif {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+}
+.chip.chip-aktif:hover {
+    background-color: #0073B4;
+}
+/* Chip dengan ikon tutup */
+.chip .chip-tutup {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 16px;
+    height: 16px;
+    margin-left: 0.5rem;
+    text-align: center;
+    line-height: 16px;
+    font-size: 0.75rem;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    vertical-align: middle;
+}
+.chip .chip-tutup:hover {
+    background-color: rgba(0,0,0,0.15);
+}
+
+/* Chip tema gelap */
+[data-tema="gelap"] .chip {
+    background-color: #3C4650;
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .chip:hover {
+    background-color: #5A646E;
+}
+[data-tema="gelap"] .chip.chip-aktif {
+    background-color: #00AAD4;
+    color: #0A141E;
+}
+
+/* ==========================================================================
+   14. BADGE — notifikasi kecil di atas ikon/teks
+   ========================================================================== */
+.badge {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background-color: #FF3232;
+    color: #FFFFFF;
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 9px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+/* Badge titik (tanpa angka) */
+.badge-titik {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 8px;
+    height: 8px;
+    background-color: #FF3232;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    vertical-align: middle;
+}
+/* Badge posisi mutlak (di atas kanan elemen) */
+.pembungkus-badge {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    position: relative;
+    vertical-align: middle;
+}
+.pembungkus-badge .badge,
+.pembungkus-badge .badge-titik {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+}
+
+/* Badge tema gelap */
+[data-tema="gelap"] .badge {
+    background-color: #FF3232;
+}
+
+/* ==========================================================================
+   18. AVATAR — gambar profil bulat/kotak
+   ========================================================================== */
+.avatar {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    overflow: hidden;
+    background-color: #00AAD4;
+}
+.avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+/* Ukuran avatar */
+.avatar-kecil { width: 28px; height: 28px; }
+.avatar-besar { width: 56px; height: 56px; }
+.avatar-sangat-besar { width: 80px; height: 80px; }
+/* Avatar kotak */
+.avatar-kotak {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+.avatar-kotak img {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
+/* Avatar dengan teks (inisial) */
+.avatar-teks {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 40px;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.avatar-kecil .avatar-teks { line-height: 28px; font-size: 0.75rem; }
+.avatar-besar .avatar-teks { line-height: 56px; font-size: 1.5rem; }
+.avatar-sangat-besar .avatar-teks { line-height: 80px; font-size: 2rem; }
+

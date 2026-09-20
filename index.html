@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>pondasi</title>
+    <link rel="stylesheet" href="css/pondasi.css?v=95">
+    <link rel="stylesheet" href="css/tampilan.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-teks.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-teks-tambahan.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-daftar.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-media.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-tabel.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-tombol.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-form.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-kontainer.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-navigasi.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-feedback.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-lainnya.css?v=95">
+    <link rel="stylesheet" href="css/tampilan-tambahan.css?v=95">
+    <link rel="stylesheet" href="css/pondasi-app.css?v=95">
+    <link rel="stylesheet" href="css/pondasi-mega-dropdown.css?v=95">
+    <link rel="stylesheet" href="css/pondasi-floating-toolbar.css?v=95">
+    <link rel="stylesheet" href="css/pondasi-panel-kelas.css?v=95">
+    <!-- FontAwesome CDN (untuk test; di mesin user pakai local) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="pondasi-app">
+
+    <!-- =========================== CANVAS (split engine, full height) =========================== -->
+    <main class="baris pondasi-canvas" id="canvas" tabindex="0"></main>
+
+    <!-- =========================== FLOATING BAR KIRI (project management) =========================== -->
+    <div class="pondasi-floating pondasi-floating-kiri">
+        <button type="button" class="pondasi-floating-btn" data-action="dokumen-panel" id="btn-dokumen" title="Berkas / dokumen (D)">
+            <i class="fa-solid fa-file" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="template-panel" id="btn-template" title="Pustaka template wireframe (T)">
+            <i class="fa-solid fa-shapes" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="save-project" title="Simpan (S)">
+            <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="saveas-panel" id="btn-saveas" title="Simpan sebagai...">
+            <i class="fa-solid fa-copy" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="export-panel" id="btn-export" title="Ekspor (E)">
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="settings-panel" id="btn-settings" title="Pengaturan (,)">
+            <i class="fa-solid fa-gear" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- =========================== FLOATING TOGGLE KANAN (canvas tools) =========================== -->
+    <div class="pondasi-floating pondasi-floating-kanan">
+        <button type="button" class="pondasi-floating-btn pondasi-floating-btn-aktif" data-action="toggle-panel-region" id="btn-panel-region" title="Panel properti region (w)">
+            <i class="fa-solid fa-window-restore" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="toggle-guide" id="btn-guide" title="Panduan garis 12/10 kolom (cyan)">
+            <i class="fa-solid fa-table-columns" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="toggle-grid" id="btn-grid" title="Garis bantu grid (16px / 1rem, magenta)">
+            <i class="fa-solid fa-border-all" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="toggle-jarak" id="btn-jarak" title="Sistem dengan jarak (margin kolom)">
+            <i class="fa-solid fa-arrows-left-right" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="toggle-preview" id="btn-preview" title="Preview halaman HTML">
+            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-floating-btn" data-action="reset-workspace" id="btn-reset" title="Bersihkan workspace (reset)">
+            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- =========================== GUIDE OVERLAY (12/10 kolom, cyan, garis solid) =========================== -->
+    <div class="pondasi-guide" id="guide-overlay" hidden>
+        <div class="pondasi-guide-baris pondasi-guide-baris-12" id="guide-baris-12">
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+        </div>
+        <div class="pondasi-guide-baris pondasi-guide-baris-10" id="guide-baris-10">
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+            <div class="pondasi-guide-kolom"></div><div class="pondasi-guide-kolom"></div>
+        </div>
+        <div class="pondasi-guide-label pondasi-guide-label-12">12</div>
+        <div class="pondasi-guide-label pondasi-guide-label-10">10</div>
+    </div>
+
+    <!-- =========================== GRID OVERLAY (16px / 1rem lines) =========================== -->
+    <div class="pondasi-grid" id="grid-overlay" hidden></div>
+
+    <!-- =========================== FOOTER (breadcrumb + statusline + ?) =========================== -->
+    <footer class="pondasi-footer">
+        <div class="pondasi-breadcrumb" id="breadcrumb">
+            <!-- Diisi oleh JS -->
+        </div>
+        <div class="pondasi-statusline" id="statusline">siap</div>
+        <button type="button" class="pondasi-footer-help" data-action="help" title="Bantuan (?)">
+            <i class="fa-solid fa-question" aria-hidden="true"></i>
+        </button>
+    </footer>
+
+
+    <!-- =========================== EDITOR BAR MINI (melayang, 3 tombol: Isi/Komponen/Properti) =========================== -->
+    <div class="pondasi-editor-bar" id="editor-bar" hidden>
+        <button type="button" class="pondasi-editor-bar-btn" data-action="dropdown-isi" id="btn-isi" title="Sisipkan isi (i) — paragraf, heading, daftar, dll">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i> Isi <span class="pondasi-editor-bar-shortcut">(i)</span>
+            <i class="fa-solid fa-caret-down" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-editor-bar-btn" data-action="dropdown-komponen" id="btn-komponen" title="Sisipkan komponen (k) — tombol, kartu, form, dll">
+            <i class="fa-solid fa-cube" aria-hidden="true"></i> Komponen <span class="pondasi-editor-bar-shortcut">(k)</span>
+            <i class="fa-solid fa-caret-down" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="pondasi-editor-bar-btn" data-action="toggle-properti" id="btn-properti" title="Properti (e) — margin, padding, border, warna, kelas">
+            <i class="fa-solid fa-sliders" aria-hidden="true"></i> Properti <span class="pondasi-editor-bar-shortcut">(e)</span>
+        </button>
+        <button type="button" class="pondasi-editor-bar-btn pondasi-editor-bar-keluar" data-action="exit-edit" title="Keluar mode edit (Esc / klik di luar region)">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- =========================== DROPDOWN ISI (melayang, dikelompokkan) =========================== -->
+    <div class="pondasi-editor-dropdown" id="dropdown-isi" hidden>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Teks</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert="p"><span class="pondasi-dropdown-tag">P</span> Paragraf</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="h1"><span class="pondasi-dropdown-tag">H1</span> Heading 1</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="h2"><span class="pondasi-dropdown-tag">H2</span> Heading 2</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="h3"><span class="pondasi-dropdown-tag">H3</span> Heading 3</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="h4"><span class="pondasi-dropdown-tag">H4</span> Heading 4</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="h5"><span class="pondasi-dropdown-tag">H5</span> Heading 5</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="h6"><span class="pondasi-dropdown-tag">H6</span> Heading 6</button>
+        </div>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Kutipan &amp; Kode</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert="blockquote"><span class="pondasi-dropdown-tag">Q</span> Kutipan</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="pre"><span class="pondasi-dropdown-tag">&lt;/&gt;</span> Kode</button>
+        </div>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Daftar</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert="ul"><span class="pondasi-dropdown-tag">UL</span> Daftar Bullet</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="ol"><span class="pondasi-dropdown-tag">OL</span> Daftar Nomor</button>
+        </div>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Media</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert="hr"><span class="pondasi-dropdown-tag">—</span> Garis Pemisah</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="img"><span class="pondasi-dropdown-tag">IMG</span> Gambar</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="table"><span class="pondasi-dropdown-tag">TBL</span> Tabel</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert="spacer"><span class="pondasi-dropdown-tag">SP</span> Spacer</button>
+        </div>
+    </div>
+
+    <!-- =========================== DROPDOWN KOMPONEN (melayang, dikelompokkan) =========================== -->
+    <div class="pondasi-editor-dropdown" id="dropdown-komponen" hidden>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Tombol</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="tombol-berisi"><span class="pondasi-dropdown-tag">BTN</span> Tombol Berisi</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="tombol-garis"><span class="pondasi-dropdown-tag">BTN</span> Tombol Garis</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="tombol-melayang"><span class="pondasi-dropdown-tag">FAB</span> Tombol Melayang</button>
+        </div>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Kontainer</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="kartu"><span class="pondasi-dropdown-tag">CRD</span> Kartu</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="akordion"><span class="pondasi-dropdown-tag">ACC</span> Akordion</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="pemisah-teks"><span class="pondasi-dropdown-tag">SEP</span> Pemisah Teks</button>
+        </div>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Form</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="input-melayang"><span class="pondasi-dropdown-tag">INP</span> Input Melayang</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="textarea"><span class="pondasi-dropdown-tag">TXA</span> Textarea</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="select"><span class="pondasi-dropdown-tag">SEL</span> Select</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="checkbox"><span class="pondasi-dropdown-tag">CHK</span> Checkbox</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="radio"><span class="pondasi-dropdown-tag">RAD</span> Radio</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="saklar"><span class="pondasi-dropdown-tag">SWT</span> Saklar</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="slider"><span class="pondasi-dropdown-tag">SLD</span> Slider</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="stepper"><span class="pondasi-dropdown-tag">STP</span> Input Angka</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="segment"><span class="pondasi-dropdown-tag">SEG</span> Segment</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="toggle-grup"><span class="pondasi-dropdown-tag">TGL</span> Toggle Group</button>
+        </div>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Navigasi</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="bilah-aplikasi"><span class="pondasi-dropdown-tag">BAR</span> Bilah Aplikasi</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="tab"><span class="pondasi-dropdown-tag">TAB</span> Tab</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="menu-mendatar"><span class="pondasi-dropdown-tag">NAV</span> Menu Mendatar</button>
+        </div>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Feedback</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="pesan-info"><span class="pondasi-dropdown-tag">MSG</span> Pesan Info</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="pesan-sukses"><span class="pondasi-dropdown-tag">MSG</span> Pesan Sukses</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="chip"><span class="pondasi-dropdown-tag">CHP</span> Chip</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="badge"><span class="pondasi-dropdown-tag">BDG</span> Badge</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="progress"><span class="pondasi-dropdown-tag">BAR</span> Progress</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="tooltip"><span class="pondasi-dropdown-tag">TIP</span> Tooltip</button>
+        </div>
+        <div class="pondasi-dropdown-grup">
+            <div class="pondasi-dropdown-grup-label">Lainnya</div>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="avatar"><span class="pondasi-dropdown-tag">AVT</span> Avatar</button>
+            <button type="button" class="pondasi-dropdown-item" data-insert-komponen="daftar"><span class="pondasi-dropdown-tag">LST</span> Daftar</button>
+        </div>
+    </div>
+
+    <!-- =========================== PANEL PROPERTI REGION (float, draggable, default visible) =========================== -->
+    <div class="pondasi-editor-panel pondasi-editor-panel-region" id="panel-properti-region">
+        <div class="pondasi-editor-panel-head pondasi-panel-drag-handle" data-panel-id="panel-properti-region">
+            <span class="pondasi-editor-panel-judul" id="panel-properti-region-judul">Properti Region</span>
+            <button type="button" class="pondasi-editor-bar-btn pondasi-editor-bar-keluar" data-action="close-properti-region" title="Tutup panel region (w)"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        </div>
+        <div class="pondasi-editor-panel-badan" id="panel-properti-region-badan" data-mode="region">
+            <!-- Diisi dinamis oleh JS (pondasi-block-panel.js) -->
+        </div>
+    </div>
+
+    <!-- =========================== PANEL PROPERTI KOMPONEN (float, draggable) =========================== -->
+    <div class="pondasi-editor-panel pondasi-editor-panel-block" id="panel-properti" hidden>
+        <div class="pondasi-editor-panel-head pondasi-panel-drag-handle" data-panel-id="panel-properti">
+            <span class="pondasi-editor-panel-judul" id="panel-properti-judul">Properti Komponen</span>
+            <button type="button" class="pondasi-editor-bar-btn pondasi-editor-bar-keluar" data-action="close-properti" title="Tutup panel"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        </div>
+        <div class="pondasi-editor-panel-badan" id="panel-properti-badan" data-mode="block">
+            <!-- Diisi dinamis oleh JS (pondasi-block-panel.js) -->
+        </div>
+    </div>
+
+    <!-- =========================== SWATCHES MODAL (terdepan, auto-close setelah pilih) =========================== -->
+    <div class="pondasi-modal pondasi-swatches-modal" id="swatches-modal" hidden>
+        <div class="pondasi-swatches-box">
+            <div class="pondasi-swatches-head">
+                <h3 id="swatches-title">Palet Warna</h3>
+                <button type="button" class="pondasi-editor-btn" data-action="close-swatches" title="Tutup"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+            </div>
+            <div class="pondasi-swatches-body" id="swatches-body">
+                <!-- Diisi oleh JS -->
+            </div>
+            <div class="pondasi-swatches-foot">
+                <label class="pondasi-swatches-hex-label">HEX <input type="text" class="pondasi-editor-input pondasi-swatches-hex" id="swatches-hex" placeholder="#000000" maxlength="7"></label>
+                <input type="color" class="pondasi-swatches-picker" id="swatches-picker" value="#000000" title="Pilih warna kustom">
+                <button type="button" class="pondasi-editor-btn pondasi-editor-btn-text" data-action="apply-hex" title="Terapkan warna hex">Terapkan</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================== HELP MODAL =========================== -->
+    <div class="pondasi-modal" id="help-modal" hidden>
+        <div class="pondasi-modal-box">
+            <h2>pondasi — pintasan keyboard</h2>
+            <dl class="pondasi-help-list">
+                <dt><kbd>v</kbd></dt>
+                <dd>Split vertikal (kiri-kanan). Pada grand-parent: buat section.baris + 2 kolom-6. Pada parent/sub-baris: tambah kolom-baru atau split child aktif.</dd>
+
+                <dt><kbd>h</kbd></dt>
+                <dd>Split horisontal (atas-bawah). Pada grand-parent: tambah section.baris. Pada parent: tambah sibling section.baris. Pada sub-parent: tambah sub-baris child.</dd>
+
+                <dt><kbd>&lt;N&gt;</kbd> + <kbd>v</kbd> / <kbd>h</kbd></dt>
+                <dd>Motion split jadi N region proporsional. Contoh: <kbd>6</kbd><kbd>v</kbd> → 6 kolom, <kbd>3</kbd><kbd>v</kbd> → 3 kolom, <kbd>5</kbd><kbd>v</kbd> → 5 kolom-lima (sistem 10), <kbd>7</kbd><kbd>h</kbd> → 7 section. N genap (2, 3, 4, 6, 12) pakai sistem 12 kolom; N ganjil (5, 7, 8, 9, 10, 11) pakai sistem 10 (kolom-lima, kolom-tujuh, dll).</dd>
+
+                <dt><kbd>Alt</kbd> + <kbd>v</kbd></dt>
+                <dd>Split vertikal pada kolom. Kolom dijadikan sub-parent (.kolom-N.sub-baris) + 2 kolom-N/2 di dalamnya.</dd>
+
+                <dt><kbd>Alt</kbd> + <kbd>h</kbd></dt>
+                <dd>Split horisontal pada kolom. Kolom jadi sub-parent + 2 sub-baris (block stack).</dd>
+
+                <dt><kbd>←</kbd> <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd></dt>
+                <dd>Navigasi region aktif (geometri — cari leaf terdekat di arah panah).</dd>
+
+                <dt><kbd>Alt</kbd> + <kbd>←/→</kbd></dt>
+                <dd>Resize kolom (step: 1 kolom). Sibling auto-balance (total tetap). Kolom ganjil tidak bisa di-resize.</dd>
+
+                <dt><kbd>Alt</kbd> + <kbd>↑/↓</kbd></dt>
+                <dd>Resize tinggi baris (step: 1rem / 16px).</dd>
+
+                <dt><kbd>Ctrl</kbd> + <kbd>←/↑/→/↓</kbd></dt>
+                <dd>Swap posisi dengan region di arah panah.</dd>
+
+                <dt><kbd>Shift</kbd> + <kbd>←/↑/→/↓</kbd></dt>
+                <dd>Multi-select region di arah panah. Setelah multi-select: <kbd>Backspace</kbd> hapus semua terpilih, <kbd>Ctrl</kbd>+<kbd>arrow</kbd> pindah semua terpilih bersamaan, <kbd>j</kbd> gabung (merge/join) region adjacent.</dd>
+
+                <dt><kbd>Backspace</kbd></dt>
+                <dd>Hapus region aktif (atau semua terpilih). Sibling menyesuaikan mengisi kekosongan. Untuk kolom ganjil: konversi otomatis ke sistem 12 (mis. kolom-lima hapus 1 → 4 kolom-3).</dd>
+
+                <dt><kbd>j</kbd></dt>
+                <dd>Gabung region terpilih (untuk kolom adjacent: jumlahkan kolom-N). Tidak bisa untuk kolom ganjil.</dd>
+
+                <dt><kbd>l</kbd></dt>
+                <dd>Kunci/buka kunci region aktif. Region terkunci tidak bisa di-split (v/h), dihapus (Backspace), digabung (j), atau dipindah. Visual: border kuning dashed + ikon gembok. Lock hanya editor state, tidak diekspor ke HTML.</dd>
+
+                <dt><kbd>w</kbd></dt>
+                <dd>Buka/tutup panel properti region (inspector permanen). Panel region selalu tampil secara default — (w) bisa hide/show kalau perlu ruang canvas penuh.</dd>
+
+                <dt><kbd>u</kbd> / <kbd>Ctrl</kbd>+<kbd>Z</kbd></dt>
+                <dd>Undo operasi terakhir.</dd>
+
+                <dt><kbd>r</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd></dt>
+                <dd>Redo operasi yang di-undo.</dd>
+
+                <dt><kbd>Enter</kbd></dt>
+                <dd>Masuk mode edit pada region terpilih. Tekan Esc atau klik di luar region untuk keluar (konten otomatis tersimpan).</dd>
+
+                <dt><kbd>?</kbd></dt>
+                <dd>Tampilkan/sembunyikan bantuan ini.</dd>
+
+                <dt><kbd>D</kbd> (di luar mode edit)</dt>
+                <dd>Buka panel berkas / dokumen (buka, buat, hapus).</dd>
+
+                <dt><kbd>T</kbd> (di luar mode edit)</dt>
+                <dd>Buka panel template wireframe.</dd>
+
+                <dt><kbd>S</kbd> (di luar mode edit)</dt>
+                <dd>Simpan dokumen.</dd>
+
+                <dt><kbd>E</kbd> (di luar mode edit)</dt>
+                <dd>Buka panel ekspor (HTML, CSS, checklist).</dd>
+
+                <dt><kbd>,</kbd> (di luar mode edit)</dt>
+                <dd>Buka panel pengaturan (preferensi).</dd>
+
+                <dt><kbd>Esc</kbd></dt>
+                <dd>Bersihkan seleksi / tutup modal / keluar mode edit.</dd>
+            </dl>
+
+            <h3 style="margin-top:1.5rem;font-size:1rem;color:#00AAD4;">Di mode edit (block)</h3>
+            <dl class="pondasi-help-list">
+                <dt><kbd>i</kbd></dt>
+                <dd>Buka/tutup/switch dropdown Isi (paragraf, heading, daftar, gambar, dll). Tekan <kbd>i</kbd> sekali: buka. Tekan lagi: tutup. Kalau dropdown Komponen terbuka: switch ke Isi.</dd>
+
+                <dt><kbd>k</kbd></dt>
+                <dd>Buka/tutup/switch dropdown Komponen (tombol, kartu, form, navigasi, dll). Sama seperti <kbd>i</kbd> tapi untuk komponen.</dd>
+
+                <dt><kbd>e</kbd></dt>
+                <dd>Toggle panel properti region (margin, padding, border, warna, kelas). Kalau dropdown terbuka: tutup dropdown dulu.</dd>
+
+                <dt><kbd>↑</kbd> / <kbd>↓</kbd></dt>
+                <dd>Navigasi block aktif (single-select).</dd>
+
+                <dt><kbd>Shift</kbd> + <kbd>↑/↓</kbd></dt>
+                <dd>Multi-select block — extend seleksi ke block di atas/bawah. Outline hijau menandai block yang terpilih.</dd>
+
+                <dt><kbd>Ctrl</kbd> + <kbd>A</kbd></dt>
+                <dd>Pilih semua block di region.</dd>
+
+                <dt><kbd>Shift</kbd> + <kbd>klik</kbd></dt>
+                <dd>Toggle multi-select block individual.</dd>
+
+                <dt><kbd>Backspace</kbd></dt>
+                <dd>Hapus block aktif (atau semua terpilih kalau multi-select).</dd>
+
+                <dt><kbd>Ctrl</kbd> + <kbd>↑/↓</kbd></dt>
+                <dd>Pindah (reorder) block aktif naik/turun. Kalau multi-select: pindah semua bersamaan.</dd>
+
+                <dt><kbd>y</kbd></dt>
+                <dd>Yank (copy) block aktif ke clipboard.</dd>
+
+                <dt><kbd>x</kbd></dt>
+                <dd>Cut block aktif ke clipboard.</dd>
+
+                <dt><kbd>p</kbd></dt>
+                <dd>Paste block dari clipboard setelah block aktif.</dd>
+
+                <dt><kbd>Enter</kbd></dt>
+                <dd>Masuk ke panel properti block (jika sudah pilih block). Fokus pindah ke field pertama.</dd>
+
+                <dt><kbd>Double-click</kbd> block</dt>
+                <dd>Aktifkan edit teks inline (contentEditable).</dd>
+
+                <dt><kbd>Drag</kbd> block</dt>
+                <dd>Reorder block via mouse — drag ke posisi lain, lepas untuk drop.</dd>
+            </dl>
+            <div class="pondasi-modal-foot">
+                <button type="button" class="pondasi-floating-btn pondasi-floating-btn-text" data-action="close-help">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================== PANEL DOKUMEN (sidebar kiri, push content) =========================== -->
+    <div class="pondasi-sidebar pondasi-sidebar-kiri" id="dokumen-panel" hidden>
+        <div class="pondasi-sidebar-head">
+            <span class="pondasi-sidebar-judul">Berkas / Dokumen</span>
+            <button type="button" class="pondasi-sidebar-tutup" data-action="tutup-sidebar-kiri" title="Tutup" aria-label="Tutup panel">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="pondasi-sidebar-badan">
+            <!-- Akordion: Buat Baru -->
+            <div class="pondasi-sidebar-section">
+                <details class="pondasi-sidebar-akordion" id="akordion-buat-dokumen">
+                    <summary><i class="fa-solid fa-file-circle-plus"></i> Buat Dokumen Baru</summary>
+                    <div class="pondasi-sidebar-akordion-isi">
+                        <input type="text" class="pondasi-sidebar-input" id="buat-nama" placeholder="Nama dokumen...">
+                        <select class="pondasi-sidebar-input" id="buat-dimensi">
+                            <option value="1200">1200px (75rem)</option>
+                            <option value="1280">1280px (80rem)</option>
+                            <option value="1024">1024px (64rem)</option>
+                            <option value="960">960px (60rem)</option>
+                            <option value="full">Full width</option>
+                        </select>
+                        <input type="text" class="pondasi-sidebar-input" id="buat-judul" placeholder="Judul (<title>)...">
+                        <label class="pondasi-sidebar-label" style="font-size:11px;color:#A0AAB4;display:block;margin-bottom:4px;">Tema</label>
+                        <select class="pondasi-sidebar-input" id="buat-tema">
+                            <option value="pondasi-default">Pondasi Default (Material Design)</option>
+                        </select>
+                        <input type="text" class="pondasi-sidebar-input" id="buat-font" placeholder="Font family (opsional)">
+                        <label class="pondasi-sidebar-label" style="font-size:11px;color:#A0AAB4;display:block;margin:8px 0 4px;">CSS Eksternal Tambahan (opsional)</label>
+                        <div class="pondasi-sidebar-field-with-status">
+                            <input type="text" class="pondasi-sidebar-input" id="buat-css-eksternal" placeholder="URL/path CSS tambahan" style="display:inline-block;width:calc(100% - 60px);">
+                            <button type="button" class="pondasi-scan-pick-btn" id="buat-css-eksternal-pick" title="Pilih berkas CSS dari harddisk">&hellip;</button>
+                            <span class="pondasi-scan-status" id="buat-css-eksternal-status" title="Status scan CSS eksternal"></span>
+                        </div>
+                        <div class="pondasi-scan-keterangan" id="buat-css-eksternal-keterangan"></div>
+                        <textarea class="pondasi-sidebar-input" id="buat-deskripsi" placeholder="Deskripsi (opsional)" rows="2" style="height:auto;min-height:40px;resize:vertical;"></textarea>
+                        <button type="button" class="pondasi-sidebar-btn" data-action="konfirmasi-buat-dokumen">Buat Dokumen</button>
+                    </div>
+                </details>
+                <details class="pondasi-sidebar-akordion pondasi-sidebar-akordion-disabled" id="akordion-buat-proyek">
+                    <summary><i class="fa-solid fa-folder-plus"></i> Buat Proyek Baru</summary>
+                    <div class="pondasi-sidebar-akordion-isi">
+                        <p style="color:#A0AAB4;font-size:11px;padding:8px 0;">Proyek (multi-page) akan tersedia di versi mendatang.</p>
+                    </div>
+                </details>
+            </div>
+            <!-- List dokumen terbaru -->
+            <div class="pondasi-sidebar-section">
+                <div class="pondasi-sidebar-section-judul">Dokumen Terbaru</div>
+                <div id="dokumen-recent-list" class="pondasi-sidebar-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================== PANEL TEMPLATE (sidebar kiri) =========================== -->
+    <div class="pondasi-sidebar pondasi-sidebar-kiri" id="template-panel" hidden>
+        <div class="pondasi-sidebar-head">
+            <span class="pondasi-sidebar-judul">Template</span>
+            <button type="button" class="pondasi-sidebar-tutup" data-action="tutup-sidebar-kiri" title="Tutup" aria-label="Tutup panel">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="pondasi-sidebar-badan">
+            <!-- Save as Template -->
+            <div class="pondasi-sidebar-section">
+                <div class="pondasi-sidebar-section-judul">Simpan sebagai Template</div>
+                <input type="text" class="pondasi-sidebar-input" id="template-save-nama" placeholder="Nama template...">
+                <textarea class="pondasi-sidebar-input" id="template-save-deskripsi" placeholder="Deskripsi (opsional)" rows="2" style="height:auto;min-height:40px;resize:vertical;"></textarea>
+                <button type="button" class="pondasi-sidebar-btn" data-action="save-as-template">Simpan Template</button>
+            </div>
+            <!-- Template Bawaan + User -->
+            <div class="pondasi-sidebar-section">
+                <div class="pondasi-sidebar-section-judul">Template Bawaan</div>
+                <div id="template-list" class="pondasi-sidebar-list"></div>
+            </div>
+            <div class="pondasi-sidebar-section">
+                <div class="pondasi-sidebar-section-judul">Template Saya</div>
+                <div id="template-user-list" class="pondasi-sidebar-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================== PANEL SAVE AS (sidebar kiri) =========================== -->
+    <div class="pondasi-sidebar pondasi-sidebar-kiri" id="saveas-panel" hidden>
+        <div class="pondasi-sidebar-head">
+            <span class="pondasi-sidebar-judul">Simpan Sebagai</span>
+            <button type="button" class="pondasi-sidebar-tutup" data-action="tutup-sidebar-kiri" title="Tutup" aria-label="Tutup panel">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="pondasi-sidebar-badan">
+            <div class="pondasi-sidebar-section">
+                <div class="pondasi-sidebar-section-judul">Nama Dokumen</div>
+                <input type="text" class="pondasi-sidebar-input" id="saveas-nama" placeholder="Nama dokumen baru...">
+            </div>
+            <div class="pondasi-sidebar-section">
+                <button type="button" class="pondasi-sidebar-btn" data-action="konfirmasi-saveas">Simpan Sebagai</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================== PANEL EXPORT (sidebar kiri) =========================== -->
+    <div class="pondasi-sidebar pondasi-sidebar-kiri" id="export-panel" hidden>
+        <div class="pondasi-sidebar-head">
+            <span class="pondasi-sidebar-judul">Ekspor</span>
+            <button type="button" class="pondasi-sidebar-tutup" data-action="tutup-sidebar-kiri" title="Tutup" aria-label="Tutup panel">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="pondasi-sidebar-badan">
+            <div class="pondasi-sidebar-section">
+                <div class="pondasi-sidebar-section-judul">Nama File</div>
+                <input type="text" class="pondasi-sidebar-input" id="export-nama" placeholder="nama-file">
+            </div>
+            <div class="pondasi-sidebar-section">
+                <div class="pondasi-sidebar-section-judul">Yang Diekspor</div>
+                <label class="pondasi-sidebar-cek"><input type="checkbox" id="export-html" checked> HTML (.html)</label>
+                <label class="pondasi-sidebar-cek"><input type="checkbox" id="export-css" checked> CSS kustom (.css)</label>
+                <label class="pondasi-sidebar-cek"><input type="checkbox" id="export-pondasi-css"> pondasi.css (framework)</label>
+                <label class="pondasi-sidebar-cek"><input type="checkbox" id="export-tampilan-css"> tampilan.css (tema lengkap)</label>
+                <label class="pondasi-sidebar-cek"><input type="checkbox" id="export-build-css" checked> CSS Build (tree-shake, hanya kelas dipakai)</label>
+                <label class="pondasi-sidebar-cek"><input type="checkbox" id="export-zip"> Inline CSS (1 file HTML)</label>
+            </div>
+            <div class="pondasi-sidebar-section">
+                <button type="button" class="pondasi-sidebar-btn" data-action="konfirmasi-export">Ekspor Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================== PANEL SETTINGS (sidebar kiri) =========================== -->
+    <div class="pondasi-sidebar pondasi-sidebar-kiri" id="settings-panel" hidden>
+        <div class="pondasi-sidebar-head">
+            <span class="pondasi-sidebar-judul">Pengaturan</span>
+            <button type="button" class="pondasi-sidebar-tutup" data-action="tutup-sidebar-kiri" title="Tutup" aria-label="Tutup panel">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="pondasi-sidebar-badan" id="settings-badan">
+            <!-- Diisi oleh JS -->
+        </div>
+        <div class="pondasi-sidebar-foot">
+            <button type="button" class="pondasi-sidebar-btn" data-action="terapkan-settings">Terapkan</button>
+        </div>
+    </div>
+
+    <!-- =========================== CUSTOM DIALOG (tampilan.css style) =========================== -->
+    <div class="lapis-dialog" id="pondasi-dialog" style="display:none;">
+        <div class="kotak-dialog">
+            <div class="dialog-kepala" id="pondasi-dialog-judul">Konfirmasi</div>
+            <div class="dialog-badan" id="pondasi-dialog-isi">Pesan...</div>
+            <div class="dialog-kaki" id="pondasi-dialog-kaki">
+                <button type="button" class="tombol tombol-garis" data-action="dialog-batal">Batal</button>
+                <button type="button" class="tombol tombol-berisi" data-action="dialog-ok">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/pondasi-state.js?v=95"></script>
+    <script src="js/pondasi-storage.js?v=95"></script>
+    <script src="js/pondasi-css-spec.js?v=95"></script>
+    <script src="js/pondasi-scanner.js?v=95"></script>
+    <script src="js/pondasi-tema.js?v=95"></script>
+    <script src="js/pondasi-render.js?v=95"></script>
+    <script src="js/pondasi-split.js?v=95"></script>
+    <script src="js/pondasi-editor.js?v=95"></script>
+    <!-- Skema block modular per kategori 
+        (diload sebelum pondasi-block-panel.js) -->
+    <script src="js/pondasi-fields.js?v=95"></script>
+    <script src="js/pondasi-blok-teks.js?v=95"></script>
+    <script src="js/pondasi-blok-daftar.js?v=95"></script>
+    <script src="js/pondasi-blok-media.js?v=95"></script>
+    <script src="js/pondasi-blok-tabel.js?v=95"></script>
+    <script src="js/pondasi-blok-tombol.js?v=95"></script>
+    <script src="js/pondasi-blok-form.js?v=95"></script>
+    <script src="js/pondasi-blok-kontainer.js?v=95"></script>
+    <script src="js/pondasi-blok-navigasi.js?v=95"></script>
+    <script src="js/pondasi-blok-feedback.js?v=95"></script>
+    <script src="js/pondasi-blok-lainnya.js?v=95"></script>
+    <script src="js/pondasi-panel-field.js?v=95"></script>
+    <script src="js/pondasi-panel-block.js?v=95"></script>
+    <script src="js/pondasi-panel-region.js?v=95"></script>
+    <script src="js/pondasi-block-panel.js?v=95"></script>
+    <script src="js/pondasi-mega-dropdown.js?v=95"></script>
+    <script src="js/pondasi-floating-toolbar.js?v=95"></script>
+    <script src="js/pondasi-panel-kelas.js?v=95"></script>
+    <script src="js/pondasi-class-context.js?v=95"></script>
+    <script src="js/pondasi-templates.js?v=95"></script>
+    <script src="js/pondasi-project.js?v=95"></script>
+    <script src="js/pondasi-input.js?v=95"></script>
+    <script src="js/pondasi-ui.js?v=95"></script>
+    <script src="js/pondasi-init.js?v=95"></script>
+
+    <!-- File picker global 
+        (di luar sidebar supaya bisa trigger click walau sidebar hidden) -->
+    <input type="file" id="buat-css-eksternal-file" accept=".css,text/css" style="position:absolute;left:-9999px;top:0;width:1px;height:1px;opacity:0;">
+
+    <!-- Datalist untuk autocomplete properti CSS (dipakai panel kelas) -->
+    <datalist id="pondasi-css-properti-list"></datalist>
+</body>
+</html>

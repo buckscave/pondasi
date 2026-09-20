@@ -1,0 +1,3154 @@
+/* ==========================================================================
+   PONDASI-APP.CSS — Styling untuk aplikasi pondasi
+   --------------------------------------------------------------------------
+   Hanya untuk "chrome" aplikasi (footer, floating buttons, editor, modal,
+   indikator region). Tidak mengubah pondasi.css. Semua layout app chrome
+   memakai block/inline-block + positioning.
+   ========================================================================== */
+
+/* --- BODY APP --- */
+.pondasi-app {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #DDE3EB;
+    color: #1E2832;
+    font-family: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================================================
+   CANVAS (split engine, full height)
+   ========================================================================== */
+.pondasi-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 28px;              /* tinggi footer */
+    height: calc(100vh - 28px);  /* viewport - footer, menempel atas browser */
+    margin: 0 auto;
+    background-color: #FAFAFA;
+    border: 1px solid #5A646E;
+    border-top: 0;             /* menempel atas */
+    overflow: hidden !important;
+    outline: 0;
+    box-sizing: border-box;
+    max-width: 75rem;
+}
+
+.pondasi-canvas:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: -2px;
+}
+
+/* ==========================================================================
+   FOOTER (breadcrumb + statusline + ?)
+   ========================================================================== */
+.pondasi-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background-color: #1E2832;
+    color: #5A646E;
+    font-size: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 100;
+    box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
+    padding: 0;
+    box-sizing: border-box;
+    display: block;
+}
+
+/* Breadcrumb — di kiri footer, font sama kecil dengan statusline */
+.pondasi-breadcrumb {
+    display: inline-block;
+    vertical-align: middle;
+    height: 28px;
+    line-height: 28px;
+    font-size: 11px;
+    color: #5A646E;
+    font-family: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
+    padding: 0 8px;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pondasi-breadcrumb-item {
+    display: inline-block;
+    padding: 1px 5px;
+    margin: 0 1px;
+    color: #5A646E;
+    cursor: pointer;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    line-height: 1.4;
+    vertical-align: middle;
+    -webkit-transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+    -moz-transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+    -o-transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+    transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+}
+
+.pondasi-breadcrumb-item:hover {
+    background-color: #3C4650;
+    color: #FFFFFF;
+    border-color: #5A646E;
+}
+
+.pondasi-breadcrumb-item.pondasi-breadcrumb-active {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-color: #00AAD4;
+}
+
+.pondasi-breadcrumb-sep {
+    display: inline-block;
+    margin: 0 2px;
+    color: #5A646E;
+    font-size: 10px;
+}
+
+/* Statusline — di tengah footer (flexible width) */
+.pondasi-statusline {
+    display: inline-block;
+    vertical-align: middle;
+    height: 28px;
+    line-height: 28px;
+    font-size: 11px;
+    color: #A0AAB4;
+    padding: 0 12px;
+    border-left: 1px solid #3C4650;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 35%;
+}
+
+/* Tombol ? di kanan footer */
+.pondasi-footer-help {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    background-color: #1E2832;
+    color: #5A646E;
+    border: 0;
+    border-left: 1px solid #3C4650;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: center;
+    line-height: 28px;
+    outline: 0;
+    -webkit-transition: background-color .1s ease, color .1s ease;
+    -moz-transition: background-color .1s ease, color .1s ease;
+    -o-transition: background-color .1s ease, color .1s ease;
+    transition: background-color .1s ease, color .1s ease;
+}
+
+.pondasi-footer-help:hover {
+    background-color: #3C4650;
+    color: #00AAD4;
+}
+
+/* ==========================================================================
+   FLOATING TOGGLES (melayang di kiri & kanan layar, vertikal)
+   ========================================================================== */
+.pondasi-floating {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    z-index: 200;
+    font-size: 0;
+    white-space: nowrap;
+    display: block;
+}
+
+.pondasi-floating-kanan {
+    right: 8px;
+}
+
+.pondasi-floating-kiri {
+    left: 8px;
+}
+
+.pondasi-floating-btn {
+    display: block;
+    width: 36px;
+    height: 36px;
+    margin: 4px 0;
+    padding: 0;
+    background-color: #1E2832;
+    color: #A0AAB4;
+    border: 1px solid #3C4650;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    line-height: 34px;
+    outline: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    -webkit-transition: background-color .1s ease, color .1s ease, border-color .1s ease, -webkit-transform .1s ease;
+    -moz-transition: background-color .1s ease, color .1s ease, border-color .1s ease, -moz-transform .1s ease;
+    -o-transition: background-color .1s ease, color .1s ease, border-color .1s ease, -o-transform .1s ease;
+    transition: background-color .1s ease, color .1s ease, border-color .1s ease, transform .1s ease;
+}
+
+.pondasi-floating-btn:hover {
+    background-color: #3C4650;
+    color: #FFFFFF;
+    border-color: #00AAD4;
+    -webkit-transform: translateX(0) scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -o-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+.pondasi-floating-btn:active,
+.pondasi-floating-btn.pondasi-floating-btn-aktif {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-color: #00AAD4;
+}
+
+.pondasi-floating-btn-text {
+    width: auto;
+    padding: 0 12px;
+    font-size: 12px;
+    line-height: 34px;
+    height: 36px;
+}
+
+/* ==========================================================================
+   GUIDE OVERLAY (12 kolom & 10 kolom, cyan)
+   ========================================================================== */
+.pondasi-guide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    pointer-events: none;
+    z-index: 50;
+    overflow: hidden;
+}
+
+.pondasi-guide[hidden] {
+    display: none;
+}
+
+.pondasi-guide-baris {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    margin: 0 auto;
+    max-width: 75rem;
+    font-size: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.pondasi-guide-baris-12 {
+    top: 0;
+    bottom: 0;
+}
+
+.pondasi-guide-baris-10 {
+    top: 0;
+    bottom: 0;
+    opacity: 0.5;
+}
+
+.pondasi-guide-kolom {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    border-left: 1px solid rgba(0, 170, 212, 0.5);
+    border-right: 1px solid rgba(0, 170, 212, 0.5);
+    box-sizing: border-box;
+}
+
+/* Sistem dengan jarak (sesuai pondasi.css — width dikurangi, margin 1% kiri-kanan) */
+/* Guide baris-12 = 12 kolom-1, dengan jarak width 6.5% (sesuai .jarak .kolom-1) */
+/* Guide baris-10 = 10 kolom-sepuluh, dengan jarak width 8.2% (sesuai .jarak .kolom-sepuluh) */
+/* first child margin kiri 0, last child margin kanan 0 */
+.pondasi-guide-baris-12.pondasi-guide-jarak .pondasi-guide-kolom {
+    width: 6.5%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.pondasi-guide-baris-12.pondasi-guide-jarak .pondasi-guide-kolom:first-child {
+    margin-left: 0;
+}
+.pondasi-guide-baris-12.pondasi-guide-jarak .pondasi-guide-kolom:last-child {
+    margin-right: 0;
+}
+
+.pondasi-guide-baris-10.pondasi-guide-jarak .pondasi-guide-kolom {
+    width: 8.2%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.pondasi-guide-baris-10.pondasi-guide-jarak .pondasi-guide-kolom:first-child {
+    margin-left: 0;
+}
+.pondasi-guide-baris-10.pondasi-guide-jarak .pondasi-guide-kolom:last-child {
+    margin-right: 0;
+}
+
+.pondasi-guide-baris-12 .pondasi-guide-kolom {
+    width: 8.333%;
+}
+
+.pondasi-guide-baris-10 .pondasi-guide-kolom {
+    width: 10%;
+}
+
+.pondasi-guide-label {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-size: 11px;
+    color: #00AAD4;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+    background-color: rgba(0, 170, 212, 0.1);
+    padding: 1px 6px;
+    border: 1px solid #00AAD4;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+.pondasi-guide-label-10 {
+    top: 36px;
+    opacity: 0.6;
+}
+
+/* ==========================================================================
+   GRID OVERLAY (16px / 1rem lines)
+   ========================================================================== */
+.pondasi-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    pointer-events: none;
+    z-index: 49;
+    /* Grid 16px / 1rem — warna magenta */
+    background-image:
+        linear-gradient(to right, rgba(255, 0, 200, 0.2) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 0, 200, 0.2) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-position: 0 0;
+}
+
+.pondasi-grid[hidden] {
+    display: none;
+}
+
+/* ==========================================================================
+   REGION INDICATORS
+   ========================================================================== */
+.pondasi-region {
+    position: relative;
+    min-height: 4rem;
+    outline: 1px solid #C8D0DA;
+    outline-offset: -1px;
+    -webkit-transition: outline-color .08s ease, background-color .08s ease;
+    -moz-transition: outline-color .08s ease, background-color .08s ease;
+    -o-transition: outline-color .08s ease, background-color .08s ease;
+    transition: outline-color .08s ease, background-color .08s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.pondasi-region:hover {
+    outline-color: #5A646E;
+}
+
+.pondasi-region.pondasi-active {
+    outline: 2px solid #00AAD4 !important;
+    outline-offset: -2px;
+    background-color: rgba(0, 170, 212, 0.06);
+    z-index: 1;
+}
+
+.pondasi-region.pondasi-selected {
+    outline: 2px solid #00B482 !important;
+    outline-offset: -2px;
+    background-color: rgba(0, 180, 130, 0.06);
+}
+
+.pondasi-region.pondasi-active.pondasi-selected {
+    outline: 2px solid #00B482 !important;
+}
+
+/*
+   Anak kolom (inline-block) fill tinggi parent-nya supaya terlihat
+   sistem pembagian vertikal (kiri-kanan) sama tinggi.
+   Hanya untuk kolom/child (inline-block) kosong. Region dengan konten
+   (.pondasi-has-content) tidak fill — tinggi menyesuaikan isi.
+*/
+.pondasi-type-parent > .pondasi-type-child:not(.pondasi-has-content),
+.pondasi-type-parent > .pondasi-type-sub-parent:not(.pondasi-has-content),
+.pondasi-type-sub-parent > .pondasi-type-child:not(.pondasi-has-content),
+.pondasi-type-sub-parent > .pondasi-type-sub-parent:not(.pondasi-has-content),
+.pondasi-type-sub-child > .pondasi-type-child:not(.pondasi-has-content),
+.pondasi-type-sub-child > .pondasi-type-sub-parent:not(.pondasi-has-content) {
+    height: 100%;
+    min-height: 0;
+}
+
+/* Region dengan konten — auto-height, tinggi menyesuaikan isi */
+.pondasi-region.pondasi-has-content {
+    height: auto !important;
+    min-height: 4rem;
+}
+
+/* --- Warna region sesuai hirarki --- */
+.pondasi-type-grand-parent { background-color: #FAFAFA; }
+.pondasi-type-parent       { background-color: #EEF1F5; }
+.pondasi-type-child        { background-color: #FFFFFF; }
+.pondasi-type-sub-parent   { background-color: #E1E6EB; }
+.pondasi-type-sub-child    { background-color: #F4F6F9; }
+
+/* Aktif override warna dasar */
+.pondasi-region.pondasi-active.pondasi-type-grand-parent { background-color: #E5F6FA; }
+.pondasi-region.pondasi-active.pondasi-type-parent      { background-color: #DCF2F8; }
+.pondasi-region.pondasi-active.pondasi-type-child        { background-color: #E5F6FA; }
+.pondasi-region.pondasi-active.pondasi-type-sub-parent   { background-color: #D2ECF4; }
+.pondasi-region.pondasi-active.pondasi-type-sub-child    { background-color: #DCF2F8; }
+
+/* --- Label region (pojok kanan-atas) — hanya tampil untuk aktif/terpilih --- */
+.pondasi-region-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 10px;
+    font-family: "Courier New", Courier, monospace;
+    color: #5A646E;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 1px 6px;
+    border-bottom-left-radius: 3px;
+    border-left: 1px solid #C8D0DA;
+    border-bottom: 1px solid #C8D0DA;
+    pointer-events: none;
+    z-index: 2;
+    line-height: 1.4;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.pondasi-region.pondasi-active .pondasi-region-label,
+.pondasi-region.pondasi-selected .pondasi-region-label {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+.pondasi-region.pondasi-active .pondasi-region-label {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-color: #00AAD4;
+}
+
+.pondasi-region.pondasi-selected .pondasi-region-label {
+    background-color: #00B482;
+    color: #FFFFFF;
+    border-color: #00B482;
+}
+
+/* Grand-parent (canvas) tidak menampilkan label di pojok kanan — sudah ada di breadcrumb */
+
+/* --- Placeholder untuk region kosong --- */
+.pondasi-placeholder {
+    display: block;
+    font-size: 11px;
+    font-family: "Courier New", Courier, monospace;
+    color: #A0AAB4;
+    padding: 1rem 0.5rem;
+    text-align: center;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    line-height: 1.5;
+}
+
+.pondasi-type-grand-parent > .pondasi-placeholder,
+.pondasi-type-parent       > .pondasi-placeholder,
+.pondasi-type-sub-parent   > .pondasi-placeholder,
+.pondasi-type-sub-child    > .pondasi-placeholder {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.pondasi-placeholder .pondasi-ph-key {
+    display: inline-block;
+    padding: 1px 5px;
+    margin: 0 2px;
+    background-color: #FFFFFF;
+    border: 1px solid #C8D0DA;
+    border-radius: 2px;
+    color: #3C4650;
+    font-weight: bold;
+}
+
+/* --- Konten region (yang dityping user) — display di luar mode edit --- */
+.pondasi-region-content {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #1E2832;
+    overflow: auto;
+}
+
+/* Anak dari content inherit dari content div (bukan dari parent region) */
+.pondasi-region-content *,
+.pondasi-region-content p,
+.pondasi-region-content h1,
+.pondasi-region-content h2,
+.pondasi-region-content h3,
+.pondasi-region-content h4,
+.pondasi-region-content h5,
+.pondasi-region-content h6,
+.pondasi-region-content ul,
+.pondasi-region-content ol,
+.pondasi-region-content li,
+.pondasi-region-content blockquote,
+.pondasi-region-content pre,
+.pondasi-region-content a,
+.pondasi-region-content span,
+.pondasi-region-content b,
+.pondasi-region-content i,
+.pondasi-region-content strong,
+.pondasi-region-content em {
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.pondasi-region-content h1 { font-size: 2rem; font-weight: bold; margin: 0.5rem 0; }
+.pondasi-region-content h2 { font-size: 1.5rem; font-weight: bold; margin: 0.4rem 0; }
+.pondasi-region-content h3 { font-size: 1.25rem; font-weight: bold; margin: 0.35rem 0; }
+.pondasi-region-content h4 { font-size: 1.1rem; font-weight: bold; margin: 0.3rem 0; }
+.pondasi-region-content h5 { font-size: 1rem; font-weight: bold; margin: 0.25rem 0; }
+.pondasi-region-content h6 { font-size: 0.9rem; font-weight: bold; margin: 0.2rem 0; }
+.pondasi-region-content p { margin: 0.35rem 0; }
+.pondasi-region-content ul,
+.pondasi-region-content ol { padding-left: 1.5rem; margin: 0.35rem 0; }
+.pondasi-region-content ul { list-style: disc; }
+.pondasi-region-content ol { list-style: decimal; }
+.pondasi-region-content blockquote {
+    border-left: 4px solid #00AAD4;
+    padding: 0.25rem 0.75rem;
+    margin: 0.5rem 0;
+    color: #5A646E;
+    background-color: #F5F7FA;
+    font-style: italic;
+}
+.pondasi-region-content a { color: #00AAD4; text-decoration: underline; }
+.pondasi-region-content img { max-width: 100%; height: auto; }
+.pondasi-region-content hr { border: 0; border-bottom: 1px solid #E1E6EB; margin: 0.5rem 0; }
+
+
+/* ==========================================================================
+   EDITOR BAR MINI (3 tombol: Isi / Komponen / Properti)
+   ========================================================================== */
+.pondasi-editor-bar {
+    position: absolute;
+    z-index: 9999;
+    background-color: #1E2832;
+    border: 1px solid #3C4650;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    padding: 4px;
+    font-size: 0;
+    white-space: nowrap;
+}
+
+.pondasi-editor-bar[hidden] { display: none; }
+
+.pondasi-editor-bar-btn {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    height: 32px;
+    padding: 0 10px;
+    margin: 0 2px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    color: #A0AAB4;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 30px;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+    -moz-transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+    -o-transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+    transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+}
+
+.pondasi-editor-bar-btn:hover {
+    background-color: #3C4650;
+    color: #FFFFFF;
+    border-color: #5A646E;
+}
+
+.pondasi-editor-bar-shortcut {
+    display: inline-block;
+    background-color: #3C4650;
+    color: #A0AAB4;
+    font-size: 10px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-left: 2px;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.2;
+}
+
+.pondasi-editor-bar-btn:hover .pondasi-editor-bar-shortcut {
+    background-color: #1E2832;
+    color: #00AAD4;
+}
+
+.pondasi-editor-bar-btn:active,
+.pondasi-editor-bar-btn.pondasi-editor-bar-aktif {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-color: #00AAD4;
+}
+
+.pondasi-editor-bar-btn i {
+    margin: 0 2px;
+    pointer-events: none;
+}
+
+.pondasi-editor-bar-keluar {
+    width: 32px;
+    padding: 0;
+    text-align: center;
+}
+
+.pondasi-editor-bar-keluar:hover {
+    background-color: #FF3232;
+    border-color: #FF3232;
+    color: #FFFFFF;
+}
+
+/* ==========================================================================
+   DROPDOWN ISI & KOMPONEN (melayang, dikelompokkan)
+   ========================================================================== */
+.pondasi-editor-dropdown {
+    position: absolute;
+    z-index: 9998;
+    background-color: #1E2832;
+    border: 1px solid #3C4650;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    padding: 4px;
+    max-width: 16rem;
+    max-height: 24rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pondasi-editor-dropdown[hidden] { display: none; }
+
+.pondasi-dropdown-grup {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.pondasi-dropdown-grup-label {
+    display: block;
+    color: #5A646E;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 8px 2px;
+    line-height: 1.4;
+}
+
+.pondasi-dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 6px 8px;
+    background-color: transparent;
+    border: 0;
+    color: #A0AAB4;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+    cursor: pointer;
+    outline: 0;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-transition: background-color .1s ease, color .1s ease;
+    -moz-transition: background-color .1s ease, color .1s ease;
+    -o-transition: background-color .1s ease, color .1s ease;
+    transition: background-color .1s ease, color .1s ease;
+    box-sizing: border-box;
+}
+
+.pondasi-dropdown-item:hover {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+}
+
+.pondasi-dropdown-item:focus {
+    outline: 2px solid #FFC832;
+    outline-offset: -2px;
+}
+
+/* Highlight item aktif saat keyboard nav (↑↓ di dropdown) — fill biru saja, tanpa outline */
+.pondasi-dropdown-item.pondasi-dropdown-item-aktif {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    outline: 0;
+}
+
+.pondasi-dropdown-item.pondasi-dropdown-item-aktif .pondasi-dropdown-tag {
+    color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.pondasi-dropdown-tag {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 28px;
+    margin-right: 8px;
+    padding: 1px 4px;
+    background-color: #3C4650;
+    color: #00AAD4;
+    font-family: "Courier New", monospace;
+    font-size: 9px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+.pondasi-dropdown-item:hover .pondasi-dropdown-tag {
+    background-color: rgba(255,255,255,0.2);
+    color: #FFFFFF;
+}
+
+/* ==========================================================================
+   PANEL PROPERTI (accordion melayang, drag-move, resizable)
+   ========================================================================== */
+.pondasi-editor-panel {
+    position: absolute;
+    z-index: 9998;
+    background-color: #1E2832;
+    border: 1px solid #3C4650;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    width: 16rem;
+    overflow: hidden;
+    min-width: 12rem;
+    max-width: 32rem;
+    min-height: 6rem;
+    max-height: 80vh;
+}
+
+.pondasi-editor-panel[hidden] { display: none; }
+
+.pondasi-editor-panel-head {
+    display: block;
+    padding: 8px 12px;
+    border-bottom: 1px solid #3C4650;
+    background-color: #0A141E;
+    cursor: move;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: 0;
+    white-space: nowrap;
+}
+
+.pondasi-editor-panel-judul {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* Resize handle — pojok kanan bawah */
+.pondasi-editor-panel-resize {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    cursor: nwse-resize;
+    z-index: 10;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.pondasi-editor-panel-resize::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid #5A646E;
+    border-bottom: 2px solid #5A646E;
+}
+
+.pondasi-editor-panel-resize:hover::after {
+    border-right-color: #00AAD4;
+    border-bottom-color: #00AAD4;
+}
+
+/* Highlight field/summary aktif di panel properti — class pondasi-field-aktif */
+/* Summary (judul details) aktif: fill biru seperti dropdown */
+.pondasi-properti-grup > summary.pondasi-field-aktif,
+.pondasi-sidebar-akordion > summary.pondasi-field-aktif {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    outline: 0;
+}
+
+/* Input/select/textarea/button aktif: outline kuning + background */
+.pondasi-properti-input.pondasi-field-aktif,
+.pondasi-properti-textarea.pondasi-field-aktif,
+.pondasi-properti-select.pondasi-field-aktif,
+.pondasi-properti-num.pondasi-field-aktif,
+.pondasi-properti-warna-btn.pondasi-field-aktif,
+.pondasi-sidebar-input.pondasi-field-aktif {
+    border-color: #FFC832 !important;
+    outline: 2px solid #FFC832 !important;
+    outline-offset: -1px;
+    background-color: #3C4650;
+}
+
+.pondasi-editor-panel-head .pondasi-editor-bar-btn {
+    float: right;
+    height: 24px;
+    width: 24px;
+    padding: 0;
+    line-height: 22px;
+    font-size: 10px;
+}
+
+.pondasi-editor-panel-badan {
+    display: block;
+    max-height: 20rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0;
+}
+
+/* Accordion grup di panel properti */
+.pondasi-properti-grup {
+    display: block;
+    border-bottom: 1px solid #3C4650;
+}
+.pondasi-properti-grup:last-child { border-bottom: 0; }
+
+.pondasi-properti-grup > summary {
+    display: block;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #A0AAB4;
+    cursor: pointer;
+    outline: 0;
+    list-style: none;
+    -webkit-transition: background-color .1s ease, color .1s ease;
+    -moz-transition: background-color .1s ease, color .1s ease;
+    -o-transition: background-color .1s ease, color .1s ease;
+    transition: background-color .1s ease, color .1s ease;
+}
+.pondasi-properti-grup > summary::-webkit-details-marker { display: none; }
+.pondasi-properti-grup > summary:hover {
+    background-color: #2C3640;
+    color: #FFFFFF;
+}
+.pondasi-properti-grup > summary:after {
+    content: "";
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    float: right;
+    margin-top: 4px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #5A646E;
+    -webkit-transition: -webkit-transform .2s ease;
+    -moz-transition: -moz-transform .2s ease;
+    -o-transition: -o-transform .2s ease;
+    transition: transform .2s ease;
+}
+.pondasi-properti-grup[open] > summary {
+    color: #00AAD4;
+}
+.pondasi-properti-grup[open] > summary:after {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    border-top-color: #00AAD4;
+}
+
+.pondasi-properti-isi {
+    display: block;
+    padding: 4px 12px 8px;
+    font-size: 0;
+}
+
+/* Fieldset properti — rapat, inline, sisi dalam 1 baris */
+.pondasi-properti-fieldset {
+    display: block;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    padding: 2px 4px;
+    margin: 2px 0;
+    font-size: 0;
+    white-space: nowrap;
+}
+
+.pondasi-properti-fieldset legend {
+    display: inline;
+    color: #00AAD4;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding: 0 3px;
+    margin: 0;
+    line-height: 1.4;
+    width: auto;
+    text-transform: lowercase;
+}
+
+.pondasi-properti-sisi {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    color: #FFFFFF;
+    font-size: 9px;
+    margin: 0 1px;
+    line-height: 1.4;
+}
+
+.pondasi-properti-num {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: 48px;
+    height: 22px;
+    margin: 0 1px;
+    padding: 0 4px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    font-size: 11px;
+    line-height: 20px;
+    text-align: center;
+    outline: 0;
+    font-family: "Courier New", monospace;
+    box-sizing: border-box;
+}
+
+/* (rule lama dihapus — pakai rule highlight kuning di atas) */
+.pondasi-properti-num::-webkit-inner-spin-button,
+.pondasi-properti-num::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.pondasi-properti-num { -moz-appearance: textfield; appearance: textfield; }
+
+.pondasi-properti-input {
+    display: block;
+    width: 100%;
+    height: 24px;
+    padding: 0 6px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 11px;
+    line-height: 22px;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-input::placeholder { color: #A0AAB4; opacity: 1; }
+/* (rule :focus lama dihapus — pakai highlight kuning di atas) */
+
+.pondasi-properti-select {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    height: 22px;
+    margin: 1px;
+    padding: 0 2px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    font-size: 10px;
+    line-height: 20px;
+    outline: 0;
+    cursor: pointer;
+    max-width: 60px;
+}
+
+.pondasi-properti-select option { background-color: #1E2832; color: #FFFFFF; }
+
+.pondasi-properti-btn {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    height: 22px;
+    margin: 1px;
+    padding: 0 6px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    font-size: 10px;
+    line-height: 20px;
+    cursor: pointer;
+    outline: 0;
+}
+
+.pondasi-properti-btn:hover { border-color: #00AAD4; color: #00AAD4; }
+.pondasi-properti-btn i { margin-right: 2px; pointer-events: none; }
+
+/* ==========================================================================
+   MODAL (Help)
+   ========================================================================== */
+.pondasi-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #0A141E;
+    background-color: rgba(10, 20, 30, 0.55);
+    /* z-index 10600 = di atas sidebar (10500) supaya help modal terlihat saat sidebar terbuka */
+    z-index: 10600;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pondasi-modal[hidden] {
+    display: none;
+}
+
+.pondasi-modal-box {
+    position: relative;
+    width: 90%;
+    max-width: 540px;
+    margin: 60px auto;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    -webkit-box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    padding: 20px 24px;
+}
+
+.pondasi-modal-box h2 {
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    font-size: 16px;
+    color: #1E2832;
+    border-bottom: 1px solid #E1E6EB;
+}
+
+.pondasi-help-list {
+    margin: 0 0 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pondasi-help-list dt {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    color: #1E2832;
+}
+
+.pondasi-help-list dt:first-child {
+    margin-top: 0;
+}
+
+.pondasi-help-list dd {
+    display: block;
+    color: #5A646E;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.pondasi-help-list kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    margin: 0 2px;
+    font-size: 11px;
+    font-family: "Courier New", Courier, monospace;
+    background-color: #F5F7FA;
+    border: 1px solid #A0AAB4;
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    color: #1E2832;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+.pondasi-modal-foot {
+    text-align: right;
+    padding-top: 8px;
+    border-top: 1px solid #E1E6EB;
+}
+
+.pondasi-modal-foot .pondasi-floating-btn {
+    display: inline-block;
+    color: #1E2832;
+    background-color: #F5F7FA;
+    border-color: #A0AAB4;
+}
+
+.pondasi-modal-foot .pondasi-floating-btn:hover {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-color: #00AAD4;
+}
+
+/* ==========================================================================
+   DRAG visual feedback
+   ========================================================================== */
+.pondasi-drag-source {
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    outline: 2px dashed #FFC832 !important;
+    outline-offset: -2px;
+}
+
+.pondasi-drop-target {
+    outline: 2px solid #00B482 !important;
+    outline-offset: -2px;
+    background-color: rgba(0, 180, 130, 0.15) !important;
+}
+
+.pondasi-app.pondasi-dragging,
+.pondasi-app.pondasi-dragging * {
+    cursor: move !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* ==========================================================================
+   CETAK
+   ========================================================================== */
+@media print {
+    .pondasi-footer,
+    .pondasi-floating,
+    .pondasi-modal,
+    .pondasi-editor,
+    .pondasi-guide,
+    .pondasi-grid,
+    .pondasi-region-label,
+    .pondasi-placeholder {
+        display: none !important;
+    }
+    .pondasi-canvas {
+        position: static;
+        border: 0;
+        margin: 0;
+        max-width: none;
+    }
+    .pondasi-region {
+        outline: 0 !important;
+    }
+}
+
+/* ==========================================================================
+   PANEL PROPERTI PER-BLOCK — styles untuk field baru (textarea, daftar, warna)
+   ========================================================================== */
+
+/* Baris field (label + input vertical) */
+.pondasi-properti-baris {
+    display: block;
+    margin: 4px 0;
+    font-size: 0;
+}
+
+/* Baris inline (label + input horizontal — untuk angka, pilih, warna) */
+.pondasi-properti-baris-inline {
+    display: block;
+    margin: 4px 0;
+    white-space: nowrap;
+    font-size: 0;
+}
+
+.pondasi-properti-label {
+    display: block;
+    color: #00AAD4;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+    margin: 0 0 2px 0;
+    line-height: 1.4;
+    text-transform: lowercase;
+}
+
+.pondasi-properti-baris-inline .pondasi-properti-label {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: auto;
+    margin: 0 4px 0 0;
+}
+
+.pondasi-properti-label-inline {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    color: #FFFFFF;
+    font-size: 11px;
+    margin: 0 4px;
+    line-height: 1.4;
+}
+
+/* Textarea untuk konten teks panjang (isi paragraf, daftar item, dll) */
+.pondasi-properti-textarea {
+    display: block;
+    width: 100%;
+    min-height: 60px;
+    padding: 4px 6px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 11px;
+    line-height: 1.4;
+    font-family: inherit;
+    outline: 0;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/* (rule :focus lama dihapus — pakai highlight kuning di atas) */
+
+/* Textarea pendek (untuk daftar editor — 3-4 baris) */
+.pondasi-properti-textarea-pendek {
+    min-height: 70px;
+    font-family: "Courier New", monospace;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+/* Number input lebar (untuk angka tunggal, bukan di fieldset) */
+.pondasi-properti-num-lebar {
+    width: 80px;
+}
+
+/* Select lebar (untuk pilih tunggal, bukan di fieldset) */
+.pondasi-properti-select-lebar {
+    width: 120px;
+    max-width: 100%;
+}
+
+/* Warna button + preview */
+.pondasi-properti-warna-btn {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    height: 22px;
+    padding: 0 6px 0 4px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    font-size: 10px;
+    line-height: 20px;
+    cursor: pointer;
+    outline: 0;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.pondasi-properti-warna-btn:hover {
+    border-color: #00AAD4;
+}
+
+.pondasi-properti-warna-prev {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: 14px;
+    height: 14px;
+    margin: 0 4px 0 0;
+    border: 1px solid #5A646E;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    background: transparent;
+}
+
+.pondasi-properti-warna-teks {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    color: #FFFFFF;
+    font-family: "Courier New", monospace;
+}
+
+/* Checkbox row */
+.pondasi-properti-cek {
+    display: block;
+    padding: 4px 0;
+    color: #FFFFFF;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.pondasi-properti-cek input[type="checkbox"] {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 4px 0 0;
+    cursor: pointer;
+}
+
+/* Aksi editor (link/alert/kustom) */
+.pondasi-properti-aksi .pondasi-properti-input,
+.pondasi-properti-aksi .pondasi-properti-textarea {
+    margin-top: 4px;
+    display: block;
+    width: 100%;
+}
+
+/* Block terpilih — outline lebih prominent */
+.pondasi-block-wrapper {
+    position: relative;
+}
+
+/* Indicator jenis block (kecil, pojok kiri bawah) */
+.pondasi-block-jenis-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 9px;
+    line-height: 1;
+    padding: 2px 4px;
+    background: rgba(30, 40, 50, 0.85);
+    color: #FFC832;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    pointer-events: none;
+    font-family: "Courier New", monospace;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Panel judul — penanda mode block */
+/* Region label — sembunyikan saat mode edit */
+.pondasi-editing-active .pondasi-region-label {
+    display: none !important;
+}
+
+.pondasi-editor-panel-judul {
+    text-transform: capitalize;
+}
+
+/* ==========================================================================
+   SIDEBAR PANEL (kiri — push content, bukan overlay)
+   Saat sidebar aktif: canvas + floating kanan + footer geser kanan 280px
+   ========================================================================== */
+.pondasi-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background-color: #1E2832;
+    z-index: 10500;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Hapus box-shadow — bersih, tanpa bayangan */
+    /* Saat hidden: geser ke kiri */
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-transition: -webkit-transform .2s ease;
+    -moz-transition: -moz-transform .2s ease;
+    -o-transition: -o-transform .2s ease;
+    transition: transform .2s ease;
+    display: block !important;
+}
+
+.pondasi-sidebar.pondasi-sidebar-aktif {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+}
+
+/* Saat sidebar kiri aktif: geser canvas, floating kiri, floating kanan, footer */
+body.pondasi-sidebar-kiri-aktif .pondasi-canvas {
+    margin-left: 280px;
+}
+/* Floating kiri: geser ke kanan sidebar + 8px gap (sama dengan jarak normal ke layar) */
+body.pondasi-sidebar-kiri-aktif .pondasi-floating-kiri {
+    left: 288px;  /* 280px sidebar + 8px gap */
+}
+body.pondasi-sidebar-kiri-aktif .pondasi-floating-kanan {
+    right: 8px;
+}
+body.pondasi-sidebar-kiri-aktif .pondasi-footer {
+    margin-left: 280px;
+}
+
+/* Transisi smooth untuk content yang geser */
+.pondasi-canvas,
+.pondasi-floating-kiri,
+.pondasi-floating-kanan,
+.pondasi-footer {
+    -webkit-transition: margin-left .2s ease, left .2s ease;
+    -moz-transition: margin-left .2s ease, left .2s ease;
+    -o-transition: margin-left .2s ease, left .2s ease;
+    transition: margin-left .2s ease, left .2s ease;
+}
+
+/* Tombol floating yang aktif (sidebar terbuka / tool toggle on) — warna berbeda */
+.pondasi-floating-btn.pondasi-floating-btn-aktif {
+    /* Styling sama dengan rule di atas (.pondasi-floating-btn:active) — di sini untuk konsolidasi */
+}
+
+.pondasi-sidebar-kiri {
+    left: 0;
+}
+
+.pondasi-sidebar-head {
+    padding: 12px 16px;
+    border-bottom: 1px solid #3C4650;
+    background-color: #0A141E;
+    font-size: 0;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.pondasi-sidebar-judul {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: 80%;
+}
+
+.pondasi-sidebar-tutup {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+    background-color: transparent;
+    border: 0;
+    color: #A0AAB4;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    float: right;
+}
+
+.pondasi-sidebar-tutup:hover {
+    background-color: #FF3232;
+    color: #FFFFFF;
+}
+
+.pondasi-sidebar-badan {
+    padding: 12px 0;
+}
+
+.pondasi-sidebar-foot {
+    padding: 12px 16px;
+    border-top: 1px solid #3C4650;
+    background-color: #0A141E;
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+}
+
+.pondasi-sidebar-section {
+    padding: 0 16px 16px;
+    border-bottom: 1px solid #3C4650;
+    margin-bottom: 12px;
+}
+
+.pondasi-sidebar-section:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+
+.pondasi-sidebar-section-judul {
+    color: #00AAD4;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.pondasi-sidebar-input {
+    display: block;
+    width: 100%;
+    height: 32px;
+    padding: 0 10px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    font-size: 13px;
+    line-height: 30px;
+    outline: 0;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.pondasi-sidebar-input::placeholder {
+    color: #A0AAB4;
+    opacity: 1;
+}
+
+.pondasi-sidebar-input:focus {
+    border-color: #00AAD4;
+}
+
+/* === FIELD DENGAN STATUS SCAN (centang/X) === */
+.pondasi-sidebar-field-with-status {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.pondasi-scan-status {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 4px;
+    margin-left: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: help;
+    background-color: #3C4650;
+    color: #A0AAB4;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+
+.pondasi-scan-status.pondasi-scan-ok {
+    background-color: #00B482;
+    color: #FFFFFF;
+}
+
+.pondasi-scan-status.pondasi-scan-error {
+    background-color: #E53935;
+    color: #FFFFFF;
+}
+
+.pondasi-scan-status.pondasi-scan-loading {
+    background-color: #FFC832;
+    color: #1E2832;
+}
+
+.pondasi-scan-status.pondasi-scan-warning {
+    background-color: #FF9800;
+    color: #FFFFFF;
+}
+
+/* === TOMBOL PILIH FILE CSS === */
+.pondasi-scan-pick-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 28px;
+    height: 24px;
+    line-height: 22px;
+    text-align: center;
+    background-color: #3C4650;
+    color: #E8EDF2;
+    border: 1px solid #5A646E;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    margin-right: 4px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.pondasi-scan-pick-btn:hover {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-color: #00AAD4;
+}
+
+/* === KETERANGAN STATUS SCAN (text di bawah input) === */
+.pondasi-scan-keterangan {
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+    margin-top: -4px;
+    color: #A0AAB4;
+    background-color: #2A343E;
+    border-radius: 4px;
+    border-left: 3px solid #3C4650;
+    word-break: break-word;
+    min-height: 0;
+}
+
+.pondasi-scan-keterangan:empty {
+    display: none;
+}
+
+.pondasi-scan-keterangan.pondasi-scan-keterangan-ok {
+    color: #00B482;
+    border-left-color: #00B482;
+    background-color: rgba(0, 180, 130, 0.08);
+}
+
+.pondasi-scan-keterangan.pondasi-scan-keterangan-error {
+    color: #FF6B6B;
+    border-left-color: #E53935;
+    background-color: rgba(229, 57, 53, 0.08);
+}
+
+.pondasi-scan-keterangan.pondasi-scan-keterangan-loading {
+    color: #FFC832;
+    border-left-color: #FFC832;
+    background-color: rgba(255, 200, 50, 0.08);
+}
+
+.pondasi-scan-keterangan.pondasi-scan-keterangan-warning {
+    color: #FFB74D;
+    border-left-color: #FF9800;
+    background-color: rgba(255, 152, 0, 0.08);
+}
+
+.pondasi-scan-keterangan.pondasi-scan-keterangan-info {
+    color: #5AC8FA;
+    border-left-color: #00AAD4;
+    background-color: rgba(0, 170, 212, 0.08);
+}
+
+/* === DROPDOWN KELAS DENGAN KATEGORI === */
+.pondasi-dropdown-kelas-grup {
+    padding: 2px 8px;
+    font-size: 10px;
+    color: #A0AAB4;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: #2A343E;
+    pointer-events: none;
+}
+
+.pondasi-dropdown-kelas-item {
+    padding: 4px 12px;
+    font-size: 12px;
+    color: #E8EDF2;
+    cursor: pointer;
+}
+
+.pondasi-dropdown-kelas-item:hover {
+    background-color: #0073B4;
+    color: #FFFFFF;
+}
+
+.pondasi-sidebar-btn {
+    display: block;
+    width: 100%;
+    height: 32px;
+    background-color: #0073B4;
+    color: #FFFFFF !important;
+    border: 0;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-transition: background-color .1s ease;
+    -moz-transition: background-color .1s ease;
+    -o-transition: background-color .1s ease;
+    transition: background-color .1s ease;
+}
+
+.pondasi-sidebar-btn:hover {
+    background-color: #00AAD4;
+}
+
+.pondasi-sidebar-list {
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Akordion di sidebar (buat dokumen/proyek) */
+.pondasi-sidebar-akordion {
+    margin: 4px 0;
+}
+
+.pondasi-sidebar-akordion > summary {
+    display: block;
+    padding: 10px 12px;
+    background-color: #0A141E;
+    border: 1px solid #3C4650;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    -webkit-transition: background-color .1s ease, border-color .1s ease;
+    -moz-transition: background-color .1s ease, border-color .1s ease;
+    -o-transition: background-color .1s ease, border-color .1s ease;
+    transition: background-color .1s ease, border-color .1s ease;
+    list-style: none;
+}
+
+.pondasi-sidebar-akordion > summary::-webkit-details-marker { display: none; }
+.pondasi-sidebar-akordion > summary::after {
+    content: '+';
+    float: right;
+    font-size: 16px;
+    color: #A0AAB4;
+    font-weight: normal;
+}
+.pondasi-sidebar-akordion[open] > summary::after { content: '\2212'; }  /* minus sign */
+
+.pondasi-sidebar-akordion > summary:hover {
+    border-color: #5A646E;
+    background-color: #1E2832;
+}
+
+.pondasi-sidebar-akordion[open] > summary {
+    border-color: #00AAD4;
+    background-color: #1E2832;
+}
+
+.pondasi-sidebar-akordion > summary:focus {
+    outline: 2px solid #FFC832;
+    outline-offset: -2px;
+}
+
+.pondasi-sidebar-akordion > summary i {
+    margin-right: 6px;
+    pointer-events: none;
+}
+
+.pondasi-sidebar-akordion-isi {
+    padding: 10px 0 4px;
+}
+
+/* Akordion yang disabled (proyek) — pakai class, bukan attribute, supaya JS guard bisa mencegah toggle */
+.pondasi-sidebar-akordion[disabled] > summary,
+.pondasi-sidebar-akordion-disabled > summary {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pondasi-sidebar-akordion[disabled] > summary:hover,
+.pondasi-sidebar-akordion-disabled > summary:hover {
+    border-color: #3C4650;
+    background-color: #0A141E;
+}
+
+.pondasi-sidebar-list-item {
+    display: block;
+    padding: 8px 10px;
+    margin: 4px 0;
+    background-color: #0A141E;
+    border: 1px solid #3C4650;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    font-size: 0;
+    -webkit-transition: background-color .1s ease, border-color .1s ease;
+    -moz-transition: background-color .1s ease, border-color .1s ease;
+    -o-transition: background-color .1s ease, border-color .1s ease;
+    transition: background-color .1s ease, border-color .1s ease;
+    cursor: pointer;
+}
+
+.pondasi-sidebar-list-item:hover {
+    border-color: #5A646E;
+}
+
+.pondasi-sidebar-list-item-aktif {
+    border-color: #00AAD4;
+    background-color: #3C4650;
+}
+
+.pondasi-sidebar-list-info-wrap {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: 85%;
+}
+
+.pondasi-sidebar-list-nama {
+    font-size: 13px;
+    color: #FFFFFF;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pondasi-sidebar-list-info {
+    font-size: 10px;
+    color: #A0AAB4;
+    margin-top: 2px;
+}
+
+.pondasi-sidebar-list-hapus {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: 28px;
+    height: 28px;
+    margin-left: 4px;
+    background-color: transparent;
+    border: 0;
+    color: #FF3232;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+.pondasi-sidebar-list-hapus:hover {
+    background-color: #FF3232;
+    color: #FFFFFF;
+}
+
+.pondasi-sidebar-list-empty {
+    padding: 16px;
+    text-align: center;
+    color: #A0AAB4;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* Checkbox style di sidebar (untuk export) */
+.pondasi-sidebar-cek {
+    display: block;
+    padding: 6px 0;
+    color: #FFFFFF;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.pondasi-sidebar-cek input[type="checkbox"] {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 6px 0 0;
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+}
+
+/* Template card di sidebar (vertical list) */
+.pondasi-template-item {
+    display: block;
+    padding: 10px;
+    margin: 4px 0;
+    background-color: #0A141E;
+    border: 1px solid #3C4650;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    cursor: pointer;
+    -webkit-transition: background-color .1s ease, border-color .1s ease;
+    -moz-transition: background-color .1s ease, border-color .1s ease;
+    -o-transition: background-color .1s ease, border-color .1s ease;
+    transition: background-color .1s ease, border-color .1s ease;
+}
+
+.pondasi-template-item:hover {
+    border-color: #00AAD4;
+    background-color: #3C4650;
+}
+
+.pondasi-template-item-preview {
+    background-color: #1E2832;
+    border: 1px solid #3C4650;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    padding: 6px;
+    margin-bottom: 6px;
+    height: 60px;
+    overflow: hidden;
+}
+
+.pondasi-template-item-nama {
+    font-size: 12px;
+    color: #FFFFFF;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.pondasi-template-item-desc {
+    font-size: 10px;
+    color: #A0AAB4;
+    line-height: 1.3;
+}
+
+/* Settings panel — pakai style sidebar (dark bg) */
+#settings-panel .pondasi-properti-grup {
+    background-color: transparent;
+}
+
+#settings-panel .pondasi-properti-grup > summary {
+    color: #FFFFFF;
+    background-color: #0A141E;
+    border-bottom: 1px solid #3C4650;
+}
+
+#settings-panel .pondasi-properti-grup > summary:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: -2px;
+}
+
+#settings-panel .pondasi-properti-input,
+#settings-panel .pondasi-properti-textarea,
+#settings-panel .pondasi-properti-select {
+    background-color: #3C4650 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+}
+
+#settings-panel .pondasi-properti-input::placeholder,
+#settings-panel .pondasi-properti-textarea::placeholder {
+    color: #A0AAB4;
+    opacity: 1;
+}
+
+#settings-panel .pondasi-properti-label {
+    color: #00AAD4;
+}
+
+/* Mini preview untuk template — pakai flexbox untuk layout yang akurat */
+.pondasi-tpl-prev-row {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    margin: 2px 0;
+    gap: 2px;
+}
+
+.pondasi-tpl-prev-horz {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    margin: 2px 0;
+    gap: 2px;
+    width: 100%;
+}
+
+.pondasi-tpl-prev-box {
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    height: 10px;
+    background-color: #00AAD4;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    min-width: 4px;
+}
+
+.pondasi-tpl-prev-box-full {
+    width: 100%;
+    height: 10px;
+}
+
+.pondasi-template-item:hover .pondasi-tpl-prev-box {
+    background-color: #0073B4;
+}
+
+
+/* ==========================================================================
+   FASE 3: PANEL PROPERTI — Layout 2 kolom, adaptive height, spinner fixed
+   ========================================================================== */
+
+/* Panel properti: tinggi adaptive, overflow hidden supaya konten tidak keluar */
+.pondasi-editor-panel {
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+.pondasi-editor-panel-badan {
+    max-height: calc(80vh - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px 0 8px;
+}
+
+/* Layout 2 kolom untuk baris properti: label rata kanan, input rata kiri */
+.pondasi-properti-baris {
+    display: block;
+    margin: 6px 8px;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+}
+
+/* Layout 2 kolom: label kiri, input kanan */
+.pondasi-properti-baris .pondasi-properti-label {
+    display: inline-block;
+    vertical-align: middle;
+    width: 45%;
+    padding-right: 8px;
+    margin: 0;
+    text-align: right;
+    color: #00AAD4;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+    box-sizing: border-box;
+    text-transform: none;
+}
+
+.pondasi-properti-baris .pondasi-properti-input,
+.pondasi-properti-baris .pondasi-properti-textarea,
+.pondasi-properti-baris .pondasi-properti-select {
+    display: inline-block;
+    vertical-align: middle;
+    width: 55%;
+    height: 26px;
+    margin: 0;
+    padding: 0 6px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 24px;
+    outline: 0;
+    font-family: "Courier New", monospace;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-baris .pondasi-properti-textarea {
+    height: auto;
+    min-height: 48px;
+    line-height: 1.4;
+    padding: 4px 6px;
+    vertical-align: top;
+}
+
+/* Baris inline (untuk angka, pilih, warna) — label + input 1 baris */
+.pondasi-properti-baris-inline {
+    display: block;
+    margin: 6px 8px;
+    white-space: nowrap;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-properti-baris-inline .pondasi-properti-label {
+    display: inline-block;
+    vertical-align: middle;
+    width: 45%;
+    padding-right: 8px;
+    margin: 0;
+    text-align: right;
+    color: #00AAD4;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+    box-sizing: border-box;
+    text-transform: none;
+}
+
+.pondasi-properti-baris-inline .pondasi-properti-num,
+.pondasi-properti-baris-inline .pondasi-properti-num-lebar,
+.pondasi-properti-baris-inline .pondasi-properti-select,
+.pondasi-properti-baris-inline .pondasi-properti-warna-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 55%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Input angka dengan spinner button */
+.pondasi-properti-num,
+.pondasi-properti-num-lebar {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    height: 26px;
+    margin: 0;
+    padding: 0 6px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 24px;
+    text-align: left;
+    outline: 0;
+    font-family: "Courier New", monospace;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-num {
+    width: 100%;
+}
+
+.pondasi-properti-num-lebar {
+    width: 100%;
+}
+
+/* Hilangkan spinner native browser */
+.pondasi-properti-num::-webkit-inner-spin-button,
+.pondasi-properti-num::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.pondasi-properti-num {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Wrapper input angka dengan spinner button kustom */
+.pondasi-properti-num-wrapper {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 55%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-num-wrapper .pondasi-properti-num {
+    display: block;
+    width: 100%;
+    padding-right: 24px;  /* ruang untuk tombol spinner */
+}
+
+/* Tombol spinner kustom (di sebelah kanan input) */
+.pondasi-properti-spinner {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 22px;
+    height: 100%;
+    display: block;
+    background-color: #2A343E;
+    border-left: 1px solid #5A646E;
+    border-radius: 0 3px 3px 0;
+    -webkit-border-radius: 0 3px 3px 0;
+    -moz-border-radius: 0 3px 3px 0;
+    cursor: pointer;
+    font-size: 0;
+    line-height: 0;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-spinner-up,
+.pondasi-properti-spinner-down {
+    position: absolute;
+    right: 2px;
+    width: 18px;
+    height: 11px;
+    display: block;
+    background-color: transparent;
+    border: 0;
+    color: #A0AAB4;
+    font-size: 9px;
+    line-height: 11px;
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-spinner-up {
+    top: 1px;
+}
+
+.pondasi-properti-spinner-down {
+    bottom: 1px;
+}
+
+.pondasi-properti-spinner-up:hover,
+.pondasi-properti-spinner-down:hover {
+    color: #00AAD4;
+}
+
+/* Fieldset (box untuk margin/padding 4 sisi) */
+.pondasi-properti-fieldset {
+    display: block;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    padding: 4px 8px;
+    margin: 6px 8px;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-properti-fieldset legend {
+    display: block;
+    color: #00AAD4;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    padding: 0 4px;
+    margin: 0 0 4px 0;
+    line-height: 1.4;
+    width: 100%;
+    text-align: left;
+    text-transform: none;
+}
+
+.pondasi-properti-fieldset .pondasi-properti-sisi {
+    display: inline-block;
+    vertical-align: middle;
+    color: #A0AAB4;
+    font-size: 10px;
+    margin: 0 4px 0 0;
+    line-height: 1.4;
+}
+
+.pondasi-properti-fieldset .pondasi-properti-num {
+    display: inline-block;
+    vertical-align: middle;
+    width: 48px;
+    height: 22px;
+    margin: 0 4px 0 0;
+    padding: 0 2px;
+    font-size: 10px;
+    line-height: 20px;
+    text-align: center;
+}
+
+/* Warna button — full width 55% */
+.pondasi-properti-warna-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 55%;
+    height: 26px;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Select — full width 55% */
+.pondasi-properti-select {
+    display: inline-block;
+    vertical-align: middle;
+    width: 55%;
+    height: 26px;
+    margin: 0;
+    padding: 0 6px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 24px;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+.pondasi-properti-select-lebar {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Checkbox — inline dengan label */
+.pondasi-properti-baris input[type="checkbox"] {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 0 0 8px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* === OVERRIDE rule lama === */
+/* Reset .pondasi-properti-label yang lama (display: block, dll) */
+.pondasi-properti-baris .pondasi-properti-label {
+    display: inline-block !important;
+}
+
+/* Reset .pondasi-properti-input yang lama (display: block, width: 100%) */
+.pondasi-properti-baris .pondasi-properti-input {
+    display: inline-block !important;
+    width: 55% !important;
+}
+
+/* === LAYOUT FULL (atas-bawah) untuk textarea & teks panjang === */
+.pondasi-properti-baris-full {
+    display: block;
+    margin: 6px 8px;
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-properti-label-full {
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+    margin: 0 0 4px 0 !important;
+    padding: 0 !important;
+}
+
+.pondasi-properti-textarea-full,
+.pondasi-properti-baris-full .pondasi-properti-input,
+.pondasi-properti-input-full {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+/* === COLOR PICKER — kotak bujur sangkar (persegi), tanpa teks === */
+.pondasi-properti-warna-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    cursor: pointer;
+    box-sizing: border-box;
+    background-color: #3C4650;
+    background-image: none;
+    font-size: 0;
+    line-height: 0;
+    outline: 0;
+    transition: border-color 0.15s ease, transform 0.1s ease;
+    -webkit-transition: border-color 0.15s ease, transform 0.1s ease;
+    -moz-transition: border-color 0.15s ease, transform 0.1s ease;
+    -o-transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.pondasi-properti-warna-btn:hover {
+    border-color: #00AAD4;
+    transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -o-transform: scale(1.05);
+}
+
+.pondasi-properti-warna-btn:focus {
+    border-color: #00AAD4;
+    outline: 0;
+}
+
+.pondasi-properti-warna-btn:active {
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+    -moz-transform: scale(0.95);
+    -o-transform: scale(0.95);
+}
+
+/* === SWATCHES MODAL — palet warna === */
+.pondasi-swatches-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* z-index 10600 = di atas sidebar (10500) supaya color picker tetap tampil saat sidebar terbuka */
+    z-index: 10600;
+    display: block;
+    text-align: center;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-swatches-modal[hidden] { display: none; }
+
+.pondasi-swatches-modal:before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.pondasi-swatches-box {
+    display: inline-block;
+    vertical-align: middle;
+    width: 320px;
+    max-width: 90vw;
+    background-color: #1E2832;
+    border: 1px solid #3C4650;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow: hidden;
+}
+
+.pondasi-swatches-head {
+    display: block;
+    padding: 8px 12px;
+    background-color: #2A343E;
+    border-bottom: 1px solid #3C4650;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-swatches-head h3 {
+    display: inline-block;
+    vertical-align: middle;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    width: calc(100% - 32px);
+}
+
+.pondasi-swatches-head .pondasi-editor-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: 0;
+    color: #A0AAB4;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.pondasi-swatches-head .pondasi-editor-btn:hover {
+    background-color: #E53935;
+    color: #FFFFFF;
+}
+
+.pondasi-swatches-body {
+    display: block;
+    padding: 12px;
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #1E2832;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-swatch {
+    display: inline-block;
+    vertical-align: top;
+    width: 28px;
+    height: 28px;
+    margin: 2px;
+    border: 1px solid #3C4650;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    cursor: pointer;
+    padding: 0;
+    box-sizing: border-box;
+    transition: transform 0.1s ease, border-color 0.1s ease;
+    -webkit-transition: transform 0.1s ease, border-color 0.1s ease;
+    -moz-transition: transform 0.1s ease, border-color 0.1s ease;
+    -o-transition: transform 0.1s ease, border-color 0.1s ease;
+}
+
+.pondasi-swatch:hover {
+    transform: scale(1.15);
+    -webkit-transform: scale(1.15);
+    -moz-transform: scale(1.15);
+    -o-transform: scale(1.15);
+    border-color: #00AAD4;
+    z-index: 1;
+    position: relative;
+}
+
+.pondasi-swatch:active {
+    transform: scale(0.95);
+    -webkit-transform: scale(0.95);
+    -moz-transform: scale(0.95);
+    -o-transform: scale(0.95);
+}
+
+.pondasi-swatches-foot {
+    display: block;
+    padding: 8px 12px;
+    background-color: #2A343E;
+    border-top: 1px solid #3C4650;
+    font-size: 0;
+    line-height: 0;
+}
+
+.pondasi-swatches-hex-label {
+    display: inline-block;
+    vertical-align: middle;
+    color: #A0AAB4;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin: 0 8px 0 0;
+    line-height: 1.4;
+}
+
+.pondasi-swatches-hex {
+    display: inline-block;
+    vertical-align: middle;
+    width: 80px;
+    height: 24px;
+    margin: 0 8px 0 4px;
+    padding: 0 6px;
+    background-color: #3C4650;
+    color: #FFFFFF !important;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 11px;
+    line-height: 22px;
+    outline: 0;
+    font-family: "Courier New", monospace;
+    box-sizing: border-box;
+}
+
+.pondasi-swatches-picker {
+    display: inline-block;
+    vertical-align: middle;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #5A646E;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    cursor: pointer;
+    background-color: transparent;
+    box-sizing: border-box;
+}
+
+.pondasi-swatches-foot .pondasi-editor-btn-text {
+    display: inline-block;
+    vertical-align: middle;
+    height: 24px;
+    padding: 0 12px;
+    margin: 0 0 0 8px;
+    background-color: #0073B4;
+    color: #FFFFFF !important;
+    border: 0;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pondasi-swatches-foot .pondasi-editor-btn-text:hover {
+    background-color: #00AAD4;
+}
+
+/* === Tema gelap swatches === */
+body[data-tema="gelap"] .pondasi-swatches-box {
+    background-color: #121212;
+    border-color: #2A343E;
+}
+
+body[data-tema="gelap"] .pondasi-swatches-head,
+body[data-tema="gelap"] .pondasi-swatches-foot {
+    background-color: #1E2832;
+    border-color: #2A343E;
+}
+
+body[data-tema="gelap"] .pondasi-swatches-body {
+    background-color: #121212;
+}
+
+/* === STATUS VALIDASI CSS KUSTOM (di panel properti, seksi Lanjutan) === */
+.pondasi-css-kustom-status {
+    margin-top: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+    line-height: 1.4;
+    border-radius: 3px;
+    background-color: transparent;
+    color: #A0AAB4;
+    min-height: 0;
+}
+
+.pondasi-css-kustom-status-ok {
+    background-color: rgba(128, 200, 50, 0.15);
+    color: #B4E664;
+    border-left: 2px solid #80C832;
+}
+
+.pondasi-css-kustom-status-error {
+    background-color: rgba(255, 50, 50, 0.15);
+    color: #FF8080;
+    border-left: 2px solid #FF3232;
+}
+
+/* === PANEL PROPERTI REGION — REDESIGN v83 === */
+/* Folder-tree hierarchy + read-only info + action buttons */
+
+.pondasi-region-info-empty {
+    padding: 24px 16px;
+    color: #5A646E;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Folder-tree section */
+.pondasi-region-tree-section {
+    padding: 8px 0;
+    border-bottom: 1px solid #0A141E;
+}
+
+.pondasi-region-tree-row {
+    display: block;
+    padding: 4px 8px 4px 8px;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #A0AAB4;
+    border-radius: 2px;
+    margin: 1px 0;
+    -webkit-transition: background-color 0.1s ease;
+    -moz-transition: background-color 0.1s ease;
+    -o-transition: background-color 0.1s ease;
+    transition: background-color 0.1s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pondasi-region-tree-row:hover {
+    background-color: #0A141E;
+    color: #E1F6FA;
+}
+
+.pondasi-region-tree-row-aktif {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+}
+
+.pondasi-region-tree-row-aktif:hover {
+    background-color: #0073B4;
+    color: #FFFFFF;
+}
+
+.pondasi-region-tree-icon {
+    display: inline-block;
+    width: 14px;
+    margin-right: 6px;
+    font-size: 10px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.pondasi-region-tree-nama {
+    display: inline-block;
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    vertical-align: middle;
+}
+
+.pondasi-region-tree-tipe {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 4px;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #5A646E;
+    background-color: #1A2A34;
+    border-radius: 2px;
+    vertical-align: middle;
+}
+
+.pondasi-region-tree-row-aktif .pondasi-region-tree-tipe {
+    color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.pondasi-region-tree-lock {
+    display: inline-block;
+    margin-left: 6px;
+    color: #FFC832;
+    font-size: 10px;
+    vertical-align: middle;
+}
+
+.pondasi-region-tree-row-aktif .pondasi-region-tree-lock {
+    color: #FFE080;
+}
+
+/* Info section (read-only fields) */
+.pondasi-region-info-section {
+    padding: 8px 0;
+    border-bottom: 1px solid #0A141E;
+}
+
+.pondasi-region-info-baris {
+    display: block;
+    padding: 4px 8px;
+    font-size: 11px;
+    line-height: 1.5;
+    border-bottom: 1px dotted #1A2A34;
+}
+
+.pondasi-region-info-baris:last-child {
+    border-bottom: 0;
+}
+
+.pondasi-region-info-label {
+    display: inline-block;
+    width: 90px;
+    color: #5A646E;
+    vertical-align: top;
+    font-weight: 500;
+}
+
+.pondasi-region-info-value {
+    display: inline-block;
+    width: calc(100% - 100px);
+    color: #E1F6FA;
+    font-family: "Courier New", monospace;
+    word-break: break-all;
+}
+
+/* Action section */
+.pondasi-region-aksi-section {
+    padding: 8px 0;
+}
+
+.pondasi-region-aksi-row {
+    display: block;
+    padding: 0 8px;
+}
+
+.pondasi-region-aksi-btn {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    padding: 6px 10px;
+    margin: 2px;
+    background-color: #1A2A34;
+    color: #A0AAB4;
+    border: 1px solid #3C4650;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    -moz-transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    -o-transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.pondasi-region-aksi-btn:hover {
+    background-color: #00AAD4;
+    color: #FFFFFF;
+    border-color: #00AAD4;
+}
+
+.pondasi-region-aksi-btn-aktif {
+    background-color: #FFC832;
+    color: #1E2832;
+    border-color: #FFC832;
+}
+
+.pondasi-region-aksi-btn-aktif:hover {
+    background-color: #FFE080;
+    color: #1E2832;
+    border-color: #FFE080;
+}
+
+.pondasi-region-aksi-btn i {
+    margin-right: 4px;
+}
+
+/* === LOCKED REGION VISUAL ON CANVAS === */
+.pondasi-region-locked {
+    /* Border kuning + lock icon overlay — applied by render.js */
+    border-color: #FFC832 !important;
+    border-style: dashed !important;
+    border-width: 2px !important;
+}
+
+.pondasi-region-locked::after {
+    content: '\f023'; /* fa-lock */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    color: #FFC832;
+    font-size: 10px;
+    background-color: rgba(30, 40, 50, 0.8);
+    padding: 2px 4px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* === KELAS DARI TEMA (read-only rules display) === */
+.pondasi-region-kelas-grup {
+    margin: 4px 0;
+    border: 1px solid #0A141E;
+    border-radius: 3px;
+    background-color: #0A141E;
+}
+
+.pondasi-region-kelas-summary {
+    display: block;
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    color: #E1F6FA;
+    list-style: none;
+}
+
+.pondasi-region-kelas-summary::-webkit-details-marker { display: none; }
+
+.pondasi-region-kelas-summary::before {
+    content: '\25B8';
+    display: inline-block;
+    width: 14px;
+    color: #5A646E;
+    -webkit-transition: transform 0.1s ease;
+    -moz-transition: transform 0.1s ease;
+    -o-transition: transform 0.1s ease;
+    transition: transform 0.1s ease;
+}
+
+.pondasi-region-kelas-grup[open] .pondasi-region-kelas-summary::before {
+    content: '\25BE';
+}
+
+.pondasi-region-kelas-nama {
+    font-family: "Courier New", monospace;
+    color: #00AAD4;
+}
+
+.pondasi-region-kelas-jumlah {
+    float: right;
+    color: #5A646E;
+    font-size: 10px;
+    font-weight: normal;
+}
+
+.pondasi-region-kelas-isi {
+    padding: 4px 8px 8px;
+    border-top: 1px solid #1A2A34;
+}
+
+.pondasi-region-rule-baris {
+    display: block;
+    padding: 2px 0;
+    font-size: 10px;
+    line-height: 1.4;
+    font-family: "Courier New", monospace;
+    color: #A0AAB4;
+    border-bottom: 1px dotted #1A2A34;
+}
+
+.pondasi-region-rule-baris:last-child {
+    border-bottom: 0;
+}
+
+.pondasi-region-rule-prop {
+    display: inline-block;
+    width: 50%;
+    color: #5A646E;
+    vertical-align: top;
+    padding-right: 4px;
+}
+
+.pondasi-region-rule-val {
+    display: inline-block;
+    width: 50%;
+    color: #E1F6FA;
+    vertical-align: top;
+    word-break: break-all;
+}
+
+.pondasi-region-rule-baris-pseudo .pondasi-region-rule-prop {
+    color: #FFC832;
+}
+
+.pondasi-region-rule-baris-pseudo .pondasi-region-rule-val {
+    color: #FFE080;
+}
+
+.pondasi-region-rule-empty {
+    padding: 4px 0;
+    font-size: 10px;
+    color: #5A646E;
+    font-style: italic;
+}
+
+.pondasi-region-pseudo-header {
+    padding: 4px 0 2px;
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    color: #FFC832;
+    border-top: 1px solid #1A2A34;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Tree arrow icon (fold/unfold) */
+.pondasi-region-tree-arrow {
+    display: inline-block;
+    width: 12px;
+    margin-right: 2px;
+    font-size: 10px;
+    color: #5A646E;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.pondasi-region-tree-arrow:hover {
+    color: #00AAD4;
+}
+
+.pondasi-region-tree-arrow-spacer {
+    display: inline-block;
+    width: 14px;
+}
+
+/* === DISABLED INPUT (region structural props, read-only) === */
+.pondasi-properti-input[disabled],
+.pondasi-properti-textarea[disabled],
+.pondasi-properti-num[disabled],
+.pondasi-properti-select[disabled],
+.pondasi-properti-warna-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #1A2A34 !important;
+    color: #5A646E !important;
+    border-color: #1A2A34 !important;
+}
+
+.pondasi-properti-input[disabled]:hover,
+.pondasi-properti-num[disabled]:hover,
+.pondasi-properti-select[disabled]:hover {
+    border-color: #1A2A34 !important;
+    background-color: #1A2A34 !important;
+}
+
+.pondasi-properti-spinner button[disabled] {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.pondasi-properti-warna-btn[disabled] {
+    cursor: not-allowed;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.pondasi-properti-warna-btn[disabled]:hover {
+    transform: none;
+}
+
+/* === DUAL PANEL: region + komponen (float, draggable) === */
+
+/* Panel region — posisi default kanan atas */
+.pondasi-editor-panel-region {
+    top: 8px;
+    right: 8px;
+    left: auto;
+}
+
+/* Panel komponen — posisi default kanan bawah */
+.pondasi-editor-panel-block {
+    bottom: 48px;
+    right: 8px;
+    top: auto;
+    left: auto;
+}
+
+/* Drag handle — seluruh head bisa di-drag */
+.pondasi-panel-drag-handle {
+    cursor: grab;
+}
+
+.pondasi-panel-drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Tombol close di head — jangan trigger drag */
+.pondasi-panel-drag-handle .pondasi-editor-bar-keluar {
+    cursor: pointer;
+}
+
+/* Saat panel sedang di-drag — disable text selection di seluruh body */
+body.pondasi-panel-dragging {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: grabbing !important;
+}
+
+body.pondasi-panel-dragging * {
+    cursor: grabbing !important;
+}

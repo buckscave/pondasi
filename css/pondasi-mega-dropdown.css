@@ -1,0 +1,254 @@
+/* ==========================================================================
+   MEGA DROPDOWN — 2 kolom (kategori + isi) untuk editor bar
+   Pakai float untuk reliability maksimal di browser lama (CSS 2.1)
+   ========================================================================== */
+
+/* Container parent (#dropdown-isi, #dropdown-komponen) — set width eksplisit
+   supaya float child tidak turun ke bawah.
+   Lebar parent sedikit lebih besar dari total child supaya ada buffer whitespace.
+   Child: 150px (kategori) + 310px (isi) = 460px. Parent: 480px. Buffer: 20px.
+   */
+#dropdown-isi,
+#dropdown-komponen {
+    width: 480px !important;
+    max-width: 480px !important;
+    min-width: 480px !important;
+    box-sizing: border-box;
+}
+
+/* Semua element mega dropdown pakai box-sizing: border-box
+   supaya border & padding tidak menambah width di luar deklarasi.
+   Ini krusial untuk hack font-size: 0 di wrapper bekerja dengan benar.
+   */
+.pondasi-mega-dropdown,
+.pondasi-mega-dropdown * {
+    box-sizing: border-box;
+}
+
+.pondasi-mega-dropdown {
+    display: block;
+    width: 460px;  /* lebih kecil dari parent supaya ada buffer */
+    background-color: #1E2832;
+    border: 1px solid #3C4650;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    /* Penting: hilangkan whitespace antar float child */
+    font-size: 0;  /* reset ke 0 supaya newline/text node tidak bikin space */
+    line-height: 0;
+}
+.pondasi-mega-dropdown * {
+    font-size: 13px;  /* restore font-size untuk child */
+    line-height: 1.4;
+}
+
+.pondasi-mega-dropdown:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.pondasi-mega-dropdown-kategori {
+    float: left;
+    width: 148px;  /* kurangi supaya total child < content area wrapper */
+    background-color: #2A343E;
+    border-right: 1px solid #3C4650;
+    box-sizing: border-box;
+}
+
+.pondasi-mega-dropdown-kategori-item {
+    display: block;
+    padding: 8px 12px;
+    color: #A0AAB4;
+    font-size: 13px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(60, 70, 80, 0.5);
+}
+
+.pondasi-mega-dropdown-kategori-item:last-child {
+    border-bottom: 0;
+}
+
+.pondasi-mega-dropdown-kategori-item:hover,
+.pondasi-mega-dropdown-kategori-item:focus {
+    background-color: #1E2832;
+    color: #FFFFFF;
+    outline: 0;
+}
+
+.pondasi-mega-dropdown-kategori-item-aktif {
+    background-color: #1E2832;
+    color: #00AAD4;
+    border-left-color: #00AAD4;
+}
+
+.pondasi-mega-dropdown-kategori-nama {
+    display: inline;
+}
+
+.pondasi-mega-dropdown-kategori-jumlah {
+    display: inline-block;
+    float: right;
+    background-color: #3C4650;
+    color: #A0AAB4;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    line-height: 1.4;
+    margin-top: 1px;
+}
+
+.pondasi-mega-dropdown-kategori-item-aktif .pondasi-mega-dropdown-kategori-jumlah {
+    background-color: #0073B4;
+    color: #FFFFFF;
+}
+
+.pondasi-mega-dropdown-isi {
+    float: left;
+    width: 308px;  /* total: 148 + 308 = 456px, muat di content area wrapper 458px */
+    max-height: 360px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px;
+    box-sizing: border-box;
+    background-color: #1E2832;
+}
+
+.pondasi-mega-dropdown-isi-kategori {
+    display: none;
+}
+
+.pondasi-mega-dropdown-item {
+    display: block;
+    padding: 6px 12px;
+    color: #E8EDF2;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 3px;
+    line-height: 1.4;
+    border-left: 3px solid transparent;
+}
+
+.pondasi-mega-dropdown-item:hover,
+.pondasi-mega-dropdown-item:focus {
+    background-color: #0073B4;
+    color: #FFFFFF;
+    outline: 0;
+}
+
+.pondasi-mega-dropdown-item-aktif {
+    background-color: #0073B4;
+    color: #FFFFFF;
+    border-left-color: #00AAD4;
+}
+
+.pondasi-mega-dropdown-item-nama {
+    display: inline;
+}
+
+.pondasi-mega-dropdown-item-tag {
+    display: inline-block;
+    float: right;
+    background-color: #3C4650;
+    color: #A0AAB4;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-left: 4px;
+}
+
+.pondasi-mega-dropdown-item:hover .pondasi-mega-dropdown-item-tag,
+.pondasi-mega-dropdown-item:focus .pondasi-mega-dropdown-item-tag,
+.pondasi-mega-dropdown-item-aktif .pondasi-mega-dropdown-item-tag {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+}
+
+/* Item disabled (kelas invalid) */
+.pondasi-mega-dropdown-item-disabled {
+    color: #5A646E;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.pondasi-mega-dropdown-item-disabled:hover,
+.pondasi-mega-dropdown-item-disabled:focus {
+    background-color: transparent;
+    color: #5A646E;
+    cursor: help;
+    border-left-color: #E53935;
+}
+
+.pondasi-mega-dropdown-item-disabled .pondasi-mega-dropdown-item-tag {
+    background-color: #E53935;
+    color: #FFFFFF;
+}
+
+.pondasi-mega-dropdown-item-disabled:hover .pondasi-mega-dropdown-item-tag {
+    background-color: #E53935;
+    color: #FFFFFF;
+}
+
+/* Scrollbar styling untuk dropdown isi */
+.pondasi-mega-dropdown-isi::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pondasi-mega-dropdown-isi::-webkit-scrollbar-track {
+    background-color: #2A343E;
+}
+
+.pondasi-mega-dropdown-isi::-webkit-scrollbar-thumb {
+    background-color: #5A646E;
+    border-radius: 4px;
+}
+
+.pondasi-mega-dropdown-isi::-webkit-scrollbar-thumb:hover {
+    background-color: #00AAD4;
+}
+
+/* === Override styling dropdown container dari pondasi-app.css === */
+#dropdown-isi.pondasi-editor-dropdown,
+#dropdown-komponen.pondasi-editor-dropdown {
+    padding: 0 !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+}
+
+/* === Tema gelap (pakai body[data-tema="gelap"]) === */
+body[data-tema="gelap"] .pondasi-mega-dropdown {
+    background-color: #121212;
+    border-color: #2A343E;
+}
+
+body[data-tema="gelap"] .pondasi-mega-dropdown-kategori {
+    background-color: #1E2832;
+    border-right-color: #2A343E;
+}
+
+body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item {
+    color: #5A646E;
+}
+
+body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item:hover,
+body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item:focus {
+    background-color: #121212;
+    color: #FFFFFF;
+}
+
+body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item-aktif {
+    background-color: #121212;
+    color: #5AC8FA;
+    border-left-color: #5AC8FA;
+}

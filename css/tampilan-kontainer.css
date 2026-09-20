@@ -1,0 +1,240 @@
+
+/* @kategori: Kontainer */
+/* ==========================================================================
+   5. KARTU — card dengan bayangan, kepala, badan, kaki
+   ========================================================================== */
+.kartu {
+    display: block;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-transition: box-shadow .2s ease;
+    -moz-transition: box-shadow .2s ease;
+    -o-transition: box-shadow .2s ease;
+    transition: box-shadow .2s ease;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+}
+.kartu:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+/* Kepala kartu — judul + aksi */
+.kartu-kepala {
+    display: block;
+    padding: 1rem;
+    border-bottom: 1px solid #E1E6EB;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1E2832;
+    line-height: 1.4;
+    box-sizing: border-box;
+}
+
+/* Badan kartu — isi utama */
+.kartu-badan {
+    display: block;
+    padding: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #1E2832;
+    box-sizing: border-box;
+}
+
+/* Kaki kartu — aksi */
+.kartu-kaki {
+    display: block;
+    padding: 0.5rem;
+    border-top: 1px solid #E1E6EB;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+/* Gambar kartu */
+.kartu-gambar {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
+/* Kartu tema gelap */
+[data-tema="gelap"] .kartu {
+    background-color: #1E2832;
+}
+[data-tema="gelap"] .kartu-kepala {
+    color: #FFFFFF;
+    border-bottom-color: #3C4650;
+}
+[data-tema="gelap"] .kartu-badan {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .kartu-kaki {
+    border-top-color: #3C4650;
+}
+
+/* ==========================================================================
+   17. PEMISAH — garis pemisah horisontal/vertikal
+   ========================================================================== */
+.pemisah {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 0.5rem 0;
+    background-color: #E1E6EB;
+    border: 0;
+}
+/* Pemisah dengan teks di tengah */
+.pemisah-teks {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #5A646E;
+    line-height: 1.4;
+    position: relative;
+    margin: 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+}
+.pemisah-teks:before,
+.pemisah-teks:after {
+    content: "";
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 40%;
+    vertical-align: middle;
+    height: 1px;
+    background-color: #E1E6EB;
+}
+.pemisah-teks:before {
+    margin-right: 0.5rem;
+}
+.pemisah-teks:after {
+    margin-left: 0.5rem;
+}
+
+/* Pemisah tema gelap */
+[data-tema="gelap"] .pemisah {
+    background-color: #3C4650;
+}
+[data-tema="gelap"] .pemisah-teks {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .pemisah-teks:before,
+[data-tema="gelap"] .pemisah-teks:after {
+    background-color: #3C4650;
+}
+
+/* ==========================================================================
+   22. AKORDION — panel lipat (FAQ style), CSS-only dengan <details>
+   ========================================================================== */
+.akordion {
+    display: block;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+/* Item akordion — pakai <details> */
+.akordion-item {
+    display: block;
+    border-bottom: 1px solid #E1E6EB;
+}
+.akordion-item:last-child {
+    border-bottom: 0;
+}
+/* Summary — header yang diklik */
+.akordion-item > summary {
+    display: block;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #1E2832;
+    cursor: pointer;
+    outline: 0;
+    list-style: none;
+    -webkit-transition: background-color .15s ease;
+    -moz-transition: background-color .15s ease;
+    -o-transition: background-color .15s ease;
+    transition: background-color .15s ease;
+    box-sizing: border-box;
+}
+.akordion-item > summary::-webkit-details-marker {
+    display: none;
+}
+.akordion-item > summary:hover {
+    background-color: #F5F7FA;
+}
+.akordion-item > summary:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: -2px;
+}
+/* Panah di kanan summary */
+.akordion-item > summary:after {
+    content: "";
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    float: right;
+    width: 0;
+    height: 0;
+    margin-top: 0.4rem;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #5A646E;
+    -webkit-transition: -webkit-transform .2s ease;
+    -moz-transition: -moz-transform .2s ease;
+    -o-transition: -o-transform .2s ease;
+    transition: transform .2s ease;
+}
+/* Saat terbuka — panah berputar */
+.akordion-item[open] > summary:after {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+/* Isi akordion */
+.akordion-isi {
+    display: block;
+    padding: 0 1.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #5A646E;
+}
+
+/* Akordion tema gelap */
+[data-tema="gelap"] .akordion {
+    background-color: #1E2832;
+}
+[data-tema="gelap"] .akordion-item {
+    border-bottom-color: #3C4650;
+}
+[data-tema="gelap"] .akordion-item > summary {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .akordion-item > summary:hover {
+    background-color: #2C3640;
+}
+[data-tema="gelap"] .akordion-item > summary:after {
+    border-top-color: #A0AAB4;
+}
+[data-tema="gelap"] .akordion-isi {
+    color: #A0AAB4;
+}
+

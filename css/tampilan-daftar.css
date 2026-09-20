@@ -1,0 +1,156 @@
+
+/* @kategori: Daftar */
+/* ==========================================================================
+   7. DAFTAR — list dengan item satu/beberapa baris
+   ========================================================================== */
+.daftar {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    overflow: hidden;
+}
+
+/* Item daftar */
+.daftar-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #E1E6EB;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1E2832;
+    cursor: pointer;
+    -webkit-transition: background-color .1s ease;
+    -moz-transition: background-color .1s ease;
+    -o-transition: background-color .1s ease;
+    transition: background-color .1s ease;
+    box-sizing: border-box;
+}
+.daftar-item:hover {
+    background-color: #F5F7FA;
+}
+.daftar-item:active {
+    background-color: #E1F6FA;
+}
+.daftar-item:last-child {
+    border-bottom: 0;
+}
+
+/* Item dengan ikon di kiri */
+.daftar-item .daftar-ikon {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 24px;
+    height: 24px;
+    margin-right: 2rem;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 24px;
+    font-size: 1.25rem;
+    color: #5A646E;
+}
+
+/* Item dengan avatar di kiri */
+.daftar-item .daftar-avatar {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+    vertical-align: middle;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    background-color: #00AAD4;
+    overflow: hidden;
+}
+.daftar-item .daftar-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+}
+
+/* Dua baris teks dalam item */
+.daftar-item .daftar-judul {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #1E2832;
+}
+.daftar-item .daftar-sub {
+    display: block;
+    font-size: 0.875rem;
+    color: #5A646E;
+    line-height: 1.5;
+}
+
+/* Aksi kanan (tombol ikon) */
+.daftar-item .daftar-aksi {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    float: right;
+    vertical-align: middle;
+}
+
+/* Daftar tema gelap */
+[data-tema="gelap"] .daftar {
+    background-color: #1E2832;
+}
+[data-tema="gelap"] .daftar-item {
+    color: #FFFFFF;
+    border-bottom-color: #3C4650;
+}
+[data-tema="gelap"] .daftar-item:hover {
+    background-color: #2C3640;
+}
+[data-tema="gelap"] .daftar-item .daftar-ikon {
+    color: #A0AAB4;
+}
+[data-tema="gelap"] .daftar-item .daftar-judul {
+    color: #FFFFFF;
+}
+[data-tema="gelap"] .daftar-item .daftar-sub {
+    color: #A0AAB4;
+}
+
+
+/* Daftar Definisi (dl, dt, dd) */
+.daftar-definisi {
+    display: block;
+    margin: 1rem 0;
+    padding: 0;
+}
+.daftar-definisi dt {
+    display: block;
+    margin-top: 0.75rem;
+    font-weight: 700;
+    color: #1E2832;
+}
+.daftar-definisi dt:first-child {
+    margin-top: 0;
+}
+.daftar-definisi dd {
+    display: block;
+    margin: 0 0 0 1.5rem;
+    padding: 0;
+    color: #5A646E;
+    line-height: 1.5;
+}
+
+/* Tema gelap */
+body[data-tema="gelap"] .daftar-definisi dt {
+    color: #FFFFFF;
+}
+body[data-tema="gelap"] .daftar-definisi dd {
+    color: #A0AAB4;
+}

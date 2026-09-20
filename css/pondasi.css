@@ -1,0 +1,1700 @@
+/* ==========================================================================
+   PONDASI.CSS — Ditulis oleh KOPIES 2010-2026
+   Target: HTML 4/5, CSS 2.1 - 3.0
+   --------------------------------------------------------------------------
+   Pondasi CSS dibuat sebagai dasar pengaturan tampilan web responsif dengan 
+   sistem tata letak block (bertumpuk/baris) dan inline-block (berjajar/kolom),
+   ========================================================================== */
+
+/* ==========================================================================
+   1. RESET & NORMALISASI PERAMBAN
+   ========================================================================== */
+html {
+    font-family: Arial, 
+                 "Helvetica Neue", Helvetica, 
+                 "Liberation Sans", sans-serif;
+    font-size: 16px;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+*,
+*:after,
+*:before {
+    border: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+body {
+    font-family: Arial, 
+                 "Helvetica Neue", Helvetica, 
+                 "Liberation Sans", sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #1E2832;
+    background-color: #FFFFFF;
+}
+
+:focus {
+    outline: 2px solid #00AAD4;
+    outline-offset: 2px;
+}
+
+article, 
+aside, 
+details, 
+figcaption, 
+figure, 
+footer, 
+header, 
+main, 
+menu, 
+nav, 
+section, 
+summary {
+    display: block;
+}
+
+audio, 
+canvas, 
+progress, 
+video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+template, [hidden] {
+    display: none;
+}
+
+img {
+    border: 0;
+    max-width: 100%;
+    height: auto;
+    -ms-interpolation-mode: bicubic;
+}
+
+svg:not(:root) { 
+    overflow: hidden; 
+}
+
+/* ==========================================================================
+   2. TIPOGRAFI & HURUF
+   ========================================================================== */
+h1, 
+h2, 
+h3, 
+h4, 
+h5, 
+h6 {
+    font-family: Arial, 
+                 "Helvetica Neue", Helvetica, 
+                 "Liberation Sans", sans-serif;
+    font-weight: bold;
+    color: inherit;
+}
+
+h1 { 
+    font-size: 2.50rem; 
+    line-height: 1.0; 
+    margin: 0.67rem 0; 
+}
+
+h2 { 
+    font-size: 2.00rem; 
+    line-height: 1.1; 
+    margin: 0.50rem 0; 
+}
+
+h3 { 
+    font-size: 1.50rem; 
+    line-height: 1.2; 
+    margin: 0.40rem 0; 
+}
+
+h4 { 
+    font-size: 1.25rem; 
+    line-height: 1.3; 
+    margin: 0.30rem 0; 
+}
+
+h5 { 
+    font-size: 1.00rem; 
+    line-height: 1.4; 
+    margin: 0.20rem 0; 
+}
+
+h6 { 
+    font-size: 0.90rem; 
+    line-height: 1.5; 
+    margin: 0.10rem 0; 
+}
+
+p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0.35rem 0;
+}
+
+a {
+    color: #00AAD4;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover { 
+    color: #00B482; 
+}
+
+a:active, 
+a:hover { 
+    outline-width: 0; 
+}
+
+a:focus { 
+    outline: 2px dotted #00AAD4; 
+    outline-offset: 2px; 
+}
+
+span {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding: 0.25rem;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+    margin: 0.5rem auto;
+    border: 0;
+    border-bottom: 1px solid #E1E6EB;
+}
+
+abbr[title] {
+    border-bottom: none;
+    text-decoration: underline dotted;
+}
+
+b, 
+strong { 
+    font-weight: bold; 
+}
+
+figure { 
+    margin: 1rem 40px; 
+}
+
+sub, 
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sub { 
+    bottom: -0.25rem; 
+}
+
+sup { 
+    top: -0.5rem; 
+}
+
+/*--- MONOSPACE & KODE --- */
+code, 
+kbd, 
+pre, 
+samp {
+    font-family: "Courier New", Courier, 
+                 "Liberation Mono", monospace;
+    font-size: 0.75rem;
+}
+
+code, 
+kbd {
+    padding: 0.2rem 0.5rem;
+    margin: 0 0.25rem;
+    white-space: nowrap;
+    background: #F5F7FA;
+    border: 1px solid #E1E6EB;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+
+kbd { 
+    border: 0; 
+    background: #3C4650; 
+    color: #FFFFFF; 
+}
+
+pre > code {
+    display: block;
+    padding: 1rem 1.5rem;
+    white-space: pre;
+    overflow-x: auto;
+}
+
+mark { 
+    background-color: #FFC832; 
+    color: #0A141E; 
+}
+
+/*--- KUTIPAN & DAFTAR --- */
+blockquote {
+    color: #5A646E;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    border-left: 6px solid #00AAD4;
+}
+
+cite {
+    font-size: 0.85rem;
+    font-style: italic;
+    font-weight: bold;
+    color: #5A646E;
+    margin-top: 0.5rem;
+}
+
+ul, 
+ol {
+    padding-left: 0;
+    margin-top: 0;
+}
+
+ul { 
+    list-style: disc inside; 
+}
+
+ol { 
+    list-style: decimal inside; 
+}
+
+ul ul, 
+ul ol, 
+ol ol, 
+ol ul {
+    margin: 0.5rem 0 0.5rem 1.5rem;
+}
+
+li { 
+    margin-bottom: 0.5rem; 
+}
+
+/*--- UTILITAS TEKS --- */
+.tebal { 
+    font-weight: bold; 
+}
+
+.miring { 
+    font-style: italic; 
+}
+
+.coret { 
+    text-decoration: line-through; 
+}
+
+.bergaris { 
+    text-decoration: underline; 
+}
+
+.samar { 
+    opacity: 0.5; 
+    filter: alpha(opacity=50); 
+}
+
+.teks-kecil { 
+    font-size: 0.75rem; 
+}
+
+.teks-sedang { 
+    font-size: 0.90rem; 
+}
+
+.teks-besar { 
+    font-size: 1.00rem; 
+}
+
+/* ==========================================================================
+   3. TATA LETAK & SISTEM GRID
+   ========================================================================== */
+.tampil { 
+    display: block; 
+}
+
+.sembunyi { 
+    display: none; 
+}
+
+.sejajar span,
+.sejajar div,
+.sejajar li,
+.sejajar {
+    display: inline-block;
+}
+
+/*--- APUNG & CLEARFIX --- */
+.ke-kiri { 
+    float: left; 
+}
+
+.ke-kanan { 
+    float: right; 
+}
+
+.bersihkan { 
+    clear: both; 
+}
+
+.bersihkan-apung:before,
+.bersihkan-apung:after {
+    content: " ";
+    display: table;
+}
+
+.bersihkan-apung:after { 
+    clear: both; 
+}
+
+.bersihkan-apung { 
+    *zoom: 1; 
+}
+
+/*--- PERATAAN TEKS & VERTIKAL --- */
+.atas { 
+    vertical-align: top; 
+}
+
+.nengah { 
+    vertical-align: middle; 
+}
+
+.bawah { 
+    vertical-align: bottom; 
+}
+
+.kiri { 
+    text-align: left; 
+}
+
+.kanan { 
+    text-align: right; 
+}
+
+.tengah { 
+    text-align: center; 
+}
+
+.samarata { 
+    text-align: justify; 
+    text-justify: inter-word; 
+}
+
+/*--- POSISI & LAPISAN --- */
+.teratas { 
+    position: absolute; 
+}
+
+.tetap { 
+    position: fixed; 
+}
+
+.relatif { 
+    position: relative; 
+}
+
+.taruh-terbawah { 
+    z-index: -99; 
+}
+
+.taruh-bawah    { 
+    z-index: -1; 
+}
+
+.taruh-normal   { 
+    z-index: 1; 
+}
+
+.taruh-atas     { 
+    z-index: 10; 
+}
+
+.taruh-teratas  { 
+    z-index: 100; 
+}
+
+/*--- STRUKTUR BARIS & KOLOM --- */
+.baris,
+.sub-baris {
+    position: relative;
+    display: block;
+    font-size: 0;
+    margin: 0 auto;
+    max-width: 75rem; /* 1200px */
+    text-align: left;
+    overflow: hidden;
+}
+
+/* Variasi dimensi — pakai data-attribute di body atau parent */
+/* Default (tanpa data-dimensi) = 1200px (75rem) */
+[data-dimensi="1200"] .baris,
+[data-dimensi="1200"] .sub-baris { max-width: 75rem; }
+
+[data-dimensi="1280"] .baris,
+[data-dimensi="1280"] .sub-baris { max-width: 80rem; }
+
+[data-dimensi="1024"] .baris,
+[data-dimensi="1024"] .sub-baris { max-width: 64rem; }
+
+[data-dimensi="960"] .baris,
+[data-dimensi="960"] .sub-baris { max-width: 60rem; }
+
+[data-dimensi="full"] .baris,
+[data-dimensi="full"] .sub-baris { max-width: none; }
+
+.perluas { 
+    width: 100%; 
+}
+
+[class*='kolom-'] {
+    position: relative;
+    display: inline-block;
+    font-size: 0.85rem;
+    vertical-align: top;
+    *display: inline;
+    *zoom: 1;
+}
+
+[class*='kolom-'].sub-baris { 
+    font-size: 0; 
+}
+
+.jarak [class*='kolom-'] {
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.baris.perluas,
+.sub-baris.perluas {
+    max-width: 100%;
+}
+
+.jarak .sub-baris [class*='kolom-'] {
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.jarak .sub-baris *[class*='kolom-']:first-child,
+.jarak [class*='kolom-']:first-of-type {
+    margin-left: 0;
+}
+
+.jarak .sub-baris *[class*='kolom-']:last-child,
+.jarak [class*='kolom-']:last-of-type {
+    margin-right: 0;
+}
+
+.tanpajarak [class*='kolom-'] {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* TABLET DAN DESKTOP (MIN. 768PX / 48REM) --- */
+@media screen and (min-width: 48rem) {
+    .baris.perluas { max-width: 100%; }
+
+    /* 12 KOLOM TANPA JARAK */
+    .kolom-1  { 
+        width: 8.333%; 
+    }
+    
+    .kolom-2  { 
+        width: 16.666%; 
+    }
+    
+    .kolom-3  { 
+        width: 24.999%; 
+    }
+    
+    .kolom-4  { 
+        width: 33.333%; 
+    }
+    
+    .kolom-5  { 
+        width: 41.666%; 
+    }
+    
+    .kolom-6  { 
+        width: 49.999%; 
+    }
+    
+    .kolom-7  { 
+        width: 58.333%; 
+    }
+    
+    .kolom-8  { 
+        width: 66.666%; 
+    }
+    
+    .kolom-9  { 
+        width: 74.999%; 
+    }
+    
+    .kolom-10 { 
+        width: 83.333%; 
+    }
+    
+    .kolom-11 { 
+        width: 91.666%; 
+    }
+    
+    .kolom-12 { 
+        width: 100%; 
+    }
+
+    /* KOLOM GANJIL TANPA JARAK */
+    .kolom-sebelas { 
+        width: 9.090%; 
+    }
+    
+    .kolom-sepuluh { 
+        width: 10%; 
+    }
+    
+    .kolom-sembilan { 
+        width: 11.111%; 
+    }
+    
+    .kolom-delapan { 
+        width: 12.5%; 
+    }
+    
+    .kolom-tujuh    { 
+        width: 14.285%; 
+    }
+    
+    .kolom-lima     { 
+        width: 20%; 
+    }
+
+    /* 12 KOLOM DENGAN JARAK */
+    .jarak .kolom-1  { 
+        width: 6.5%; 
+    }
+    
+    .jarak .kolom-2  { 
+        width: 15%; 
+    }
+    
+    .jarak .kolom-3  { 
+        width: 23.5%; 
+    }
+    
+    .jarak .kolom-4  { 
+        width: 32%; 
+    }
+    
+    .jarak .kolom-5  { 
+        width: 40.5%; 
+    }
+    
+    .jarak .kolom-6  { 
+        width: 49%; 
+    }
+    
+    .jarak .kolom-7  { 
+        width: 57.5%; 
+    }
+    
+    .jarak .kolom-8  { 
+        width: 66%; 
+    }
+    
+    .jarak .kolom-9  { 
+        width: 74.5%; 
+    }
+    
+    .jarak .kolom-10 { 
+        width: 83%; 
+    }
+    
+    .jarak .kolom-11 { 
+        width: 91.5%; 
+    }
+    
+    .jarak .kolom-12 { 
+        width: 100%; 
+    }
+
+    .jarak .kolom-sebelas { 
+        width: 7.272%; 
+    }
+    
+    .jarak .kolom-sepuluh { 
+        width: 8.2%; 
+    }
+    
+    .jarak .kolom-sembilan { 
+        width: 9.333%; 
+    }
+    
+    .jarak .kolom-delapan { 
+        width: 10.75%; 
+    }
+    
+    .jarak .kolom-tujuh { 
+        width: 12.571%; 
+    }
+    
+    .jarak .kolom-lima { 
+        width: 18.4%; 
+    }
+}
+
+/* MOBILE (MAX. 768PX / 48REM) --- */
+@media screen and (max-width: 48rem) {
+    html { padding: 0 1rem; }
+
+    .kolom-1, 
+    .kolom-2, 
+    .kolom-3,
+    .kolom-lima, 
+    .kolom-tujuh, 
+    .kolom-delapan,
+    .kolom-sembilan, 
+    .kolom-sepuluh, 
+    .kolom-sebelas {
+        width: 25%;
+    }
+
+    .kolom-4, 
+    .kolom-5, 
+    .kolom-6, 
+    .kolom-7, 
+    .kolom-8 {
+        width: 50%;
+    }
+
+    .kolom-9, 
+    .kolom-10, 
+    .kolom-11 {
+        width: 75%;
+    }
+
+    .kolom-12 { width: 100%; }
+
+    .jarak .kolom-1, 
+    .jarak .kolom-2, 
+    .jarak .kolom-3,
+    .jarak .kolom-lima, 
+    .jarak .kolom-tujuh, 
+    .jarak .kolom-delapan,
+    .jarak .kolom-sembilan, 
+    .jarak .kolom-sepuluh, 
+    .jarak .kolom-sebelas { 
+        width: 23.5%; 
+    }
+
+    .jarak .kolom-4, 
+    .jarak .kolom-5, 
+    .jarak .kolom-6, 
+    .jarak .kolom-7, 
+    .jarak .kolom-8 {
+        width: 49%; 
+    }
+
+    .jarak .kolom-9, 
+    .jarak .kolom-10, 
+    .jarak .kolom-11 {
+        width: 74.5%; 
+    }
+
+    .jarak .kolom-12 { width: 100%; }
+
+    .jarak .kolom-1:nth-of-type(4n), 
+    .jarak .kolom-2:nth-of-type(4n), 
+    .jarak .kolom-3:nth-of-type(4n), 
+    .jarak .kolom-4:nth-of-type(2n),
+    .jarak .kolom-5:nth-of-type(2n), 
+    .jarak .kolom-6:nth-of-type(2n),
+    .jarak .kolom-7:nth-of-type(2n), 
+    .jarak .kolom-8:nth-of-type(2n),
+    .jarak .kolom-lima:nth-of-type(4n), 
+    .jarak .kolom-tujuh:nth-of-type(4n), 
+    .jarak .kolom-delapan:nth-of-type(4n), 
+    .jarak .kolom-sembilan:nth-of-type(4n), 
+    .jarak .kolom-sepuluh:nth-of-type(4n), 
+    .jarak .kolom-sebelas:nth-of-type(4n) { 
+        margin-right: 0;
+    }
+
+    .jarak .kolom-1:nth-of-type(4n+1), 
+    .jarak .kolom-2:nth-of-type(4n+1), 
+    .jarak .kolom-3:nth-of-type(4n+1), 
+    .jarak .kolom-4:nth-of-type(2n+1), 
+    .jarak .kolom-5:nth-of-type(2n+1), 
+    .jarak .kolom-6:nth-of-type(2n+1), 
+    .jarak .kolom-7:nth-of-type(2n+1), 
+    .jarak .kolom-8:nth-of-type(2n+1), 
+    .jarak .kolom-lima:nth-of-type(4n+1), 
+    .jarak .kolom-tujuh:nth-of-type(4n+1), 
+    .jarak .kolom-delapan:nth-of-type(4n+1), 
+    .jarak .kolom-sembilan:nth-of-type(4n+1), 
+    .jarak .kolom-sepuluh:nth-of-type(4n+1), 
+    .jarak .kolom-sebelas:nth-of-type(4n+1) { 
+        margin-left: 0;
+    }
+
+    [class*='kolom-'].penuh { 
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+/*--- PENGATURAN JARAK LUAR (MARGIN) ---*/
+.jarak-0 { 
+    margin: 0; 
+}
+
+.jarak-1 { 
+    margin: 0.5rem; 
+}
+
+.jarak-2 { 
+    margin: 1.0rem; 
+}
+
+.jarak-3 { 
+    margin: 1.5rem; 
+}
+
+.jarak-4 { 
+    margin: 2.0rem; 
+}
+
+.jarak-vertikal-0 { 
+    margin-top: 0; 
+    margin-bottom: 0; 
+}
+
+.jarak-vertikal-1 { 
+    margin-top: 0.5rem; 
+    margin-bottom: 0.5rem; 
+}
+
+.jarak-vertikal-2 { 
+    margin-top: 1.0rem; 
+    margin-bottom: 1.0rem; 
+}
+
+.jarak-vertikal-3 { 
+    margin-top: 1.5rem; 
+    margin-bottom: 1.5rem; 
+}
+
+.jarak-vertikal-4 { 
+    margin-top: 2.0rem; 
+    margin-bottom: 2.0rem; 
+}
+
+.jarak-horisontal-0 { 
+    margin-right: 0; 
+    margin-left: 0; 
+}
+
+.jarak-horisontal-1 { 
+    margin-right: 0.5rem; 
+    margin-left: 0.5rem; 
+}
+
+.jarak-horisontal-2 { 
+    margin-right: 1.0rem; 
+    margin-left: 1.0rem; 
+}
+
+.jarak-horisontal-3 { 
+    margin-right: 1.5rem; 
+    margin-left: 1.5rem; 
+}
+
+.jarak-horisontal-4 { 
+    margin-right: 2.0rem; 
+    margin-left: 2.0rem; 
+}
+
+.jarak-atas-0 { 
+    margin-top: 0; 
+}
+
+.jarak-atas-1 { 
+    margin-top: 0.5rem; 
+}
+
+.jarak-atas-2 { 
+    margin-top: 1.0rem; 
+}
+
+.jarak-atas-3 { 
+    margin-top: 1.5rem; 
+}
+
+.jarak-atas-4 { 
+    margin-top: 2.0rem; 
+}
+
+.jarak-bawah-0 { 
+    margin-bottom: 0; 
+}
+
+.jarak-bawah-1 { 
+    margin-bottom: 0.5rem; 
+}
+
+.jarak-bawah-2 { 
+    margin-bottom: 1.0rem; 
+}
+
+.jarak-bawah-3 { 
+    margin-bottom: 1.5rem; 
+}
+
+.jarak-bawah-4 { 
+    margin-bottom: 2.0rem; 
+}
+
+.jarak-kiri-0 { 
+    margin-left: 0; 
+}
+
+.jarak-kiri-1 { 
+    margin-left: 0.5rem; 
+}
+
+.jarak-kiri-2 { 
+    margin-left: 1.0rem; 
+}
+
+.jarak-kiri-3 { 
+    margin-left: 1.5rem; 
+}
+
+.jarak-kiri-4 { 
+    margin-left: 2.0rem; 
+}
+
+.jarak-kanan-0 { 
+    margin-right: 0; 
+}
+
+.jarak-kanan-1 { 
+    margin-right: 0.5rem; 
+}
+
+.jarak-kanan-2 { 
+    margin-right: 1.0rem; 
+}
+
+.jarak-kanan-3 { 
+    margin-right: 1.5rem; 
+}
+
+.jarak-kanan-4 { 
+    margin-right: 2.0rem; 
+}
+
+/*--- PENGATURAN JARAK DALAM (PADDING) ---*/
+.tepian-0 { 
+    padding: 0; 
+}
+
+.tepian-1 { 
+    padding: 0.5rem; 
+}
+
+.tepian-2 { 
+    padding: 1.0rem; 
+}
+
+.tepian-3 { 
+    padding: 1.5rem; 
+}
+
+.tepian-4 { 
+    padding: 2.0rem; 
+}
+
+.tepi-atas-0 { 
+    padding-top: 0; 
+}
+
+.tepi-atas-1 { 
+    padding-top: 0.5rem; 
+}
+
+.tepi-atas-2 { 
+    padding-top: 1.0rem; 
+}
+
+.tepi-atas-3 { 
+    padding-top: 1.5rem; 
+}
+
+.tepi-atas-4 { 
+    padding-top: 2.0rem; 
+}
+
+.tepi-bawah-0 { 
+    padding-bottom: 0; 
+}
+
+.tepi-bawah-1 { 
+    padding-bottom: 0.5rem; 
+}
+
+.tepi-bawah-2 { 
+    padding-bottom: 1.0rem; 
+}
+
+.tepi-bawah-3 { 
+    padding-bottom: 1.5rem; 
+}
+
+.tepi-bawah-4 { 
+    padding-bottom: 2.0rem; 
+}
+
+.tepi-kiri-0 { 
+    padding-left: 0; 
+}
+
+.tepi-kiri-1 { 
+    padding-left: 0.5rem; 
+}
+
+.tepi-kiri-2 { 
+    padding-left: 1.0rem; 
+}
+
+.tepi-kiri-3 { 
+    padding-left: 1.5rem; 
+}
+
+.tepi-kiri-4 { 
+    padding-left: 2.0rem; 
+}
+
+.tepi-kanan-0 { 
+    padding-right: 0; 
+}
+
+.tepi-kanan-1 { 
+    padding-right: 0.5rem; 
+}
+
+.tepi-kanan-2 { 
+    padding-right: 1.0rem; 
+}
+
+.tepi-kanan-3 { 
+    padding-right: 1.5rem; 
+}
+
+.tepi-kanan-4 { 
+    padding-right: 2.0rem; 
+}
+
+/* ==========================================================================
+   4. KOMPONEN UTAMA & FORMULIR
+   ========================================================================== */
+
+/*--- FORMULIR --- */
+button, 
+input, 
+optgroup, 
+select, 
+textarea {
+    font: inherit;
+    margin: 0;
+}
+
+button, 
+input { 
+    overflow: visible; 
+}
+
+button, 
+select { 
+    text-transform: none; 
+}
+
+textarea { 
+    overflow: auto; 
+}
+
+label { 
+    font-size: 0.75rem; 
+    line-height: 1.5rem; 
+    cursor: pointer; 
+}
+
+fieldset {
+    border: 1px solid #E1E6EB;
+    font-size: 0;
+    margin: 0 2px;
+    padding: 0.35rem 0.75rem 0.75rem;
+}
+
+legend {
+    color: inherit;
+    display: table;
+    font-size: 0.7rem;
+    max-width: 100%;
+    padding: 0;
+    white-space: normal;
+}
+
+optgroup { 
+    font-weight: bold; 
+}
+
+button,
+html [type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    cursor: pointer;
+}
+
+button[disabled], 
+input[disabled], 
+select[disabled], 
+textarea[disabled] {
+    cursor: default;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+}
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+    outline: 1px dotted ButtonText;
+}
+
+[type="checkbox"], 
+[type="radio"] {
+    padding: 0;
+    min-height: auto;
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+    height: auto;
+}
+
+[type="search"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    outline-offset: -2px;
+}
+
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    font: inherit;
+}
+
+::-webkit-input-placeholder { 
+    color: inherit; 
+    opacity: 0.54; 
+}
+
+:-moz-placeholder { 
+    color: inherit; 
+    opacity: 0.54; 
+}
+
+::-moz-placeholder { 
+    color: inherit; 
+    opacity: 0.54; 
+}
+
+:-ms-input-placeholder { 
+    color: inherit; 
+    opacity: 0.54; 
+}
+
+::placeholder { 
+    color: inherit; 
+    opacity: 0.54; 
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="color"],
+select,
+textarea {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #1E2832;
+    background-color: transparent;
+    border: 1px solid #A0AAB4;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    -webkit-transition: border-color .15s ease, box-shadow .15s ease;
+    -moz-transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+input[type="color"] { 
+    padding: 0.15rem; 
+}
+
+input[type="range"] { 
+    padding: 0; 
+    min-height: auto; 
+    background: transparent; 
+}
+
+input:focus, 
+select:focus, 
+textarea:focus {
+    border-color: #00AAD4;
+    outline: 0;
+    -webkit-box-shadow: 0 0 4px rgba(0, 170, 212, 0.4);
+    -moz-box-shadow: 0 0 4px rgba(0, 170, 212, 0.4);
+    box-shadow: 0 0 4px rgba(0, 170, 212, 0.4);
+}
+
+input:invalid, 
+select:invalid, 
+textarea:invalid {
+    border-color: #FF3232;
+}
+
+.masukan-blok {
+    width: 100%;
+    display: block;
+}
+
+
+/*--- TABEL --- */
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th, 
+td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.5rem 0.75rem;
+}
+
+caption {
+    text-align: left;
+    font-size: 0.7rem;
+    font-style: italic;
+    padding: 0.5rem;
+    color: #5A646E;
+}
+
+/*--- BINGKAI MEDIA RESPONSIF --- */
+.rasio-16-9,
+.rasio-4-3,
+.rasio-1-1 {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+}
+
+.rasio-16-9 { 
+    padding-top: 56.25%; 
+}
+
+.rasio-4-3  { 
+    padding-top: 75%; 
+}
+
+.rasio-1-1  { 
+    padding-top: 100%; 
+}
+
+.rasio-16-9 iframe, 
+.rasio-16-9 embed, 
+.rasio-16-9 object, 
+.rasio-16-9 video,
+.rasio-4-3 iframe,  
+.rasio-4-3 embed,  
+.rasio-4-3 object,  
+.rasio-4-3 video,
+.rasio-1-1 iframe,  
+.rasio-1-1 embed,  
+.rasio-1-1 object,  
+.rasio-1-1 video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ==========================================================================
+   5. SISTEM WARNA (MEJIKUHIBINIU & GRAYSCALE)
+   ========================================================================== */
+
+/*--- DEKLARASI GARIS UTAMA --- */
+.garis,
+[class*='garis-'] {
+    border-width: 1px;
+    border-style: solid;
+}
+
+/*--- WARNA TEKS --- */
+
+/* MEJIKUHIBINIU - MERAH */
+.teks-merah-muda { 
+    color: #FF8080; 
+}
+
+.teks-merah      { 
+    color: #FF3232; 
+}
+
+.teks-merah-tua  { 
+    color: #B30000; 
+}
+
+/* MEJIKUHIBINIU - JINGGA */
+.teks-jingga-muda { 
+    color: #FFA080; 
+}
+
+.teks-jingga      { 
+    color: #FF6432; 
+}
+
+.teks-jingga-tua  { 
+    color: #C83200; 
+}
+
+/* MEJIKUHIBINIU - KUNING */
+.teks-kuning-muda { 
+    color: #FFE180; 
+}
+
+.teks-kuning      { 
+    color: #FFC832; 
+}
+
+.teks-kuning-tua  { 
+    color: #C89600; 
+}
+
+/* MEJIKUHIBINIU - HIJAU */
+.teks-hijau-muda { 
+    color: #B4E664; 
+}
+
+.teks-hijau      { 
+    color: #80C832; 
+}
+
+.teks-hijau-tua  { 
+    color: #4B9600; 
+}
+
+/* MEJIKUHIBINIU - BIRU */
+.teks-biru-muda { 
+    color: #78C8F0; 
+}
+
+.teks-biru      { 
+    color: #32A5E1; 
+}
+
+.teks-biru-tua  { 
+    color: #0073B4; 
+}
+
+/* MEJIKUHIBINIU - NILA */
+.teks-nila-muda { 
+    color: #B482F0; 
+}
+
+.teks-nila      { 
+    color: #823CDC; 
+}
+
+.teks-nila-tua  { 
+    color: #500AAA; 
+}
+
+/* MEJIKUHIBINIU - UNGU */
+.teks-ungu-muda { 
+    color: #DCB4E6; 
+}
+
+.teks-ungu      { 
+    color: #B978C8; 
+}
+
+.teks-ungu-tua  { 
+    color: #874696; 
+}
+
+/* GRAYSCALE TEKS */
+.teks-putih    { 
+    color: #FFFFFF; 
+}
+
+.teks-abu-muda { 
+    color: #E1E6EB; 
+}
+
+.teks-abu      { 
+    color: #A0AAB4; 
+}
+
+.teks-abu-tua  { 
+    color: #5A646E; 
+}
+
+.teks-kelabu   { 
+    color: #3C4650; 
+}
+
+.teks-gelap    { 
+    color: #1E2832; 
+}
+
+.teks-hitam    { 
+    color: #0A141E; 
+}
+
+/*--- WARNA LATAR --- */
+
+/* MEJIKUHIBINIU - MERAH */
+.latar-merah-muda { 
+    background-color: #FF8080; 
+}
+
+.latar-merah { 
+    background-color: #FF3232; 
+}
+
+.latar-merah-tua { 
+    background-color: #B30000; 
+}
+
+/* MEJIKUHIBINIU - JINGGA */
+.latar-jingga-muda { 
+    background-color: #FFA080; 
+}
+
+.latar-jingga      { 
+    background-color: #FF6432; 
+}
+
+.latar-jingga-tua  { 
+    background-color: #C83200; 
+}
+
+/* MEJIKUHIBINIU - KUNING */
+.latar-kuning-muda { 
+    background-color: #FFE180; 
+}
+
+.latar-kuning      { 
+    background-color: #FFC832; 
+}
+
+.latar-kuning-tua  { 
+    background-color: #C89600; 
+}
+
+/* MEJIKUHIBINIU - HIJAU */
+.latar-hijau-muda { 
+    background-color: #B4E664; 
+}
+
+.latar-hijau      { 
+    background-color: #80C832; 
+}
+
+.latar-hijau-tua  { 
+    background-color: #4B9600; 
+}
+
+/* MEJIKUHIBINIU - BIRU */
+.latar-biru-muda { 
+    background-color: #78C8F0; 
+}
+
+.latar-biru      { 
+    background-color: #32A5E1; 
+}
+
+.latar-biru-tua  { 
+    background-color: #0073B4; 
+}
+
+/* MEJIKUHIBINIU - NILA */
+.latar-nila-muda { 
+    background-color: #B482F0; 
+}
+
+.latar-nila      { 
+    background-color: #823CDC; 
+}
+
+.latar-nila-tua  { 
+    background-color: #500AAA; 
+}
+
+/* MEJIKUHIBINIU - UNGU */
+.latar-ungu-muda { 
+    background-color: #DCB4E6; 
+}
+
+.latar-ungu      { 
+    background-color: #B978C8; 
+}
+
+.latar-ungu-tua  { 
+    background-color: #874696; 
+}
+
+/* GRAYSCALE LATAR */
+.latar-putih    { 
+    background-color: #FFFFFF; 
+}
+
+.latar-abu-muda { 
+    background-color: #E1E6EB; 
+}
+
+.latar-abu      { 
+    background-color: #A0AAB4; 
+}
+
+.latar-abu-tua  { 
+    background-color: #5A646E; 
+}
+
+.latar-kelabu   { 
+    background-color: #3C4650; 
+}
+
+.latar-gelap    { 
+    background-color: #1E2832; 
+}
+
+.latar-hitam    { 
+    background-color: #0A141E; 
+}
+
+/*--- WARNA GARIS --- */
+
+/* MEJIKUHIBINIU - MERAH */
+.garis-merah-muda { 
+    border-color: #FF8080; 
+}
+
+.garis-merah      { 
+    border-color: #FF3232; 
+}
+
+.garis-merah-tua  { 
+    border-color: #B30000; 
+}
+
+/* MEJIKUHIBINIU - JINGGA */
+.garis-jingga-muda { 
+    border-color: #FFA080; 
+}
+
+.garis-jingga      { 
+    border-color: #FF6432; 
+}
+
+.garis-jingga-tua  { 
+    border-color: #C83200; 
+}
+
+/* MEJIKUHIBINIU - KUNING */
+.garis-kuning-muda { 
+    border-color: #FFE180; 
+}
+
+.garis-kuning      { 
+    border-color: #FFC832; 
+}
+
+.garis-kuning-tua  { 
+    border-color: #C89600; 
+}
+
+/* MEJIKUHIBINIU - HIJAU */
+.garis-hijau-muda { 
+    border-color: #B4E664; 
+}
+
+.garis-hijau      { 
+    border-color: #80C832; 
+}
+
+.garis-hijau-tua  { 
+    border-color: #4B9600; 
+}
+
+/* MEJIKUHIBINIU - BIRU */
+.garis-biru-muda { 
+    border-color: #78C8F0; 
+}
+
+.garis-biru      { 
+    border-color: #32A5E1; 
+}
+
+.garis-biru-tua  { 
+    border-color: #0073B4; 
+}
+
+/* MEJIKUHIBINIU - NILA */
+.garis-nila-muda { 
+    border-color: #B482F0; 
+}
+
+.garis-nila      { 
+    border-color: #823CDC; 
+}
+
+.garis-nila-tua  { 
+    border-color: #500AAA; 
+}
+
+/* MEJIKUHIBINIU - UNGU */
+.garis-ungu-muda { 
+    border-color: #DCB4E6; 
+}
+
+.garis-ungu      { 
+    border-color: #B978C8; 
+}
+
+.garis-ungu-tua  { 
+    border-color: #874696; 
+}
+
+/* GRAYSCALE GARIS */
+.garis-putih    { 
+    border-color: #FFFFFF; 
+}
+
+.garis-abu-muda { 
+    border-color: #E1E6EB; 
+}
+
+.garis-abu      { 
+    border-color: #A0AAB4; 
+}
+
+.garis-abu-tua  { 
+    border-color: #5A646E; 
+}
+
+.garis-kelabu   { 
+    border-color: #3C4650; 
+}
+
+.garis-gelap    { 
+    border-color: #1E2832; 
+}
+
+.garis-hitam    { 
+    border-color: #0A141E; 
+}
+
+/* ==========================================================================
+   6. UTILITAS & FITUR TAMBAHAN
+   ========================================================================== */
+
+.bungkus-kata {
+    word-wrap: break-word;
+}
+
+.potong-teks {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ::SELECTION (PEMILIHAN TEKS) */
+::-moz-selection { 
+    background: #00AAD4; 
+    color: #FFFFFF; 
+}
+
+::selection { 
+    background: #00AAD4; 
+    color: #FFFFFF; 
+}
+
+/* ==========================================================================
+   PONDASI.CSS — KOPIES 2010-2026
+   ========================================================================== */
