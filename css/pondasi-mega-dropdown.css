@@ -51,7 +51,7 @@
 .pondasi-mega-dropdown-kategori {
     float: left;
     width: 148px;  /* kurangi supaya total child < content area wrapper */
-    background-color: #2A343E;
+    background-color: #1E2832;
     border-right: 1px solid #3C4650;
     box-sizing: border-box;
 }
@@ -123,7 +123,7 @@
 .pondasi-mega-dropdown-item {
     display: block;
     padding: 6px 12px;
-    color: #E8EDF2;
+    color: #E1E6EB;
     font-size: 13px;
     cursor: pointer;
     border-radius: 3px;
@@ -179,16 +179,16 @@
     background-color: transparent;
     color: #5A646E;
     cursor: help;
-    border-left-color: #E53935;
+    border-left-color: #FF3232;
 }
 
 .pondasi-mega-dropdown-item-disabled .pondasi-mega-dropdown-item-tag {
-    background-color: #E53935;
+    background-color: #FF3232;
     color: #FFFFFF;
 }
 
 .pondasi-mega-dropdown-item-disabled:hover .pondasi-mega-dropdown-item-tag {
-    background-color: #E53935;
+    background-color: #FF3232;
     color: #FFFFFF;
 }
 
@@ -198,7 +198,7 @@
 }
 
 .pondasi-mega-dropdown-isi::-webkit-scrollbar-track {
-    background-color: #2A343E;
+    background-color: #1E2832;
 }
 
 .pondasi-mega-dropdown-isi::-webkit-scrollbar-thumb {
@@ -228,13 +228,13 @@
 
 /* === Tema gelap (pakai body[data-tema="gelap"]) === */
 body[data-tema="gelap"] .pondasi-mega-dropdown {
-    background-color: #121212;
-    border-color: #2A343E;
+    background-color: #0A141E;
+    border-color: #1E2832;
 }
 
 body[data-tema="gelap"] .pondasi-mega-dropdown-kategori {
     background-color: #1E2832;
-    border-right-color: #2A343E;
+    border-right-color: #1E2832;
 }
 
 body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item {
@@ -243,12 +243,12 @@ body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item {
 
 body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item:hover,
 body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item:focus {
-    background-color: #121212;
+    background-color: #0A141E;
     color: #FFFFFF;
 }
 
 body[data-tema="gelap"] .pondasi-mega-dropdown-kategori-item-aktif {
-    background-color: #121212;
-    color: #5AC8FA;
-    border-left-color: #5AC8FA;
+    background-color: #0A141E;
+    color: #00AAD4;
+    border-left-color: #00AAD4;
 }

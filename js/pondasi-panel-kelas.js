@@ -251,7 +251,7 @@ P.renderTambahPropertiButton = function (namaKelas, pseudo) {
         '<button type="button" class="pondasi-properti-tambah-btn" ' +
         'data-action="tambah-properti" data-kelas="' + P.escAttr(namaKelas) + '" ' +
         'data-pseudo="' + P.escAttr(pseudo || '') + '">' +
-        '<i class="fa-solid fa-plus" aria-hidden="true"></i> Tambah properti' +
+        P.icon('plus') + ' Tambah properti' +
         '</button>' +
         '</div>';
 };
@@ -427,9 +427,9 @@ P.tampilkanTambahProperti = function (namaKelas, pseudo, btnEl) {
         'data-pseudo="' + P.escAttr(pseudo || '') + '">' +
         '<button type="button" class="pondasi-properti-tambah-confirm" ' +
         'data-action="tambah-properti-confirm" data-kelas="' + P.escAttr(namaKelas) + '" ' +
-        'data-pseudo="' + P.escAttr(pseudo || '') + '" title="Tambah"><i class="fa-solid fa-check" aria-hidden="true"></i></button>' +
+        'data-pseudo="' + P.escAttr(pseudo || '') + '" title="Tambah">' + P.icon('check') + '</button>' +
         '<button type="button" class="pondasi-properti-tambah-cancel" ' +
-        'data-action="tambah-properti-cancel" title="Batal"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>' +
+        'data-action="tambah-properti-cancel" title="Batal">' + P.icon('x') + '</button>' +
         '</div>' +
         '</div>';
 

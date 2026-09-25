@@ -196,6 +196,59 @@ P.saveAsTemplate = function(nama, deskripsi) {
     return true;
 };
 
+/* Save as multi-page template — simpan semua halaman dari project aktif */
+P.saveAsTemplateMultiPage = function(nama, deskripsi) {
+    if (!P.STATE.currentProjectId) {
+        P.flash('Tidak ada proyek aktif');
+        return false;
+    }
+    nama = (nama || '').trim();
+    if (!nama) { P.flash('Nama template tidak boleh kosong'); return false; }
+
+    P.syncToProject();
+    var project = P.STATE.projects[P.STATE.currentProjectId];
+    if (!project || !project.pages || project.pages.length === 0) {
+        P.flash('Proyek tidak punya halaman');
+        return false;
+    }
+
+    // Salin semua halaman, bersihkan undoStack/redoStack & _inherited flags
+    var pagesCopy = project.pages.map(function(p) {
+        var newPage = {
+            name: p.name,
+            tree: P.deepCopy(p.tree),
+            customCSS: P.deepCopy(p.customCSS || {})
+        };
+        // Bersihkan _inherited & _originBlockId (template tidak punya master link)
+        (function walk(node) {
+            if (node.blocks) {
+                node.blocks.forEach(function(b) {
+                    delete b._inherited;
+                    delete b._originBlockId;
+                });
+            }
+            if (node.children) node.children.forEach(walk);
+        })(newPage.tree);
+        return newPage;
+    });
+
+    var settings = P.getProjectSettings();
+    var template = {
+        id: 'utpl_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6),
+        name: nama,
+        deskripsi: deskripsi || '',
+        pages: pagesCopy,
+        settings: settings,
+        createdAt: Date.now()
+    };
+
+    var list = P.getUserTemplates();
+    list.push(template);
+    P.saveUserTemplates(list);
+    P.flash('Multi-page template "' + nama + '" disimpan (' + pagesCopy.length + ' halaman)');
+    return true;
+};
+
 /* Apply user template */
 P.applyUserTemplate = function(templateId) {
     var list = P.getUserTemplates();
@@ -277,4 +330,90 @@ P.getAllTemplates = function() {
         });
     });
     return result;
+};
+
+/* ======================================================================
+   EXPORT / IMPORT TEMPLATE JSON
+   ====================================================================== */
+
+/* Export template sebagai file .json ke harddisk */
+P.exportTemplateJson = function(templateId) {
+    var list = P.getUserTemplates();
+    var template = null;
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].id === templateId) { template = list[i]; break; }
+    }
+    if (!template) { P.flash('Template tidak ditemukan'); return; }
+
+    var jsonStr = JSON.stringify(template, null, 2);
+    var namaFile = P.sanitizeNama(template.name) + '.json';
+    if (!namaFile) namaFile = 'template.json';
+
+    if (P.downloadFile) {
+        P.downloadFile(namaFile, jsonStr, 'application/json;charset=utf-8');
+        P.flash('Template "' + template.name + '" diunduh (' + namaFile + ')');
+    }
+};
+
+/* Import template dari file .json (dipanggil oleh file input handler) */
+P.importTemplateJson = function(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            var data = JSON.parse(e.target.result);
+            if (!data || !data.tree) {
+                P.flash('Berkas bukan template pondasi yang valid');
+                return;
+            }
+
+            // Generate ID baru supaya tidak collide
+            data.id = 'utpl_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6);
+            if (!data.name) data.name = file.name.replace(/\.json$/i, '');
+            if (!data.deskripsi) data.deskripsi = 'Imported dari ' + file.name;
+            if (!data.createdAt) data.createdAt = Date.now();
+
+            // Validasi struktur minimal
+            if (!data.tree.tag || !data.tree.children) {
+                P.flash('Struktur tree tidak valid');
+                return;
+            }
+
+            // Tambah ke list
+            var list = P.getUserTemplates();
+            list.push(data);
+            P.saveUserTemplates(list);
+
+            P.flash('Template "' + data.name + '" diimpor');
+            if (P.renderUserTemplateList) P.renderUserTemplateList();
+        } catch (err) {
+            P.flash('Gagal membaca berkas: ' + (err.message || 'JSON tidak valid'));
+        }
+    };
+    reader.onerror = function() {
+        P.flash('Gagal membaca berkas');
+    };
+    reader.readAsText(file);
+};
+
+/* Trigger file picker untuk import template */
+P.pilihFileTemplate = function() {
+    var fileInput = document.getElementById('template-import-file');
+    if (fileInput) {
+        fileInput.value = '';
+        try { fileInput.click(); } catch (e) {}
+    }
+};
+
+/* Handle file template dipilih (dipanggil saat file input change) */
+P.handleFileTemplateDipilih = function() {
+    var fileInput = document.getElementById('template-import-file');
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) return;
+    var file = fileInput.files[0];
+    // Cek ekstensi
+    if (!file.name.match(/\.json$/i)) {
+        P.flash('Berkas harus .json');
+        return;
+    }
+    P.importTemplateJson(file);
 };

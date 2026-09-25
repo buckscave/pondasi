@@ -45,7 +45,7 @@ P.renderPanelRegion = function(badan, judulEl) {
             // Fold/unfold arrow (hanya kalau punya anak)
             if (hasChildren) {
                 var arrow = P.el('i', {
-                    class: 'fa-solid ' + (isFolded ? 'fa-caret-right' : 'fa-caret-down') + ' pondasi-region-tree-arrow',
+                    html: P.icon(isFolded ? 'caret-right' : 'caret-down'),
                     'aria-hidden': 'true',
                     title: isFolded ? 'Buka' : 'Tutup'
                 });
@@ -63,10 +63,10 @@ P.renderPanelRegion = function(badan, judulEl) {
             }
 
             // Folder/file icon
-            var iconClass = hasChildren ? (isFolded ? 'fa-folder' : 'fa-folder-open') : 'fa-file';
-            if (isActive) iconClass = hasChildren ? (isFolded ? 'fa-folder' : 'fa-folder-open') : 'fa-file-lines';
-            row.appendChild(P.el('i', { class: 'fa-solid ' + iconClass + ' pondasi-region-tree-icon',
-                'aria-hidden': 'true' }));
+            var iconName = hasChildren ? (isFolded ? 'folder' : 'folder-open') : 'file';
+            if (isActive) iconName = hasChildren ? (isFolded ? 'folder' : 'folder-open') : 'file';
+            var iconEl = P.el('span', { class: 'pondasi-region-tree-icon', html: P.icon(iconName) });
+            row.appendChild(iconEl);
 
             // Nama: tag.classes
             var namaStr = n.tag;
@@ -82,8 +82,9 @@ P.renderPanelRegion = function(badan, judulEl) {
 
             // Lock icon kalau region terkunci
             if (n.locked) {
-                row.appendChild(P.el('i', { class: 'fa-solid fa-lock pondasi-region-tree-lock',
-                    'aria-hidden': 'true', title: 'Terkunci (l untuk buka)' }));
+                var lockEl = P.el('span', { class: 'pondasi-region-tree-lock', title: 'Terkunci (l untuk buka)' });
+                lockEl.innerHTML = P.icon('lock');
+                row.appendChild(lockEl);
             }
 
             // Klik row (selain arrow) = select node
@@ -239,7 +240,7 @@ P.renderPanelRegion = function(badan, judulEl) {
             type: 'button',
             class: 'pondasi-region-aksi-btn' + (node.locked ? ' pondasi-region-aksi-btn-aktif' : ''),
             title: 'Kunci region (l) — blok split/delete/swap/yank/cut/merge',
-            html: '<i class="fa-solid ' + (node.locked ? 'fa-lock' : 'fa-lock-open') + '" aria-hidden="true"></i> ' +
+            html: P.icon(node.locked ? 'lock' : 'lock-open') + ' ' +
                   (node.locked ? 'Buka Kunci' : 'Kunci')
         });
         lockBtn.addEventListener('click', function () {
@@ -254,7 +255,7 @@ P.renderPanelRegion = function(badan, judulEl) {
                 type: 'button',
                 class: 'pondasi-region-aksi-btn',
                 title: 'Masuk mode edit (Enter)',
-                html: '<i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Edit Block'
+                html: P.icon('edit') + ' Edit Block'
             });
             editBtn.addEventListener('click', function () {
                 if (P.masukModeEdit) P.masukModeEdit();

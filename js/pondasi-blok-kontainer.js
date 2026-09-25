@@ -87,19 +87,17 @@ P.SKEMA_BLOCK['hero'] = {
 };
 
 P.SKEMA_BLOCK['modal'] = {
-    nama: 'Modal / Dialog (CSS pure)',
+    nama: 'Modal / Dialog',
     tag: 'div',
     kelasDefault: 'modal',
     kategori: 'Kontainer',
     kategoriDropdown: 'komponen',
     bagian: [
         { judul: 'Konten', buka: true, fields: [
+            { id: 'nama', label: 'Nama (untuk target tombol)', jenis: 'teks', placeholder: 'modal-1' },
             { id: 'judul', label: 'Judul modal', jenis: 'teks', placeholder: 'Konfirmasi' },
             { id: 'isi', label: 'Isi modal', jenis: 'textarea', placeholder: 'Apakah Anda yakin?' },
             { id: 'label', label: 'Teks tombol OK', jenis: 'teks', placeholder: 'Ya, lanjutkan' }
-        ]},
-        { judul: 'Trigger', fields: [
-            { id: 'target', label: 'ID target (#hash URL)', jenis: 'teks', placeholder: 'modal-1' }
         ]},
         { judul: 'Kelas', fields: [
             { id: 'kelas', label: 'Kelas', jenis: 'teks', placeholder: 'modal' }
@@ -110,18 +108,16 @@ P.SKEMA_BLOCK['modal'] = {
 };
 
 P.SKEMA_BLOCK['drawer'] = {
-    nama: 'Drawer / Sidebar Toggle (CSS pure)',
+    nama: 'Drawer / Sidebar',
     tag: 'div',
     kelasDefault: 'drawer',
     kategori: 'Kontainer',
     kategoriDropdown: 'komponen',
     bagian: [
         { judul: 'Konten', buka: true, fields: [
+            { id: 'nama', label: 'Nama (untuk target tombol)', jenis: 'teks', placeholder: 'drawer-1' },
             { id: 'judul', label: 'Judul drawer', jenis: 'teks', placeholder: 'Menu' },
-            { id: 'isi', label: 'Isi drawer', jenis: 'textarea', placeholder: 'Item menu...' }
-        ]},
-        { judul: 'Trigger', fields: [
-            { id: 'target', label: 'ID checkbox trigger', jenis: 'teks', placeholder: 'drawer-toggle-1' },
+            { id: 'isi', label: 'Isi drawer', jenis: 'textarea', placeholder: 'Item menu...' },
             { id: 'posisi', label: 'Posisi', jenis: 'pilih', opsi: ['kiri', 'kanan'] }
         ]},
         { judul: 'Kelas', fields: [

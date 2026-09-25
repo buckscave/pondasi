@@ -22,11 +22,7 @@ P.SKEMA_BLOCK['tombol-berisi'] = {
         { judul: 'Tipografi', fields: P.FIELDS_TIPOGRAFI_UMUM },
         { judul: 'Tampilan', fields: P.FIELDS_TAMPILAN_UMUM },
         { judul: 'Aksi', fields: [
-            { id: 'aksi.klik.jenis', label: 'Saat diklik', jenis: 'pilih',
-              opsi: ['none', 'link', 'alert', 'kustom'] },
-            { id: 'aksi.klik.url', label: 'URL (jika link)', jenis: 'teks', placeholder: 'https://' },
-            { id: 'aksi.klik.pesan', label: 'Pesan (jika alert)', jenis: 'textarea', placeholder: 'Halo!' },
-            { id: 'aksi.klik.kode', label: 'Kode kustom (jika kustom)', jenis: 'textarea', placeholder: "alert('hai')" }
+            { id: 'aksi', label: 'Aksi', jenis: 'aksi' }
         ]}
     ]
 };
@@ -71,11 +67,7 @@ P.SKEMA_BLOCK['tombol-ikon'] = {
         ]},
         { judul: 'Tampilan', fields: P.FIELDS_TAMPILAN_UMUM },
         { judul: 'Aksi', fields: [
-            { id: 'aksi.klik.jenis', label: 'Saat diklik', jenis: 'pilih',
-              opsi: ['none', 'link', 'alert', 'kustom'] },
-            { id: 'aksi.klik.url', label: 'URL (jika link)', jenis: 'teks', placeholder: 'https://' },
-            { id: 'aksi.klik.pesan', label: 'Pesan (jika alert)', jenis: 'textarea', placeholder: 'Halo!' },
-            { id: 'aksi.klik.kode', label: 'Kode kustom', jenis: 'textarea', placeholder: "alert('hai')" }
+            { id: 'aksi', label: 'Aksi', jenis: 'aksi' }
         ]}
     ]
 };
@@ -99,9 +91,7 @@ P.SKEMA_BLOCK['tombol-melayang'] = {
         ]},
         { judul: 'Tampilan', fields: P.FIELDS_TAMPILAN_UMUM },
         { judul: 'Aksi', fields: [
-            { id: 'aksi.klik.jenis', label: 'Saat diklik', jenis: 'pilih',
-              opsi: ['none', 'link', 'alert', 'kustom'] },
-            { id: 'aksi.klik.kode', label: 'Kode kustom', jenis: 'textarea', placeholder: "alert('hai')" }
+            { id: 'aksi', label: 'Aksi', jenis: 'aksi' }
         ]}
     ]
 };

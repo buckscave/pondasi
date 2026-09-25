@@ -229,7 +229,7 @@
     color: #FFFFFF;
 }
 [data-tema="gelap"] .akordion-item > summary:hover {
-    background-color: #2C3640;
+    background-color: #3C4650;
 }
 [data-tema="gelap"] .akordion-item > summary:after {
     border-top-color: #A0AAB4;

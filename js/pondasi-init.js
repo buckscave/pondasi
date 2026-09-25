@@ -5,7 +5,7 @@ var P = P || {};
        INIT
        ====================================================================== */
     P.init = function() {
-        console.log('pondasi init v95 — mulai (multi-dokumen: fix persistensi delete, z-index, edit mode stale, settings apply, dead code cleanup)');
+        console.log('pondasi init v143 — mulai (multi-dokumen: fix persistensi delete, z-index, edit mode stale, settings apply, dead code cleanup)');
 
         // Cek storage mode dulu (deteksi PHP server)
         P.cekStorage(function (mode) {
@@ -98,6 +98,106 @@ var P = P || {};
         document.body.addEventListener('click', function(e) {
             if (P.handleFloatingKiri) P.handleFloatingKiri(e);
         });
+        // v116: floating kanan untuk canvas tools + code view
+        document.body.addEventListener('click', function(e) {
+            if (P.handleFloatingKanan) P.handleFloatingKanan(e);
+        });
+        // Footer page badge → toggle popover
+        var footerPage = document.getElementById('footer-page');
+        if (footerPage && P.handleFooterPageClick) {
+            footerPage.addEventListener('click', P.handleFooterPageClick);
+        }
+        // Footer page nav buttons (< >)
+        var footerPagePrev = document.getElementById('footer-page-prev');
+        if (footerPagePrev) footerPagePrev.addEventListener('click', function () { P.pagePrev(); });
+        var footerPageNext = document.getElementById('footer-page-next');
+        if (footerPageNext) footerPageNext.addEventListener('click', function () { P.pageNext(); });
+        // Footer + icon → tambah halaman
+        var footerAdd = document.getElementById('footer-page-add');
+        if (footerAdd && P.handleFooterPageAddClick) {
+            footerAdd.addEventListener('click', P.handleFooterPageAddClick);
+        }
+        // Footer ✏️ icon → rename halaman aktif
+        var footerRename = document.getElementById('footer-page-rename');
+        if (footerRename && P.handleFooterPageRenameClick) {
+            footerRename.addEventListener('click', P.handleFooterPageRenameClick);
+        }
+        // Page panel X → tutup
+        var pagePanelTutup = document.getElementById('page-panel-tutup');
+        if (pagePanelTutup && P.handlePagePanelTutup) {
+            pagePanelTutup.addEventListener('click', P.handlePagePanelTutup);
+        }
+        // File picker untuk "Buka dari Berkas"
+        var bukaFileInput = document.getElementById('buka-dari-berkas-file');
+        if (bukaFileInput && P.handleBukaDariBerkasChange) {
+            bukaFileInput.addEventListener('change', P.handleBukaDariBerkasChange);
+        }
+        // v116: File picker untuk assets gambar
+        var assetsFileInput = document.getElementById('assets-gambar-file');
+        if (assetsFileInput && P.handleAssetsGambarChange) {
+            assetsFileInput.addEventListener('change', P.handleAssetsGambarChange);
+        }
+        // v116: Code view buttons
+        var cvClose = document.getElementById('codeview-close');
+        if (cvClose) cvClose.addEventListener('click', function () { P.tutupCodeView(); });
+        var cvApply = document.getElementById('codeview-apply');
+        if (cvApply) cvApply.addEventListener('click', function () { P.applyCodeView(); });
+        var cvCopy = document.getElementById('codeview-copy');
+        if (cvCopy) cvCopy.addEventListener('click', function () { P.copyCodeView(); });
+        // Code view tab buttons
+        var cvTabs = document.querySelectorAll('.pondasi-codeview-tab');
+        for (var tvi = 0; tvi < cvTabs.length; tvi++) {
+            cvTabs[tvi].addEventListener('click', function (e) {
+                P.setCodeViewTab(e.target.dataset.cvTab || e.target.parentNode.dataset.cvTab);
+            });
+        }
+        // Code view: Esc untuk tutup
+        document.addEventListener('keydown', function (e) {
+            var cvOverlay = document.getElementById('codeview-overlay');
+            if (!cvOverlay || cvOverlay.hasAttribute('hidden')) return;
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                // Jangan tutup kalau sedang di textarea (esc mungkin untuk batal edit)
+                if (e.target && e.target.tagName === 'TEXTAREA') {
+                    e.target.blur();
+                    return;
+                }
+                P.tutupCodeView();
+                e.preventDefault();
+            }
+        });
+        // Breadcrumb scroll buttons
+        var bcScrollLeft = document.getElementById('breadcrumb-scroll-left');
+        if (bcScrollLeft) {
+            bcScrollLeft.addEventListener('click', function () { P.scrollBreadcrumb('left'); });
+        }
+        var bcScrollRight = document.getElementById('breadcrumb-scroll-right');
+        if (bcScrollRight) {
+            bcScrollRight.addEventListener('click', function () { P.scrollBreadcrumb('right'); });
+        }
+        // Update tombol panah saat user scroll manual di breadcrumb
+        var bcEl = document.getElementById('breadcrumb');
+        if (bcEl && P.updateBreadcrumbScrollButtons) {
+            bcEl.addEventListener('scroll', P.updateBreadcrumbScrollButtons);
+        }
+        // Klik di luar page panel → tutup popover
+        document.addEventListener('mousedown', function (e) {
+            var panel = document.getElementById('page-panel');
+            if (!panel || panel.hasAttribute('hidden')) return;
+            // Jangan tutup kalau klik di dalam panel atau di badge footer
+            if (e.target.closest('#page-panel, #footer-page, #footer-page-add, #footer-page-rename')) return;
+            P.tutupPagePanel();
+        });
+        // Akordion "Buat Dokumen" & "Buat Proyek" — saat satu buka, tutup yang lain
+        var akorDok = document.getElementById('akordion-buat-dokumen');
+        var akorProyek = document.getElementById('akordion-buat-proyek');
+        if (akorDok && akorProyek) {
+            akorDok.addEventListener('toggle', function () {
+                if (akorDok.open) akorProyek.removeAttribute('open');
+            });
+            akorProyek.addEventListener('toggle', function () {
+                if (akorProyek.open) akorDok.removeAttribute('open');
+            });
+        }
         var canvas = document.getElementById('canvas');
         if (canvas) canvas.addEventListener('mousedown', function(e) {
             if (P.handleMouseDown) P.handleMouseDown(e);
@@ -197,26 +297,38 @@ var P = P || {};
                     P.closeSwatches();
                     return;
                 }
-                // Klik swatch
+                // v127: Klik tombol "Terapkan" — apply warna yang sudah di-seleksi
+                var applyBtn = e.target.closest('[data-action="apply-hex"]');
+                if (applyBtn) {
+                    P.applyHexFromInput();
+                    return;
+                }
+                // Klik tombol "Kosong" — select kosong
+                var noneBtn = e.target.closest('[data-action="apply-none"]');
+                if (noneBtn) {
+                    P.selectSwatch('', P.STATE.editMode.paletteOpen);
+                    return;
+                }
+                // Klik swatch — v125: seleksi dulu, apply via tombol "Terapkan"
                 var sw = e.target.closest('.pondasi-swatch');
                 if (sw && sw.dataset.color !== undefined) {
-                    P.applySwatch(sw.dataset.color, sw.dataset.type || P.STATE.editMode.paletteOpen);
+                    P.selectSwatch(sw.dataset.color, sw.dataset.type || P.STATE.editMode.paletteOpen);
                 }
                 // Klik backdrop (di luar box)
                 if (e.target === swatchesModal) {
                     P.closeSwatches();
                 }
             });
-            // Sync hex input dengan color picker native
-            var picker = document.getElementById('swatches-picker');
+            // v123: color picker pakai custom HSL wheel, bukan native input[type=color]
+            // Auto-apply di-revert — user harus klik "Terapkan" manual
             var hexInput = document.getElementById('swatches-hex');
-            if (picker && hexInput) {
-                picker.addEventListener('input', function () {
-                    hexInput.value = picker.value.toUpperCase();
-                });
+            if (hexInput) {
                 hexInput.addEventListener('input', function () {
                     var v = hexInput.value.trim();
-                    if (/^#[0-9a-fA-F]{6}$/.test(v)) picker.value = v;
+                    if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+                        // Sync ke custom wheel (jika ada)
+                        if (P.setColorWheelValue) P.setColorWheelValue(v);
+                    }
                 });
                 // Enter di hex input → apply
                 hexInput.addEventListener('keydown', function (e) {
@@ -226,6 +338,10 @@ var P = P || {};
                     }
                 });
             }
+            // v124: init custom color wheel (selalu visible di samping swatches)
+            if (P.initColorWheel) P.initColorWheel();
+            // v134: init gradient picker
+            if (P.initGradient) P.initGradient();
         }
 
         // Auto-save on unload — hanya register di registerListeners (jangan duplikat di initAfterLoad).
@@ -264,6 +380,20 @@ var P = P || {};
         if (fileInput) {
             fileInput.addEventListener('change', function () {
                 P.handleFileCSSDipilih();
+            });
+        }
+        // Listener untuk template import file input
+        var templateFileInput = document.getElementById('template-import-file');
+        if (templateFileInput) {
+            templateFileInput.addEventListener('change', function () {
+                P.handleFileTemplateDipilih();
+            });
+        }
+        // Listener untuk image file picker
+        var imageFileInput = document.getElementById('image-pick-file');
+        if (imageFileInput) {
+            imageFileInput.addEventListener('change', function () {
+                P.handleImageFileDipilih();
             });
         }
 
@@ -385,6 +515,14 @@ var P = P || {};
     };
 
     P.initAfterLoad = function() {
+        // v117: Inject SVG sprite (hidden <svg> berisi semua <symbol>)
+        if (P.injectIconSprite) P.injectIconSprite();
+        // v116: Replace semua <i data-icon="X"> di DOM dengan SVG <use>
+        if (P.replaceIcons) P.replaceIcons();
+        // v130: Extract warna dari CSS eksternal → tambahkan ke Warna Pengguna
+        // v132: Cleanup dulu — buang warna default yang terlanjur masuk dari versi sebelumnya
+        if (P.cleanupCustomColors) P.cleanupCustomColors();
+        if (P.Scanner && P.Scanner.scanProjectColors) P.Scanner.scanProjectColors();
         // Kalau tidak ada project aktif, auto-create (UX: user langsung lihat canvas editable)
         if (!P.STATE.currentProjectId || !P.STATE.projects[P.STATE.currentProjectId]) {
             console.log('pondasi: auto-create new project');
@@ -429,6 +567,10 @@ var P = P || {};
             }
         }
         if (P.renderPanel) P.renderPanel();
+        // Render list halaman di sidebar dokumen
+        if (P.renderPageList) P.renderPageList();
+        // Update indikator halaman di footer
+        if (P.updatePageIndicator) P.updatePageIndicator();
 
         // Statusline awal
         if (P.setStatusline) P.setStatusline('siap — tekan v untuk split, ? untuk bantuan');

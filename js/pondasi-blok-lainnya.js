@@ -1,6 +1,7 @@
 /* PONDASI-BLOK-LAINNYA.JS
    Skema block untuk kategori Lainnya:
    - chip, badge, avatar, daftar-komponen, timeline, tree-view
+   - jam, tanggal, hitung-mundur (block dinamis)
    */
 var P = P || {};
 P.SKEMA_BLOCK = P.SKEMA_BLOCK || {};
@@ -120,4 +121,57 @@ P.SKEMA_BLOCK['tree-view'] = {
         { judul: 'Tampilan', fields: P.FIELDS_TAMPILAN_UMUM },
         { judul: 'Tipografi', fields: P.FIELDS_TIPOGRAFI_UMUM }
 ]
+};
+
+/* === BLOCK DINAMIS (auto-update via pondasi-aksi.js) === */
+
+P.SKEMA_BLOCK['jam'] = {
+    nama: 'Jam (Real-time)',
+    tag: 'span',
+    kelasDefault: '',
+    kategori: 'Lainnya',
+    kategoriDropdown: 'komponen',
+    bagian: [
+        { judul: 'Konten', buka: true, fields: [
+            { id: 'format', label: 'Format', jenis: 'pilih', opsi: ['24', '12'] }
+        ]},
+        { judul: 'Kelas', fields: [
+            { id: 'kelas', label: 'Kelas', jenis: 'teks', placeholder: '' }
+        ]},
+        { judul: 'Tipografi', fields: P.FIELDS_TIPOGRAFI_UMUM }
+    ]
+};
+
+P.SKEMA_BLOCK['tanggal'] = {
+    nama: 'Tanggal',
+    tag: 'span',
+    kelasDefault: '',
+    kategori: 'Lainnya',
+    kategoriDropdown: 'komponen',
+    bagian: [
+        { judul: 'Konten', buka: true, fields: [
+            { id: 'format', label: 'Format', jenis: 'pilih', opsi: ['panjang', 'pendek', 'angka', 'iso'] }
+        ]},
+        { judul: 'Kelas', fields: [
+            { id: 'kelas', label: 'Kelas', jenis: 'teks', placeholder: '' }
+        ]},
+        { judul: 'Tipografi', fields: P.FIELDS_TIPOGRAFI_UMUM }
+    ]
+};
+
+P.SKEMA_BLOCK['hitung-mundur'] = {
+    nama: 'Hitung Mundur (Countdown)',
+    tag: 'span',
+    kelasDefault: '',
+    kategori: 'Lainnya',
+    kategoriDropdown: 'komponen',
+    bagian: [
+        { judul: 'Konten', buka: true, fields: [
+            { id: 'target', label: 'Target tanggal (ISO)', jenis: 'teks', placeholder: '2026-12-31T23:59:59' }
+        ]},
+        { judul: 'Kelas', fields: [
+            { id: 'kelas', label: 'Kelas', jenis: 'teks', placeholder: '' }
+        ]},
+        { judul: 'Tipografi', fields: P.FIELDS_TIPOGRAFI_UMUM }
+    ]
 };

@@ -7,9 +7,10 @@ var P = P || {};
     P.STATE = {
         // Multi-project management
         currentProjectId: null,    // id project aktif (null = belum ada project)
-        projects: {},              // {projectId: {id, name, tree, customCSS, settings, ...}}
+        currentPageId: null,       // id halaman aktif dalam project
+        projects: {},              // {projectId: {id, name, pages: [...], currentPageId, cssExternal, settings, ...}}
 
-        // Editor state (per-session)
+        // Editor state (per-session, dari halaman aktif)
         tree: null,
         activeId: null,
         selectedIds: [],
@@ -37,6 +38,11 @@ var P = P || {};
         currentKey: 'pondasi.current.v2',
         legacyTreeKey: 'pondasi.tree.v1',
         legacyCustomCSSKey: 'pondasi.customcss.v1'
+    };
+
+    /* === PAGE ID GENERATOR === */
+    P.genPageId = function() {
+        return 'page_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
     };
 
     /* ======================================================================
@@ -285,6 +291,65 @@ var P = P || {};
         return JSON.parse(JSON.stringify(obj));
     }
 
+    /* === v122: Custom colors management (warna kustom user) === */
+    /* Disimpan di localStorage, terpisah dari palette mejikuhibiniu */
+    P.getCustomColors = function() {
+        try {
+            var stored = localStorage.getItem('pondasi.customColors');
+            if (!stored) return [];
+            var arr = JSON.parse(stored);
+            return Array.isArray(arr) ? arr : [];
+        } catch (e) {
+            return [];
+        }
+    };
+
+    P.addCustomColor = function(hex) {
+        if (!hex) return false;
+        hex = hex.toUpperCase();
+        // Validate format
+        if (!/^#[0-9A-F]{6}$/.test(hex)) return false;
+        var colors = P.getCustomColors();
+        // v130: Cek apakah warna sudah ada di palette default mejikuhibiniu
+        // Jika ya, jangan tambahkan ke custom — tetap sebagai warna default
+        var paletteHexes = ['FF8080','FF3232','B30000','FFA080','FF6432','C83200','FFE180','FFC832','C89600','B4E664','80C832','4B9600','78C8F0','32A5E1','0073B4','B482F0','823CDC','500AAA','DCB4E6','B978C8','874696','FFFFFF','E1E6EB','A0AAB4','5A646E','3C4650','1E2832','0A141E'];
+        var hexNoHash = hex.substring(1);
+        if (paletteHexes.indexOf(hexNoHash) >= 0) return false;  // sudah ada di palette default
+        if (colors.indexOf(hex) >= 0) return false;  // sudah ada di custom
+        colors.push(hex);
+        // Limit max 14 warna kustom (2 baris × 7)
+        if (colors.length > 14) colors = colors.slice(-14);
+        try {
+            localStorage.setItem('pondasi.customColors', JSON.stringify(colors));
+        } catch (e) {
+            return false;
+        }
+        return true;
+    };
+
+    P.removeCustomColor = function(hex) {
+        if (!hex) return false;
+        // v138: Jangan uppercase gradient entries (#GRAD:gradlin-1 punya nama class lowercase)
+        if (hex.indexOf('#GRAD:') !== 0) {
+            hex = hex.toUpperCase();
+        }
+        var colors = P.getCustomColors();
+        var idx = colors.indexOf(hex);
+        if (idx < 0) return false;
+        colors.splice(idx, 1);
+        try {
+            localStorage.setItem('pondasi.customColors', JSON.stringify(colors));
+        } catch (e) {
+            return false;
+        }
+        // v126: Refresh baris custom tanpa re-render seluruh modal
+        if (P.refreshCustomColorRow && P.STATE.editMode.paletteOpen) {
+            P.refreshCustomColorRow(P.STATE.editMode.paletteOpen);
+        }
+        P.flash('Warna kustom dihapus');
+        return true;
+    };
+
     P.pushUndo = function() {
         // Simpan juga blocks + editMode state untuk block-level undo
         var node = P.getById(P.STATE.activeId);
@@ -303,6 +368,8 @@ var P = P || {};
             P.STATE.undoStack.shift();
         }
         P.STATE.redoStack = [];
+        // Sync ke page (per-page undo/redo persistence)
+        P.syncUndoRedoToPage();
     }
 
     P.undo = function() {
@@ -343,6 +410,8 @@ var P = P || {};
             P.renderPanel();
         }
         P.flash('Undo');
+        // Sync ke page (per-page undo/redo persistence)
+        P.syncUndoRedoToPage();
     }
 
     P.redo = function() {
@@ -381,7 +450,18 @@ var P = P || {};
             P.renderPanel();
         }
         P.flash('Redo');
+        // Sync ke page (per-page undo/redo persistence)
+        P.syncUndoRedoToPage();
     }
+
+    /* === Helper: sync undo/redo stack ke halaman aktif === */
+    P.syncUndoRedoToPage = function() {
+        if (!P.STATE.currentProjectId) return;
+        var page = P.getCurrentPage();
+        if (!page) return;
+        page.undoStack = P.deepCopy(P.STATE.undoStack);
+        page.redoStack = P.deepCopy(P.STATE.redoStack);
+    };
 
     // Load project aktif (dari localStorage) — dipanggil di init
     P.load = function() {
@@ -488,8 +568,19 @@ var P = P || {};
         if (!P.STATE.currentProjectId) return;
         var project = P.STATE.projects[P.STATE.currentProjectId];
         if (!project) return;
-        project.tree = P.deepCopy(P.STATE.tree);
-        project.customCSS = P.deepCopy(P.STATE.customCSS);
+        // Sinkronkan tree + customCSS ke halaman aktif
+        var page = P.getCurrentPage();
+        if (page) {
+            page.tree = P.deepCopy(P.STATE.tree);
+            page.customCSS = P.deepCopy(P.STATE.customCSS);
+            // Simpan undo/redo stack ke halaman (per-page undo/redo)
+            page.undoStack = P.deepCopy(P.STATE.undoStack);
+            page.redoStack = P.deepCopy(P.STATE.redoStack);
+            // Jika halaman aktif adalah master, propagate ke semua page yang inherit
+            if (page.isMaster && P.propagateMaster) {
+                P.propagateMaster(page.id);
+            }
+        }
         project.modifiedAt = Date.now();
     };
 
@@ -497,8 +588,19 @@ var P = P || {};
         if (!P.STATE.currentProjectId) return false;
         var project = P.STATE.projects[P.STATE.currentProjectId];
         if (!project) return false;
-        P.STATE.tree = P.deepCopy(project.tree);
-        P.STATE.customCSS = P.deepCopy(project.customCSS || {});
+        // Load dari halaman aktif
+        var page = P.getCurrentPage();
+        if (!page) {
+            // Fallback: kalau project belum punya pages (legacy), migrate dulu
+            P.migrateProjectToPages(project);
+            page = P.getCurrentPage();
+            if (!page) return false;
+        }
+        P.STATE.tree = P.deepCopy(page.tree);
+        P.STATE.customCSS = P.deepCopy(page.customCSS || {});
+        // Load undo/redo stack dari halaman (per-page undo/redo)
+        P.STATE.undoStack = page.undoStack ? P.deepCopy(page.undoStack) : [];
+        P.STATE.redoStack = page.redoStack ? P.deepCopy(page.redoStack) : [];
         var maxId = 0;
         if (P.STATE.tree) {
             (function walk(n) {
@@ -510,9 +612,539 @@ var P = P || {};
         P.STATE.nextId = maxId + 1;
         P.STATE.activeId = P.STATE.tree ? P.STATE.tree.id : null;
         P.STATE.selectedIds = [];
-        P.STATE.undoStack = [];
-        P.STATE.redoStack = [];
         return true;
+    };
+
+    /* === MULTI-PAGE: migrate project lama (tree tunggal) ke pages array === */
+    P.migrateProjectToPages = function(project) {
+        if (project.pages && project.pages.length > 0) return; // sudah multi-page
+        var pageId = P.genPageId();
+        project.pages = [{
+            id: pageId,
+            name: 'Beranda',
+            tree: project.tree || P.nGrandParent(),
+            customCSS: project.customCSS || {}
+        }];
+        project.currentPageId = pageId;
+        P.STATE.currentPageId = pageId;
+        // Hapus field lama (sudah dipindah ke page)
+        delete project.tree;
+        delete project.customCSS;
+    };
+
+    /* === MULTI-PAGE: dapatkan halaman aktif === */
+    P.getCurrentPage = function() {
+        if (!P.STATE.currentProjectId) return null;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project) return null;
+        // Migrate kalau belum punya pages
+        if (!project.pages || project.pages.length === 0) {
+            P.migrateProjectToPages(project);
+        }
+        // Cari halaman aktif
+        var pageId = P.STATE.currentPageId || project.currentPageId;
+        if (pageId) {
+            for (var i = 0; i < project.pages.length; i++) {
+                if (project.pages[i].id === pageId) return project.pages[i];
+            }
+        }
+        // Fallback: halaman pertama
+        if (project.pages.length > 0) {
+            P.STATE.currentPageId = project.pages[0].id;
+            project.currentPageId = project.pages[0].id;
+            return project.pages[0];
+        }
+        return null;
+    };
+
+    /* === MULTI-PAGE: list semua halaman di project aktif === */
+    P.listPages = function() {
+        if (!P.STATE.currentProjectId) return [];
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project) return [];
+        if (!project.pages) return [];
+        return project.pages.map(function(page) {
+            return {
+                id: page.id,
+                name: page.name,
+                regionCount: page.tree ? P.countRegions(page.tree) : 0,
+                isActive: page.id === (P.STATE.currentPageId || project.currentPageId)
+            };
+        });
+    };
+
+    /* === MULTI-PAGE: tambah halaman baru === */
+    P.newPage = function(nama) {
+        if (!P.STATE.currentProjectId) return null;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project) return null;
+        // Sync halaman aktif dulu
+        P.syncToProject();
+        // Buat halaman baru
+        var pageId = P.genPageId();
+        var page = {
+            id: pageId,
+            name: nama || ('Halaman ' + (project.pages.length + 1)),
+            tree: P.nGrandParent(),
+            customCSS: {}
+        };
+        project.pages.push(page);
+        // Switch ke halaman baru
+        P.STATE.currentPageId = pageId;
+        project.currentPageId = pageId;
+        P.saveProjects();
+        P.loadFromProject();
+        P.render();
+        P.renderPanel();
+        if (P.updatePageIndicator) P.updatePageIndicator();
+        return pageId;
+    };
+
+    /* === MULTI-PAGE: switch halaman === */
+    P.switchPage = function(pageId) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        // Cari halaman
+        var found = null;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === pageId) { found = project.pages[i]; break; }
+        }
+        if (!found) return false;
+        // Jangan switch kalau sama
+        if (P.STATE.currentPageId === pageId) return true;
+        // Keluar mode edit
+        if (typeof P.keluarModeEdit === 'function') P.keluarModeEdit();
+        // Sync halaman aktif dulu (termasuk undo/redo stack ke page)
+        P.syncToProject();
+        // Switch
+        P.STATE.currentPageId = pageId;
+        project.currentPageId = pageId;
+        P.saveProjects();
+        P.loadFromProject();
+        P.render();
+        P.renderPanel();
+        P.updatePageIndicator();
+        return true;
+    };
+
+    /* === MULTI-PAGE: reorder halaman (pindah posisi di array) === */
+    P.reorderPage = function(fromIdx, toIdx) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        var pages = project.pages;
+        if (fromIdx < 0 || fromIdx >= pages.length) return false;
+        if (toIdx < 0 || toIdx >= pages.length) return false;
+        if (fromIdx === toIdx) return false;
+        // Pindahkan
+        var moved = pages.splice(fromIdx, 1)[0];
+        pages.splice(toIdx, 0, moved);
+        project.modifiedAt = Date.now();
+        P.saveProjects();
+        P.renderPanel();
+        P.updatePageIndicator();
+        return true;
+    };
+
+    /* === MULTI-PAGE: dapatkan index halaman aktif (1-based) === */
+    P.getCurrentPageIndex = function() {
+        if (!P.STATE.currentProjectId) return 0;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return 0;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === P.STATE.currentPageId) return i + 1;
+        }
+        return 0;
+    };
+
+    /* === MULTI-PAGE: total halaman === */
+    P.getPageCount = function() {
+        if (!P.STATE.currentProjectId) return 0;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return 0;
+        return project.pages.length;
+    };
+
+    /* === MULTI-PAGE: set judul HTML per-halaman (override project.settings.judul) === */
+    P.setPageJudul = function(pageId, judul) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === pageId) {
+                project.pages[i].title = judul || '';
+                project.modifiedAt = Date.now();
+                P.saveProjects();
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /* === MULTI-PAGE: dapatkan judul HTML efektif (page.title || project.settings.judul) === */
+    P.getPageJudul = function(pageId) {
+        if (!P.STATE.currentProjectId) return '';
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return '';
+        var page = null;
+        if (pageId) {
+            for (var i = 0; i < project.pages.length; i++) {
+                if (project.pages[i].id === pageId) { page = project.pages[i]; break; }
+            }
+        } else {
+            page = P.getCurrentPage();
+        }
+        if (!page) return '';
+        if (page.title && page.title.trim()) return page.title;
+        // Fallback: project settings judul
+        return (project.settings && project.settings.judul) || project.name || '';
+    };
+
+    /* === MULTI-PAGE: toggle status master page === */
+    P.setPageAsMaster = function(pageId, isMaster) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === pageId) {
+                project.pages[i].isMaster = !!isMaster;
+                project.modifiedAt = Date.now();
+                P.saveProjects();
+                P.renderPagePanel();
+                P.updatePageIndicator();
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /* === MULTI-PAGE: set halaman inherit dari master === */
+    P.setPageInheritFrom = function(pageId, masterPageId) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        // Validasi: masterPageId harus null ATAU page dengan isMaster=true
+        if (masterPageId) {
+            var master = null;
+            for (var i = 0; i < project.pages.length; i++) {
+                if (project.pages[i].id === masterPageId && project.pages[i].isMaster) { master = project.pages[i]; break; }
+            }
+            if (!master) { P.flash('Halaman target bukan master page'); return false; }
+            // Tidak boleh inherit dari diri sendiri
+            if (masterPageId === pageId) { P.flash('Tidak bisa inherit dari diri sendiri'); return false; }
+        }
+        for (var j = 0; j < project.pages.length; j++) {
+            if (project.pages[j].id === pageId) {
+                project.pages[j].inheritFrom = masterPageId || null;
+                project.modifiedAt = Date.now();
+                P.saveProjects();
+                P.syncMasterToPage(pageId);
+                P.renderPagePanel();
+                if (pageId === P.STATE.currentPageId) {
+                    P.loadFromProject();
+                    P.render();
+                }
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /* === MULTI-PAGE: list semua master page di project aktif === */
+    P.listMasterPages = function() {
+        if (!P.STATE.currentProjectId) return [];
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return [];
+        return project.pages.filter(function(p) { return p.isMaster; }).map(function(p) {
+            return { id: p.id, name: p.name };
+        });
+    };
+
+    /* === MULTI-PAGE: sync blocks dari master ke page yang inherit === */
+    /* v115: dukung block-level override. Block dengan _inherited === false TIDAK diupdate. */
+    P.syncMasterToPage = function(pageId) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        var page = null;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === pageId) { page = project.pages[i]; break; }
+        }
+        if (!page || !page.inheritFrom) return false;
+        var master = null;
+        for (var j = 0; j < project.pages.length; j++) {
+            if (project.pages[j].id === page.inheritFrom && project.pages[j].isMaster) { master = project.pages[j]; break; }
+        }
+        if (!master) return false;
+
+        // Strategy: walk both trees depth-first in parallel by position.
+        // For each block in current page tree:
+        //   - If block._inherited === false → keep (local override or local addition)
+        //   - Else → replace with corresponding block from master (preserve local block ID, set _inherited=true, _originBlockId=master block id)
+        // Master blocks beyond child count → append to child's region (with _inherited=true)
+        // Child blocks beyond master count → leave as-is (user additions)
+
+        var newTree = P.deepCopy(master.tree);
+        P.beriIdBaruRegion(newTree);
+        // Walk newTree, mark all blocks as _inherited=true and save _originBlockId
+        (function walkMarkInherited(node) {
+            if (node.blocks) {
+                node.blocks.forEach(function(b) {
+                    b._inherited = true;
+                    b._originBlockId = b.id;  // save as origin (after beriIdBaruRegion, id is new)
+                });
+            }
+            if (node.children) node.children.forEach(walkMarkInherited);
+        })(newTree);
+
+        // Walk current child tree, collect blocks with _inherited === false (overrides + local additions)
+        // Match by position path: e.g. "children[0].blocks[2]"
+        var childOverrides = {};  // path → block data
+        var childAdditions = {};  // regionPath → array of extra blocks (local additions beyond master)
+        (function collectOverrides(node, path) {
+            if (node.blocks) {
+                for (var bi = 0; bi < node.blocks.length; bi++) {
+                    var b = node.blocks[bi];
+                    if (b._inherited === false) {
+                        // Override or local addition
+                        var bpath = path + '.blocks[' + bi + ']';
+                        childOverrides[bpath] = b;
+                    }
+                }
+            }
+            if (node.children) {
+                node.children.forEach(function(c, ci) {
+                    collectOverrides(c, path + '.children[' + ci + ']');
+                });
+            }
+        })(page.tree, '');
+
+        // Apply overrides ke newTree
+        (function applyOverrides(node, path) {
+            if (node.blocks) {
+                for (var bi = 0; bi < node.blocks.length; bi++) {
+                    var bpath = path + '.blocks[' + bi + ']';
+                    if (childOverrides[bpath]) {
+                        // Replace this block with override (keep override's local id, mark _inherited=false)
+                        var override = P.deepCopy(childOverrides[bpath]);
+                        override._inherited = false;
+                        node.blocks[bi] = override;
+                    }
+                }
+            }
+            if (node.children) {
+                node.children.forEach(function(c, ci) {
+                    applyOverrides(c, path + '.children[' + ci + ']');
+                });
+            }
+        })(newTree, '');
+
+        page.tree = newTree;
+        page.customCSS = P.deepCopy(master.customCSS || {});
+        return true;
+    };
+
+    /* === Unlock block inherited → jadi local override === */
+    P.unlockBlockOverride = function(regionId, blockId) {
+        var region = P.getById(regionId);
+        if (!region || !region.blocks) return false;
+        for (var i = 0; i < region.blocks.length; i++) {
+            if (region.blocks[i].id === blockId) {
+                region.blocks[i]._inherited = false;
+                P.save();
+                P.renderBlocks();
+                P.renderPanel();
+                P.flash('Block di-unlock — sekarang bisa diedit (override lokal)');
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /* === Reset block override → kembali ke versi master === */
+    P.resetBlockOverride = function(regionId, blockId) {
+        var page = P.getCurrentPage();
+        if (!page || !page.inheritFrom) {
+            P.flash('Halaman tidak inherit dari master');
+            return false;
+        }
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        var master = null;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === page.inheritFrom && project.pages[i].isMaster) {
+                master = project.pages[i];
+                break;
+            }
+        }
+        if (!master) return false;
+        // Find block in current tree, get its _originBlockId
+        var region = P.getById(regionId);
+        if (!region || !region.blocks) return false;
+        var block = null;
+        for (var j = 0; j < region.blocks.length; j++) {
+            if (region.blocks[j].id === blockId) { block = region.blocks[j]; break; }
+        }
+        if (!block || !block._originBlockId) {
+            P.flash('Block tidak punya origin master');
+            return false;
+        }
+        // Find master block by _originBlockId (depth-first walk)
+        var masterBlock = null;
+        (function walk(node) {
+            if (masterBlock) return;
+            if (node.blocks) {
+                for (var k = 0; k < node.blocks.length; k++) {
+                    if (node.blocks[k].id === block._originBlockId) {
+                        masterBlock = node.blocks[k];
+                        return;
+                    }
+                }
+            }
+            if (node.children) node.children.forEach(walk);
+        })(master.tree);
+        if (!masterBlock) {
+            P.flash('Block master tidak ditemukan (mungkin sudah dihapus di master)');
+            return false;
+        }
+        // Replace block content with master's (preserve local id)
+        var newBlock = P.deepCopy(masterBlock);
+        newBlock.id = block.id;  // keep local id
+        newBlock._inherited = true;
+        newBlock._originBlockId = masterBlock.id;
+        // Replace in region.blocks
+        for (var m = 0; m < region.blocks.length; m++) {
+            if (region.blocks[m].id === blockId) {
+                region.blocks[m] = newBlock;
+                break;
+            }
+        }
+        P.save();
+        P.renderBlocks();
+        P.renderPanel();
+        P.flash('Block di-reset ke versi master');
+        return true;
+    };
+
+    /* === MULTI-PAGE: propagate master ke semua page yang inherit === */
+    P.propagateMaster = function(masterPageId) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        var needReload = false;
+        project.pages.forEach(function(p) {
+            if (p.inheritFrom === masterPageId) {
+                P.syncMasterToPage(p.id);
+                if (p.id === P.STATE.currentPageId) needReload = true;
+            }
+        });
+        if (needReload) {
+            P.loadFromProject();
+            P.render();
+        }
+        return true;
+    };
+
+    /* === MULTI-PAGE: detach page dari master (break link, keep blocks lokal) === */
+    P.detachPageFromMaster = function(pageId) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === pageId) {
+                if (!project.pages[i].inheritFrom) { P.flash('Halaman tidak terkait master'); return false; }
+                project.pages[i].inheritFrom = null;
+                project.modifiedAt = Date.now();
+                P.saveProjects();
+                P.renderPagePanel();
+                P.flash('Halaman dilepas dari master — blocks tetap ada secara lokal');
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /* === MULTI-PAGE: hapus halaman === */
+    P.deletePage = function(pageId) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        // Minimal 1 halaman
+        if (project.pages.length <= 1) {
+            P.flash('Minimal 1 halaman harus ada');
+            return false;
+        }
+        // Hapus
+        var idx = -1;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === pageId) { idx = i; break; }
+        }
+        if (idx < 0) return false;
+        project.pages.splice(idx, 1);
+        // Kalau hapus halaman aktif, switch ke halaman pertama
+        if (P.STATE.currentPageId === pageId) {
+            P.STATE.currentPageId = project.pages[0].id;
+            project.currentPageId = project.pages[0].id;
+            P.loadFromProject();
+            P.render();
+        }
+        P.saveProjects();
+        P.renderPanel();
+        if (P.updatePageIndicator) P.updatePageIndicator();
+        return true;
+    };
+
+    /* === MULTI-PAGE: duplikat halaman === */
+    P.duplicatePage = function(pageId) {
+        if (!P.STATE.currentProjectId) return null;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return null;
+        // Cari halaman source
+        var src = null;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === pageId) { src = project.pages[i]; break; }
+        }
+        if (!src) return null;
+        // Buat duplikat — PLEK KETIPLEK: tree, customCSS, title, isMaster(=false), dll. Tapi ID baru & nama +suffix
+        var newPageId = P.genPageId();
+        var newPage = {
+            id: newPageId,
+            name: src.name + ' (salinan)',
+            tree: P.deepCopy(src.tree),
+            customCSS: P.deepCopy(src.customCSS),
+            title: src.title || '',  // copy judul juga
+            isMaster: false,  // duplikat TIDAK jadi master (default off, user pilih manual)
+            inheritFrom: src.inheritFrom || null  // pertahankan inherit kalau src inherit
+        };
+        // Beri ID baru ke region di tree duplikat
+        P.beriIdBaruRegion(newPage.tree);
+        // undo/redo stack TIDAK di-copy (halaman baru mulai dengan stack kosong)
+        project.pages.push(newPage);
+        P.saveProjects();
+        P.renderPanel();
+        return newPageId;
+    };
+
+    /* === MULTI-PAGE: rename halaman === */
+    P.renamePage = function(pageId, namaBaru) {
+        if (!P.STATE.currentProjectId) return false;
+        var project = P.STATE.projects[P.STATE.currentProjectId];
+        if (!project || !project.pages) return false;
+        for (var i = 0; i < project.pages.length; i++) {
+            if (project.pages[i].id === pageId) {
+                project.pages[i].name = namaBaru;
+                P.saveProjects();
+                P.renderPanel();
+                return true;
+            }
+        }
+        return false;
+    };
+
+    /* === MULTI-PAGE: dapatkan nama halaman aktif === */
+    P.getCurrentPageName = function() {
+        var page = P.getCurrentPage();
+        return page ? page.name : '';
     };
 
     P.newProject = function(nama, templateKey) {
@@ -526,18 +1158,25 @@ var P = P || {};
             settings = P.deepCopy(P.TEMPLATES[templateKey].settings || P.defaultSettings());
         }
 
+        var pageId = P.genPageId();
         var project = {
             id: projectId,
             name: nama || 'Proyek tanpa judul',
-            tree: tree,
-            customCSS: {},
-            cssExternal: [],  // [{ url, status, error, classes, categories, errors }]
+            pages: [{
+                id: pageId,
+                name: 'Beranda',
+                tree: tree,
+                customCSS: {}
+            }],
+            currentPageId: pageId,
+            cssExternal: [],
             settings: settings,
             createdAt: Date.now(),
             modifiedAt: Date.now()
         };
         P.STATE.projects[projectId] = project;
         P.STATE.currentProjectId = projectId;
+        P.STATE.currentPageId = pageId;
         P.saveProjects();
         P.loadFromProject();
         P.render();
@@ -552,6 +1191,9 @@ var P = P || {};
             P.syncToProject();
         }
         P.STATE.currentProjectId = projectId;
+        // Set currentPageId dari project
+        var project = P.STATE.projects[projectId];
+        P.STATE.currentPageId = project.currentPageId || (project.pages && project.pages.length > 0 ? project.pages[0].id : null);
         P.saveProjects();
         P.loadFromProject();
         P.render();
@@ -590,11 +1232,23 @@ var P = P || {};
         P.syncToProject();
         var src = P.STATE.projects[P.STATE.currentProjectId];
         var projectId = P.genProjectId();
+        // Duplikat semua halaman
+        var newPages = src.pages.map(function(page) {
+            var newPageId = P.genPageId();
+            var newPage = {
+                id: newPageId,
+                name: page.name,
+                tree: P.deepCopy(page.tree),
+                customCSS: P.deepCopy(page.customCSS)
+            };
+            P.beriIdBaruRegion(newPage.tree);
+            return newPage;
+        });
         var project = {
             id: projectId,
             name: namaBaru || (src.name + ' (salinan)'),
-            tree: P.deepCopy(src.tree),
-            customCSS: P.deepCopy(src.customCSS),
+            pages: newPages,
+            currentPageId: newPages[0].id,
             cssExternal: P.deepCopy(src.cssExternal || []),
             settings: P.deepCopy(src.settings),
             createdAt: Date.now(),
@@ -602,6 +1256,7 @@ var P = P || {};
         };
         P.STATE.projects[projectId] = project;
         P.STATE.currentProjectId = projectId;
+        P.STATE.currentPageId = newPages[0].id;
         P.saveProjects();
         P.loadFromProject();
         return projectId;
@@ -627,12 +1282,15 @@ var P = P || {};
         var list = [];
         Object.keys(P.STATE.projects).forEach(function (id) {
             var p = P.STATE.projects[id];
+            // Migrate kalau belum multi-page
+            if (!p.pages) P.migrateProjectToPages(p);
             list.push({
                 id: p.id,
                 name: p.name,
                 createdAt: p.createdAt,
                 modifiedAt: p.modifiedAt,
-                regionCount: P.countRegions(p.tree)
+                regionCount: p.pages && p.pages[0] ? P.countRegions(p.pages[0].tree) : 0,
+                pageCount: p.pages ? p.pages.length : 0
             });
         });
         list.sort(function (a, b) {
@@ -642,9 +1300,14 @@ var P = P || {};
     };
 
     P.applyTemplate = function(templateKey) {
+        // Default behavior: apply ke halaman aktif (backward compat)
+        return P.applyTemplateToCurrentPage(templateKey);
+    };
+
+    /* === Apply template ke halaman aktif saja === */
+    P.applyTemplateToCurrentPage = function(templateKey) {
         if (!P.TEMPLATES || !P.TEMPLATES[templateKey]) return false;
         var template = P.TEMPLATES[templateKey];
-        // Keluar mode edit dulu supaya editMode.regionId tidak stale
         if (typeof P.keluarModeEdit === 'function') P.keluarModeEdit();
         P.pushUndo();
         P.STATE.tree = P.deepCopy(template.tree);
@@ -663,6 +1326,168 @@ var P = P || {};
         P.saveProjects();
         P.render();
         return true;
+    };
+
+    /* === Apply template → buat proyek baru dengan semua halaman dari template === */
+    P.applyTemplateAsNewProject = function(templateKey, projectName) {
+        if (!P.TEMPLATES || !P.TEMPLATES[templateKey]) return null;
+        var template = P.TEMPLATES[templateKey];
+        if (typeof P.keluarModeEdit === 'function') P.keluarModeEdit();
+        // Buat project baru
+        var projectId = P.genProjectId();
+        var pageId = P.genPageId();
+        // Template bisa punya pages array (multi-page) atau single tree (legacy)
+        var pages = [];
+        if (template.pages && template.pages.length > 0) {
+            // Multi-page template
+            template.pages.forEach(function (tplPage, i) {
+                var pId = P.genPageId();
+                var newPage = {
+                    id: pId,
+                    name: tplPage.name || ('Halaman ' + (i + 1)),
+                    tree: P.deepCopy(tplPage.tree),
+                    customCSS: P.deepCopy(tplPage.customCSS || {})
+                };
+                P.beriIdBaruRegion(newPage.tree);
+                pages.push(newPage);
+            });
+        } else {
+            // Single-tree template (legacy)
+            var newPage = {
+                id: pageId,
+                name: 'Beranda',
+                tree: P.deepCopy(template.tree),
+                customCSS: {}
+            };
+            P.beriIdBaruRegion(newPage.tree);
+            pages.push(newPage);
+        }
+        var settings = P.defaultSettings();
+        if (template.settings) {
+            settings = P.deepCopy(template.settings);
+        }
+        var project = {
+            id: projectId,
+            name: projectName || (template.nama || 'Proyek dari Template'),
+            pages: pages,
+            currentPageId: pages[0].id,
+            cssExternal: [],
+            settings: settings,
+            createdAt: Date.now(),
+            modifiedAt: Date.now()
+        };
+        P.STATE.projects[projectId] = project;
+        P.STATE.currentProjectId = projectId;
+        P.STATE.currentPageId = pages[0].id;
+        P.saveProjects();
+        P.loadFromProject();
+        if (P.applySettingsKeEditor) P.applySettingsKeEditor();
+        P.render();
+        if (P.updatePageIndicator) P.updatePageIndicator();
+        return projectId;
+    };
+
+    /* === Apply template → buat DOKUMEN baru (single page, no multi-page wrapper) === */
+    P.applyTemplateAsNewDocument = function(templateKey, documentName) {
+        if (!P.TEMPLATES || !P.TEMPLATES[templateKey]) return null;
+        var template = P.TEMPLATES[templateKey];
+        if (typeof P.keluarModeEdit === 'function') P.keluarModeEdit();
+        var projectId = P.genProjectId();
+        var pageId = P.genPageId();
+        // Pakai tree dari template (atau pages[0] kalau multi-page template)
+        var tplTree;
+        var tplCustomCSS = {};
+        if (template.pages && template.pages.length > 0) {
+            tplTree = template.pages[0].tree;
+            tplCustomCSS = template.pages[0].customCSS || {};
+        } else {
+            tplTree = template.tree;
+        }
+        var newPage = {
+            id: pageId,
+            name: 'Beranda',
+            tree: P.deepCopy(tplTree),
+            customCSS: P.deepCopy(tplCustomCSS)
+        };
+        P.beriIdBaruRegion(newPage.tree);
+        var settings = P.defaultSettings();
+        if (template.settings) {
+            settings = P.deepCopy(template.settings);
+        }
+        var project = {
+            id: projectId,
+            name: documentName || (template.nama || 'Dokumen dari Template'),
+            pages: [newPage],
+            currentPageId: pageId,
+            cssExternal: [],
+            settings: settings,
+            createdAt: Date.now(),
+            modifiedAt: Date.now()
+        };
+        P.STATE.projects[projectId] = project;
+        P.STATE.currentProjectId = projectId;
+        P.STATE.currentPageId = pageId;
+        P.saveProjects();
+        P.loadFromProject();
+        if (P.applySettingsKeEditor) P.applySettingsKeEditor();
+        P.render();
+        if (P.updatePageIndicator) P.updatePageIndicator();
+        return projectId;
+    };
+
+    /* === Apply template → buat PROYEK baru dengan N halaman (template di-apply ke tiap halaman) === */
+    P.applyTemplateAsNewProjectMultiPage = function(templateKey, projectName, pageCount) {
+        if (!P.TEMPLATES || !P.TEMPLATES[templateKey]) return null;
+        var template = P.TEMPLATES[templateKey];
+        if (typeof P.keluarModeEdit === 'function') P.keluarModeEdit();
+        var projectId = P.genProjectId();
+        // Buat pageCount halaman, masing-masing apply template
+        // Kalau template multi-page, pakai pages[0] (atau cycling kalau pageCount > tpl.pages.length)
+        var pages = [];
+        var tplPages = (template.pages && template.pages.length > 0) ? template.pages : [{ tree: template.tree, customCSS: {} }];
+        for (var i = 0; i < pageCount; i++) {
+            var tplPage = tplPages[i % tplPages.length];
+            var pId = P.genPageId();
+            var pageName;
+            if (pageCount === 1) {
+                pageName = 'Beranda';
+            } else if (i === 0) {
+                pageName = 'Beranda';
+            } else {
+                pageName = 'Halaman ' + (i + 1);
+            }
+            var newPage = {
+                id: pId,
+                name: pageName,
+                tree: P.deepCopy(tplPage.tree),
+                customCSS: P.deepCopy(tplPage.customCSS || {})
+            };
+            P.beriIdBaruRegion(newPage.tree);
+            pages.push(newPage);
+        }
+        var settings = P.defaultSettings();
+        if (template.settings) {
+            settings = P.deepCopy(template.settings);
+        }
+        var project = {
+            id: projectId,
+            name: projectName || (template.nama || 'Proyek dari Template'),
+            pages: pages,
+            currentPageId: pages[0].id,
+            cssExternal: [],
+            settings: settings,
+            createdAt: Date.now(),
+            modifiedAt: Date.now()
+        };
+        P.STATE.projects[projectId] = project;
+        P.STATE.currentProjectId = projectId;
+        P.STATE.currentPageId = pages[0].id;
+        P.saveProjects();
+        P.loadFromProject();
+        if (P.applySettingsKeEditor) P.applySettingsKeEditor();
+        P.render();
+        if (P.updatePageIndicator) P.updatePageIndicator();
+        return projectId;
     };
 
     P.beriIdBaruRegion = function(node) {
@@ -685,17 +1510,24 @@ var P = P || {};
             var legacyCSS = localStorage.getItem(P.STATE.legacyCustomCSSKey);
             if (legacyTree && Object.keys(P.STATE.projects).length === 0) {
                 var projectId = P.genProjectId();
+                var pageId = P.genPageId();
                 P.STATE.projects[projectId] = {
                     id: projectId,
                     name: 'Proyek lama',
-                    tree: JSON.parse(legacyTree),
-                    customCSS: legacyCSS ? JSON.parse(legacyCSS) : {},
+                    pages: [{
+                        id: pageId,
+                        name: 'Beranda',
+                        tree: JSON.parse(legacyTree),
+                        customCSS: legacyCSS ? JSON.parse(legacyCSS) : {}
+                    }],
+                    currentPageId: pageId,
                     cssExternal: [],
                     settings: P.defaultSettings(),
                     createdAt: Date.now(),
                     modifiedAt: Date.now()
                 };
                 P.STATE.currentProjectId = projectId;
+                P.STATE.currentPageId = pageId;
                 P.saveProjects();
                 localStorage.removeItem(P.STATE.legacyTreeKey);
                 localStorage.removeItem(P.STATE.legacyCustomCSSKey);
@@ -807,6 +1639,14 @@ var P = P || {};
                         var cssKustomClass = P.getBlockCssKustomClass(block);
                         if (cssKustomClass) blockClasses.push(cssKustomClass);
                     }
+                    // v137: Tambah block.classes (untuk gradient class dll)
+                    if (block.classes && block.classes.length > 0) {
+                        for (var bcIdx = 0; bcIdx < block.classes.length; bcIdx++) {
+                            if (blockClasses.indexOf(block.classes[bcIdx]) < 0) {
+                                blockClasses.push(block.classes[bcIdx]);
+                            }
+                        }
+                    }
 
                     if (blockClasses.length > 0) {
                         be += ' class="' + blockClasses.join(' ') + '"';
@@ -908,6 +1748,10 @@ var P = P || {};
             if (!css || !css.className) return;
             var cls = css.className;
             var rules = css.rules || {};
+
+            // v134: Skip gradient entries di sini (di-handle terpisah di bawah)
+            if (css.isGradient) return;
+
             var node = P.getById(rid);
             // Tentukan selector: tag.region.classes.kelas_kustom
             // Mis. div.kolom-4.kustom-r3 — hanya region spesifik ini yang kena rule.
@@ -953,6 +1797,29 @@ var P = P || {};
                     }
                 });
             }
+        });
+
+        // === v134: GRADIENT RULES ===
+        // Generate CSS rules untuk gradient classes (.gard-*)
+        var hasGradient = false;
+        Object.keys(P.STATE.customCSS).forEach(function (rid) {
+            var css = P.STATE.customCSS[rid];
+            if (!css || !css.isGradient) return;
+            if (!hasGradient) {
+                lines.push('/* === Gradient classes === */');
+                hasGradient = true;
+            }
+            var cls = css.className;
+            var rules = css.rules || {};
+            lines.push('.' + cls + ' {');
+            Object.keys(rules).forEach(function (prop) {
+                var val = rules[prop];
+                if (val) {
+                    lines.push('    ' + prop + ': ' + val + ';');
+                }
+            });
+            lines.push('}');
+            lines.push('');
         });
 
         // === BLOCK STYLE RULES ===
@@ -1077,3 +1944,22 @@ var P = P || {};
         }, 2500);
     }
 
+
+/* === v132: Cleanup — hapus warna default yang terlanjur masuk ke custom colors === */
+P.cleanupCustomColors = function() {
+    var paletteHexes = ['FF8080','FF3232','B30000','FFA080','FF6432','C83200','FFE180','FFC832','C89600','B4E664','80C832','4B9600','78C8F0','32A5E1','0073B4','B482F0','823CDC','500AAA','DCB4E6','B978C8','874696','FFFFFF','E1E6EB','A0AAB4','5A646E','3C4650','1E2832','0A141E'];
+    var colors = P.getCustomColors();
+    var cleaned = colors.filter(function(hex) {
+        // v138: Keep gradient entries (#GRAD:*)
+        if (hex.indexOf('#GRAD:') === 0) return true;
+        var hexNoHash = hex.replace('#', '').toUpperCase();
+        return paletteHexes.indexOf(hexNoHash) < 0;
+    });
+    if (cleaned.length !== colors.length) {
+        try {
+            localStorage.setItem('pondasi.customColors', JSON.stringify(cleaned));
+        } catch (e) {}
+        return colors.length - cleaned.length;
+    }
+    return 0;
+};

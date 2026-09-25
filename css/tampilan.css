@@ -52,11 +52,11 @@
 /* --- Warna utama --- */
 /* Primary: cyan pondasi #00AAD4 */
 /* Sekunder: hijau pondasi #00B482 */
-/* Latar: #FAFAFA, Permukaan: #FFFFFF */
+/* Latar: #F5F7FA, Permukaan: #FFFFFF */
 /* Teks: #1E2832, Teks sekunder: #5A646E */
 
 /* --- Warna dasar tema gelap --- */
-/* Latar: #121212, Permukaan: #1E2832 */
+/* Latar: #0A141E, Permukaan: #1E2832 */
 /* Teks: #FFFFFF, Teks sekunder: #A0AAB4 */
 
 /* ==========================================================================
@@ -140,22 +140,22 @@
     border-left: 4px solid #A0AAB4;
 }
 .pesan-info {
-    background-color: #E1F6FA;
+    background-color: #FFFFFF;
     border-left-color: #00AAD4;
     color: #0073B4;
 }
 .pesan-sukses {
-    background-color: #E5F8DC;
+    background-color: #FFFFFF;
     border-left-color: #80C832;
     color: #4B9600;
 }
 .pesan-peringatan {
-    background-color: #FFF4D6;
+    background-color: #FFFFFF;
     border-left-color: #FFC832;
     color: #C89600;
 }
 .pesan-error {
-    background-color: #FFE0E0;
+    background-color: #FFFFFF;
     border-left-color: #FF3232;
     color: #B30000;
 }
@@ -165,19 +165,19 @@
     border-left-color: #5A646E;
 }
 [data-tema="gelap"] .pesan-info {
-    background-color: #1A2A34;
+    background-color: #0A141E;
     color: #78C8F0;
 }
 [data-tema="gelap"] .pesan-sukses {
-    background-color: #1A2A20;
+    background-color: #0A141E;
     color: #B4E664;
 }
 [data-tema="gelap"] .pesan-peringatan {
-    background-color: #2A2614;
+    background-color: #0A141E;
     color: #FFE180;
 }
 [data-tema="gelap"] .pesan-error {
-    background-color: #2A1414;
+    background-color: #0A141E;
     color: #FF8080;
 }
 

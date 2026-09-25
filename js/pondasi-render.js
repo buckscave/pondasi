@@ -81,7 +81,12 @@ var P = P || {};
             if (node.blocks && node.blocks.length > 0) {
                 node.blocks.forEach(function (block) {
                     var be = document.createElement(block.tag);
-                    if (block.kelas) be.className = block.kelas;
+                    // v137: Gabungkan block.kelas + block.classes (untuk gradient class)
+                    var cls = block.kelas || '';
+                    if (block.classes && block.classes.length > 0) {
+                        cls += (cls ? ' ' : '') + block.classes.join(' ');
+                    }
+                    if (cls) be.className = cls;
                     if (block.isi) be.innerHTML = block.isi;
                     if (block.properti) {
                         for (var pk in block.properti) {
@@ -89,6 +94,10 @@ var P = P || {};
                                 be.setAttribute(pk, block.properti[pk]);
                             }
                         }
+                    }
+                    // v142: Apply block.style (inline CSS override) — sama seperti renderBlocks di edit mode
+                    if (block.style && P.terapkanStyleBlock) {
+                        P.terapkanStyleBlock(be, block);
                     }
                     e.appendChild(be);
                 });
@@ -302,12 +311,15 @@ var P = P || {};
 
         // Update breadcrumb
         P.updateBreadcrumb();
+
+        // v139: Re-inject gradient <style> tags (hilang setelah DOM rebuild)
+        if (P.reinjectGradientStyles) P.reinjectGradientStyles();
     }
 
     P.setStatusline = function(text) {
-        var el = document.getElementById('statusline');
-        if (!el) return;
-        el.textContent = text;
+        // Statusline dihapus dari footer di v111 — pakai flash untuk pesan transient
+        // Fungsi ini tetap dipertahankan sebagai no-op agar panggilan lama tidak error
+        // (banyak file JS lain masih memanggil P.setStatusline)
     }
 
     P.updateBreadcrumb = function() {
@@ -328,6 +340,7 @@ var P = P || {};
         }
 
         // Render
+        var activeItem = null;
         path.forEach(function (n, i) {
             if (i > 0) {
                 var sep = P.el('span', { class: 'pondasi-breadcrumb-sep', text: '>' });
@@ -345,7 +358,47 @@ var P = P || {};
                 P.render();
             });
             bc.appendChild(item);
+            if (n.id === P.STATE.activeId) activeItem = item;
         });
+
+        // Auto-scroll ke node aktif + update tombol panah
+        setTimeout(function () {
+            if (activeItem && activeItem.scrollIntoView) {
+                // Scroll ke active item tanpa animasi vertical (horizontal only)
+                var bcRect = bc.getBoundingClientRect();
+                var itemRect = activeItem.getBoundingClientRect();
+                if (itemRect.left < bcRect.left || itemRect.right > bcRect.right) {
+                    bc.scrollLeft = activeItem.offsetLeft - bc.clientWidth / 2 + activeItem.clientWidth / 2;
+                }
+            }
+            P.updateBreadcrumbScrollButtons();
+        }, 0);
+    }
+
+    /* === Update visibility tombol panah breadcrumb === */
+    P.updateBreadcrumbScrollButtons = function() {
+        var bc = document.getElementById('breadcrumb');
+        if (!bc) return;
+        var btnLeft = document.getElementById('breadcrumb-scroll-left');
+        var btnRight = document.getElementById('breadcrumb-scroll-right');
+        if (!btnLeft || !btnRight) return;
+        // Bisa scroll kiri?
+        var canLeft = bc.scrollLeft > 4;
+        // Bisa scroll kanan?
+        var canRight = bc.scrollLeft + bc.clientWidth < bc.scrollWidth - 4;
+        if (canLeft) btnLeft.removeAttribute('hidden');
+        else btnLeft.setAttribute('hidden', '');
+        if (canRight) btnRight.removeAttribute('hidden');
+        else btnRight.setAttribute('hidden', '');
+    }
+
+    /* === Scroll breadcrumb dengan tombol panah === */
+    P.scrollBreadcrumb = function(direction) {
+        var bc = document.getElementById('breadcrumb');
+        if (!bc) return;
+        var step = 80;  // pixel per klik
+        bc.scrollLeft += direction === 'right' ? step : -step;
+        setTimeout(P.updateBreadcrumbScrollButtons, 50);
     }
 
     P.countRegions = function(node) {

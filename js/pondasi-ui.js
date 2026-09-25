@@ -182,74 +182,57 @@ var P = P || {};
         P.setStatusline(teks);
     }
 
-    // Toggle preview — tampilkan halaman HTML hasil dalam iframe overlay
+    // Toggle preview — buka di tab baru via preview.html
     P.previewVisible = false;
     P.togglePreview = function() {
-        P.previewVisible = !P.previewVisible;
         var btn = document.getElementById('btn-preview');
-        if (P.previewVisible) {
-            // Generate HTML dari tree + buka overlay preview
-            var html = P.buatHTMLPreview();
-            var overlay = document.getElementById('preview-overlay');
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.id = 'preview-overlay';
-                overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:#FFFFFF;';
-                document.body.appendChild(overlay);
-            }
-            // Buat iframe
-            overlay.innerHTML = '';
-            var iframe = document.createElement('iframe');
-            iframe.style.cssText = 'width:100%;height:100%;border:0;';
-            overlay.appendChild(iframe);
-            iframe.contentDocument.open();
-            iframe.contentDocument.write(html);
-            iframe.contentDocument.close();
-            // Tombol tutup
-            var tutup = document.createElement('button');
-            tutup.style.cssText = 'position:fixed;top:8px;right:8px;z-index:100000;width:40px;height:40px;border-radius:50%;background:#1E2832;color:#FFFFFF;border:0;font-size:18px;cursor:pointer;';
-            tutup.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-            tutup.onclick = function () { P.togglePreview(); };
-            overlay.appendChild(tutup);
-            overlay.style.display = 'block';
-            if (btn) btn.classList.add('pondasi-floating-btn-aktif');
-            P.setStatusline('Preview aktif — klik × untuk kembali');
-        } else {
-            var ov = document.getElementById('preview-overlay');
-            if (ov) ov.style.display = 'none';
-            if (btn) btn.classList.remove('pondasi-floating-btn-aktif');
-            P.setStatusline('preview ditutup');
+        // Generate HTML lengkap dari tree
+        var html = P.buatHTMLPreview();
+        // Simpan ke sessionStorage
+        try {
+            sessionStorage.setItem('pondasi-preview-html', html);
+        } catch (e) {
+            P.flash('Gagal menyimpan preview: ' + (e.message || 'sessionStorage penuh'));
+            return;
         }
+        // Buka preview.html di tab baru
+        var base = window.location.href.replace(/[^/]*$/, '');
+        window.open(base + 'preview.html', '_blank');
+        if (btn) btn.classList.add('pondasi-floating-btn-aktif');
+        P.setStatusline('Preview dibuka di tab baru');
+        setTimeout(function() {
+            if (btn) btn.classList.remove('pondasi-floating-btn-aktif');
+        }, 1000);
     }
 
-    // Buat HTML lengkap dari tree untuk preview — sertakan settings (tema, dimensi, font, css)
+    // Buat HTML lengkap dari tree untuk preview — buka di tab baru, path absolute
     P.buatHTMLPreview = function() {
         var settings = P.getProjectSettings();
-        // Generate CSS link tags dari tema aktif (pakai P.Tema kalau ada, fallback ke hardcoded)
+        // Base path = lokasi pondasi (window.location.origin + path ke folder pondasi)
+        var base = window.location.href.replace(/[^/]*$/, '');
+        // Generate CSS link tags — pakai absolute path supaya Blob URL bisa akses
         var cssLinks = '';
-        if (P.Tema && P.Tema.generateLinkTags) {
-            cssLinks = P.Tema.generateLinkTags();
-        } else {
-            // Fallback: hardcode path tema default
-            var temaBerkas = [
-                'css/pondasi.css',
-                'css/tampilan.css',
-                'css/tampilan-teks.css',
-                'css/tampilan-teks-tambahan.css',
-                'css/tampilan-daftar.css',
-                'css/tampilan-media.css',
-                'css/tampilan-tabel.css',
-                'css/tampilan-tombol.css',
-                'css/tampilan-form.css',
-                'css/tampilan-kontainer.css',
-                'css/tampilan-navigasi.css',
-                'css/tampilan-feedback.css',
-                'css/tampilan-lainnya.css'
-            ];
-            temaBerkas.forEach(function (b) {
-                cssLinks += '<link rel="stylesheet" href="' + b + '">';
-            });
-        }
+        var semuaBerkas = [
+            'css/pondasi.css',
+            'css/tampilan.css',
+            'css/tampilan-teks.css',
+            'css/tampilan-teks-tambahan.css',
+            'css/tampilan-daftar.css',
+            'css/tampilan-media.css',
+            'css/tampilan-tabel.css',
+            'css/tampilan-tombol.css',
+            'css/tampilan-form.css',
+            'css/tampilan-kontainer.css',
+            'css/tampilan-navigasi.css',
+            'css/tampilan-feedback.css',
+            'css/tampilan-lainnya.css',
+            'css/tampilan-tambahan.css',
+            'css/pondasi-aksi.css'
+        ];
+        semuaBerkas.forEach(function (b) {
+            cssLinks += '<link rel="stylesheet" href="' + base + b + '">';
+        });
+        // CSS eksternal dari settings
         if (settings.cssLinks && settings.cssLinks.length > 0) {
             settings.cssLinks.forEach(function (href) {
                 if (href) cssLinks += '<link rel="stylesheet" href="' + href + '">';
@@ -274,7 +257,11 @@ var P = P || {};
             if (settings.lineHeight) sp.push('line-height: ' + settings.lineHeight);
             bodyStyle = ' style="' + sp.join('; ') + '"';
         }
-        return '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">' + cssLinks + customCSS + '</head><body' + bodyAttrs + bodyStyle + '>' + P.serializeNode(P.STATE.tree, 0) + '</body></html>';
+        // Include pondasi-aksi.js + init (selalu include di preview supaya semua aksi bekerja)
+        var aksiScript = '<script src="' + base + 'js/pondasi-aksi.js"></' + 'script>' +
+            '<script>PondasiAksi.init(document);</' + 'script>';
+
+        return '<!DOCTYPE html><html lang="' + (settings.bahasa || 'id') + '"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">' + cssLinks + customCSS + '</head><body' + bodyAttrs + bodyStyle + '>' + P.serializeNode(P.STATE.tree, 0) + aksiScript + '</body></html>';
     }
 
     // Apply/hapus kelas .jarak dari parent region aktif

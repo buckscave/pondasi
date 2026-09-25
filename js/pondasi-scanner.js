@@ -991,3 +991,48 @@ P.Scanner = {
         return errors;
     }
 };
+
+/* === v130: Extract warna dari CSS eksternal user → tambahkan ke custom colors === */
+P.Scanner.extractColorsFromCSS = function(rawText) {
+    if (!rawText) return 0;
+    var hexPattern = /#([0-9a-fA-F]{6})\b|#([0-9a-fA-F]{3})\b/g;
+    var match;
+    var found = [];
+    while ((match = hexPattern.exec(rawText)) !== null) {
+        var hex = match[1] || match[2];
+        if (hex.length === 3) {
+            hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+        }
+        hex = '#' + hex.toUpperCase();
+        if (found.indexOf(hex) < 0) found.push(hex);
+    }
+    var added = 0;
+    for (var i = 0; i < found.length; i++) {
+        if (P.addCustomColor(found[i])) added++;
+    }
+    return added;
+};
+
+/* === v130: Scan semua CSS eksternal di project aktif → extract warna === */
+P.Scanner.scanProjectColors = function() {
+    if (!P.STATE.currentProjectId) return 0;
+    var project = P.STATE.projects[P.STATE.currentProjectId];
+    if (!project || !project.cssExternal) return 0;
+    var totalAdded = 0;
+    project.cssExternal.forEach(function(ext) {
+        if (ext.rawText) {
+            totalAdded += P.Scanner.extractColorsFromCSS(ext.rawText);
+        }
+    });
+    // Juga scan dari cache
+    var cache = P.Scanner.cache.cssExternal;
+    for (var url in cache) {
+        if (cache[url] && cache[url].rawText) {
+            totalAdded += P.Scanner.extractColorsFromCSS(cache[url].rawText);
+        }
+    }
+    if (totalAdded > 0 && P.flash) {
+        P.flash(totalAdded + ' warna dari CSS eksternal ditambahkan ke Warna Pengguna');
+    }
+    return totalAdded;
+};

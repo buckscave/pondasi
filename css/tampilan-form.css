@@ -41,7 +41,7 @@
 }
 .ruas-input input:focus {
     border-bottom: 2px solid #00AAD4;
-    background-color: #E1F6FA;
+    background-color: #FFFFFF;
 }
 
 /* Label melayang */
@@ -403,14 +403,14 @@
 [data-tema="gelap"] .ruas-input input,
 [data-tema="gelap"] .ruas-input textarea,
 [data-tema="gelap"] .ruas-input select {
-    background-color: #2C3640;
+    background-color: #3C4650;
     color: #FFFFFF;
     border-bottom-color: #5A646E;
 }
 [data-tema="gelap"] .ruas-input input:focus,
 [data-tema="gelap"] .ruas-input textarea:focus,
 [data-tema="gelap"] .ruas-input select:focus {
-    background-color: #1A2A34;
+    background-color: #0A141E;
     border-bottom-color: #00AAD4;
 }
 [data-tema="gelap"] .ruas-input label {
@@ -461,7 +461,7 @@
 }
 .langkah-angka input[type="number"]:focus {
     border-color: #00AAD4;
-    background-color: #E1F6FA;
+    background-color: #FFFFFF;
 }
 /* Tombol + dan − */
 .langkah-tombol {
@@ -506,7 +506,7 @@
 
 /* Stepper tema gelap */
 [data-tema="gelap"] .langkah-angka input[type="number"] {
-    background-color: #2C3640;
+    background-color: #3C4650;
     color: #FFFFFF;
     border-color: #5A646E;
 }
@@ -576,7 +576,7 @@
     border-right-color: #5A646E;
 }
 [data-tema="gelap"] .segment-item:hover {
-    background-color: #2C3640;
+    background-color: #3C4650;
 }
 [data-tema="gelap"] .segment-item.segment-aktif {
     background-color: #00AAD4;
@@ -719,7 +719,7 @@
 [data-tema="gelap"] .ruas-input input[type="month"],
 [data-tema="gelap"] .ruas-input input[type="week"],
 [data-tema="gelap"] .ruas-input input[type="datetime-local"] {
-    background-color: #2C3640;
+    background-color: #3C4650;
     color: #FFFFFF;
     border-bottom-color: #5A646E;
 }
@@ -748,7 +748,7 @@
 }
 .ruas-cari input[type="search"]:focus {
     border-color: #00AAD4;
-    background-color: #E1F6FA;
+    background-color: #FFFFFF;
 }
 .ruas-cari:before {
     content: "";
@@ -784,7 +784,7 @@
 
 /* Pencarian tema gelap */
 [data-tema="gelap"] .ruas-cari input[type="search"] {
-    background-color: #2C3640;
+    background-color: #3C4650;
     color: #FFFFFF;
     border-color: #5A646E;
 }

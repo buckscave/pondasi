@@ -1,0 +1,79 @@
+/* PONDASI-AKSI.CSS
+   Styles untuk animasi aksi JavaScript (muncul saat gulir, parallax).
+   Dipakai bersama pondasi-aksi.js.
+*/
+
+/* === MUNCUL SAAT GULIR === */
+.pondasi-aksi-menunggu {
+    opacity: 0;
+    -webkit-transition: opacity 0.6s ease, transform 0.6s ease;
+    -moz-transition: opacity 0.6s ease, transform 0.6s ease;
+    -o-transition: opacity 0.6s ease, transform 0.6s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Fade */
+.pondasi-aksi-menunggu[data-aksi-efek="fade"] {
+    opacity: 0;
+}
+.pondasi-aksi-muncul-fade {
+    opacity: 1 !important;
+}
+
+/* Slide dari bawah */
+.pondasi-aksi-menunggu[data-aksi-efek="slide"] {
+    opacity: 0;
+    -webkit-transform: translateY(2rem);
+    -moz-transform: translateY(2rem);
+    -ms-transform: translateY(2rem);
+    -o-transform: translateY(2rem);
+    transform: translateY(2rem);
+}
+.pondasi-aksi-muncul-slide {
+    opacity: 1 !important;
+    -webkit-transform: translateY(0) !important;
+    -moz-transform: translateY(0) !important;
+    -ms-transform: translateY(0) !important;
+    -o-transform: translateY(0) !important;
+    transform: translateY(0) !important;
+}
+
+/* Zoom */
+.pondasi-aksi-menunggu[data-aksi-efek="zoom"] {
+    opacity: 0;
+    -webkit-transform: scale(0.85);
+    -moz-transform: scale(0.85);
+    -ms-transform: scale(0.85);
+    -o-transform: scale(0.85);
+    transform: scale(0.85);
+}
+.pondasi-aksi-muncul-zoom {
+    opacity: 1 !important;
+    -webkit-transform: scale(1) !important;
+    -moz-transform: scale(1) !important;
+    -ms-transform: scale(1) !important;
+    -o-transform: scale(1) !important;
+    transform: scale(1) !important;
+}
+
+/* Default (tanpa efek spesifik) = fade */
+.pondasi-aksi-menunggu:not([data-aksi-efek]) {
+    opacity: 0;
+}
+.pondasi-aksi-muncul-fade {
+    opacity: 1 !important;
+}
+
+/* === PARALLAX === */
+[data-aksi-scroll="parallax"] {
+    -webkit-transition: transform 0.1s linear;
+    -moz-transition: transform 0.1s linear;
+    -o-transition: transform 0.1s linear;
+    transition: transform 0.1s linear;
+}
+
+/* === BLOCK DINAMIS === */
+[data-dinamis] {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+}

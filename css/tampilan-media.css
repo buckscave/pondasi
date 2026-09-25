@@ -19,7 +19,7 @@
     padding: 0;
     border-radius: 4px;
     overflow: hidden;
-    background-color: #F5F5F5;
+    background-color: #F5F7FA;
 }
 .gambar-bingkai img {
     display: block;
@@ -31,7 +31,7 @@
     padding: 8px 12px;
     font-size: 0.875rem;
     color: #5A646E;
-    background-color: #F5F5F5;
+    background-color: #F5F7FA;
     text-align: center;
 }
 
@@ -59,7 +59,7 @@
 .pemisah {
     display: block;
     border: 0;
-    border-top: 1px solid #E0E0E0;
+    border-top: 1px solid #E1E6EB;
     margin: 16px 0;
     padding: 0;
     height: 0;
@@ -91,15 +91,15 @@
     padding: 32px 16px;
     text-align: center;
     color: #A0AAB4;
-    background-color: #FAFAFA;
-    border: 1px dashed #C8D0DA;
+    background-color: #F5F7FA;
+    border: 1px dashed #E1E6EB;
     border-radius: 4px;
 }
 .kosong .kosong-ikon {
     display: block;
     font-size: 32px;
     margin-bottom: 8px;
-    color: #C8D0DA;
+    color: #E1E6EB;
 }
 .kosong .kosong-judul {
     display: block;
@@ -116,7 +116,7 @@
 /* --- Skeleton loader (placeholder konten loading) --- */
 .skeleton {
     display: block;
-    background-color: #E0E0E0;
+    background-color: #E1E6EB;
     border-radius: 4px;
     height: 16px;
     margin: 8px 0;

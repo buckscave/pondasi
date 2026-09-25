@@ -36,7 +36,7 @@ z-index: 10600;
     float: left;
     background-color: transparent;
     border: 0;
-    color: #E8EDF2;
+    color: #E1E6EB;
     padding: 4px 8px;
     margin: 0;
     border-radius: 3px;
@@ -84,8 +84,8 @@ z-index: 10600;
 
 /* === Tema gelap === */
 body[data-tema="gelap"] .pondasi-floating-toolbar {
-    background-color: #121212;
-    border-color: #2A343E;
+    background-color: #0A141E;
+    border-color: #1E2832;
 }
 
 body[data-tema="gelap"] .pondasi-floating-toolbar button {
@@ -98,10 +98,10 @@ body[data-tema="gelap"] .pondasi-floating-toolbar button:hover {
 }
 
 body[data-tema="gelap"] .pondasi-floating-toolbar button.pondasi-floating-toolbar-aktif {
-    background-color: #5AC8FA;
-    color: #121212;
+    background-color: #00AAD4;
+    color: #0A141E;
 }
 
 body[data-tema="gelap"] .pondasi-floating-toolbar-pemisah {
-    background-color: #2A343E;
+    background-color: #1E2832;
 }

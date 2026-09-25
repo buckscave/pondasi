@@ -13,7 +13,7 @@
 .pondasi-breadcrumb-wrapper {
     display: block;
     padding: 6px 8px;
-    background-color: #2A343E;
+    background-color: #1E2832;
     border-bottom: 1px solid #3C4650;
 }
 
@@ -86,7 +86,7 @@
 
 .pondasi-properti-seksi {
     display: block;
-    border-bottom: 1px solid #2A343E;
+    border-bottom: 1px solid #1E2832;
 }
 
 .pondasi-properti-seksi:last-child {
@@ -96,7 +96,7 @@
 .pondasi-properti-seksi-header {
     display: block;
     padding: 8px 12px;
-    background-color: #2A343E;
+    background-color: #1E2832;
     cursor: pointer;
     font-size: 0;
     line-height: 0;
@@ -166,7 +166,7 @@ summary:focus {
 .pondasi-properti-seksi-judul {
     display: inline-block;
     vertical-align: middle;
-    color: #5AC8FA;
+    color: #00AAD4;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -213,7 +213,7 @@ summary:focus {
     padding: 4px 8px 0;
     font-size: 0;
     line-height: 0;
-    border-bottom: 1px solid #2A343E;
+    border-bottom: 1px solid #1E2832;
     background-color: #1E2832;
 }
 
@@ -278,7 +278,7 @@ summary:focus {
     display: inline-block;
     vertical-align: middle;
     width: 55%;
-    color: #E8EDF2;
+    color: #E1E6EB;
     font-size: 11px;
     font-family: "Courier New", monospace;
     line-height: 1.4;
@@ -294,19 +294,19 @@ summary:focus {
 .pondasi-properti-section-judul {
     display: block;
     padding: 8px 12px 4px;
-    color: #5AC8FA;
+    color: #00AAD4;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.05em;
     line-height: 1.4;
     text-transform: uppercase;
     background-color: #1E2832;
-    border-bottom: 1px solid #2A343E;
+    border-bottom: 1px solid #1E2832;
 }
 
 /* Kelas grup — details per kelas */
 .pondasi-properti-kelas-grup {
-    border-bottom: 1px solid #2A343E;
+    border-bottom: 1px solid #1E2832;
 }
 
 .pondasi-properti-kelas-grup > summary {
@@ -320,7 +320,7 @@ summary:focus {
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
-    background-color: #2A343E;
+    background-color: #1E2832;
     border: 0;
     list-style: none;
 }
@@ -346,7 +346,7 @@ summary:focus {
 
 .pondasi-properti-kelas-grup > summary:hover {
     background-color: #3C4650;
-    color: #5AC8FA;
+    color: #00AAD4;
 }
 
 .pondasi-properti-kelas-nama {
@@ -369,7 +369,7 @@ summary:focus {
     padding: 4px 8px 0;
     font-size: 0;
     line-height: 0;
-    border-bottom: 1px solid #2A343E;
+    border-bottom: 1px solid #1E2832;
     background-color: #1E2832;
 }
 
@@ -499,7 +499,7 @@ summary:focus {
 .pondasi-tambah-prop-head {
     display: block;
     padding: 8px 12px;
-    background-color: #2A343E;
+    background-color: #1E2832;
     border-bottom: 1px solid #3C4650;
     font-size: 0;
     line-height: 0;
@@ -541,7 +541,7 @@ summary:focus {
 }
 
 .pondasi-tambah-prop-close:hover {
-    background-color: #E53935;
+    background-color: #FF3232;
     color: #FFFFFF;
 }
 
@@ -589,8 +589,8 @@ summary:focus {
     padding: 6px 8px;
     background-color: transparent;
     border: 0;
-    border-bottom: 1px solid #2A343E;
-    color: #E8EDF2;
+    border-bottom: 1px solid #1E2832;
+    color: #E1E6EB;
     font-size: 11px;
     cursor: pointer;
     line-height: 1.4;
@@ -678,7 +678,7 @@ summary:focus {
     height: 26px;
     margin: 0 2px 0 0;
     padding: 0 6px;
-    background-color: #2A343E;
+    background-color: #1E2832;
     color: #FFFFFF !important;
     border: 1px solid #00AAD4;
     border-radius: 3px;
@@ -751,13 +751,13 @@ summary:focus {
 }
 
 .pondasi-properti-tambah-cancel:hover {
-    background-color: #E53935;
+    background-color: #FF3232;
     color: #FFFFFF;
 }
 
 /* === TEMA GELAP === */
 body[data-tema="gelap"] .pondasi-properti-section-judul {
-    background-color: #121212;
+    background-color: #0A141E;
     border-bottom-color: #1E2832;
 }
 
@@ -770,16 +770,16 @@ body[data-tema="gelap"] .pondasi-properti-kelas-grup > summary {
 }
 
 body[data-tema="gelap"] .pondasi-pseudo-tabs {
-    background-color: #121212;
+    background-color: #0A141E;
     border-bottom-color: #1E2832;
 }
 
 body[data-tema="gelap"] .pondasi-tambah-prop-box {
-    background-color: #121212;
-    border-color: #2A343E;
+    background-color: #0A141E;
+    border-color: #1E2832;
 }
 
 body[data-tema="gelap"] .pondasi-tambah-prop-head {
     background-color: #1E2832;
-    border-bottom-color: #2A343E;
+    border-bottom-color: #1E2832;
 }

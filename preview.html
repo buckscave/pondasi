@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preview — Pondasi</title>
+    <style>
+        body { margin: 0; padding: 0; }
+        .pondasi-preview-error {
+            display: flex; align-items: center; justify-content: center;
+            height: 100vh; font-family: sans-serif; color: #5A646E; font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        (function() {
+            var html = sessionStorage.getItem('pondasi-preview-html');
+            if (!html) {
+                document.body.innerHTML = '<div class="pondasi-preview-error">Tidak ada data preview. Tutup tab ini dan klik tombol Preview lagi di editor Pondasi.</div>';
+                return;
+            }
+            // Tulis HTML lengkap ke document — ini menggantikan seluruh halaman
+            document.open();
+            document.write(html);
+            document.close();
+            // JANGAN cleanup sessionStorage — biarkan user bisa refresh
+            // Data akan otomatis hilang saat tab ditutup (sessionStorage = per-tab)
+        })();
+    </script>
+</body>
+</html>

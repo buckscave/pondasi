@@ -34,7 +34,7 @@
     background-color: #F5F7FA;
 }
 .daftar-item:active {
-    background-color: #E1F6FA;
+    background-color: #FFFFFF;
 }
 .daftar-item:last-child {
     border-bottom: 0;
@@ -111,7 +111,7 @@
     border-bottom-color: #3C4650;
 }
 [data-tema="gelap"] .daftar-item:hover {
-    background-color: #2C3640;
+    background-color: #3C4650;
 }
 [data-tema="gelap"] .daftar-item .daftar-ikon {
     color: #A0AAB4;

@@ -14,7 +14,7 @@ P.SKEMA_BLOCK['gambar'] = {
     kategoriDropdown: 'isi',
     bagian: [
         { judul: 'Sumber', buka: true, fields: [
-            { id: 'src', label: 'URL gambar', jenis: 'teks', placeholder: 'https://...' },
+            { id: 'src', label: 'URL gambar', jenis: 'gambar-pick', placeholder: 'https://... atau klik tombol untuk pilih dari Assets' },
             { id: 'alt', label: 'Alt teks', jenis: 'teks', placeholder: 'Deskripsi gambar' }
         ]},
         { judul: 'Kelas', fields: [
@@ -39,7 +39,7 @@ P.SKEMA_BLOCK['figure'] = {
     kategoriDropdown: 'isi',
     bagian: [
         { judul: 'Sumber', buka: true, fields: [
-            { id: 'src', label: 'URL gambar', jenis: 'teks', placeholder: 'https://...' },
+            { id: 'src', label: 'URL gambar', jenis: 'gambar-pick', placeholder: 'https://... atau klik tombol untuk pilih dari Assets' },
             { id: 'alt', label: 'Alt teks', jenis: 'teks', placeholder: 'Deskripsi gambar' },
             { id: 'judul', label: 'Caption', jenis: 'teks', placeholder: 'Keterangan gambar' }
         ]},

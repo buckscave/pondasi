@@ -28,9 +28,10 @@ var P = P || {};
         }
 
         // Restore selection kalau palette baru ditutup
+        // v126: JANGAN null-kan savedSelection di sini — biarkan applySwatch/closeSwatches yang handle
         if (P.STATE.editMode.savedSelection) {
             P.restoreSelection(P.STATE.editMode.savedSelection);
-            P.STATE.editMode.savedSelection = null;
+            // JANGan null-kan — keep alive untuk multi-apply
         }
 
         try {
@@ -164,86 +165,262 @@ var P = P || {};
 
     /* Buka modal swatches (terdepan) */
     P.openSwatches = function(type) {
-        // type: 'text' | 'fill' | 'stroke'
-        if (!P.STATE.editMode.active) return;
+        if (!P.STATE.editMode.active && !P.STATE.editMode.paletteOpen) return;
         var modal = document.getElementById('swatches-modal');
         var body = document.getElementById('swatches-body');
         var title = document.getElementById('swatches-title');
+        var noneBtn = document.getElementById('swatches-none');
         if (!modal || !body) return;
 
-        // Simpan selection sebelum buka modal
-        P.STATE.editMode.savedSelection = P.saveSelection();
+        // v126: HANYA simpan savedSelection jika belum ada
+        // Jangan timpa saat re-render (modal sudah terbuka, savedSelection harus tetap dari canvas)
+        if (!P.STATE.editMode.savedSelection) {
+            P.STATE.editMode.savedSelection = P.saveSelection();
+        }
         P.STATE.editMode.paletteOpen = type;
 
         // Set judul
         var titles = { text: 'Warna Teks', fill: 'Warna Latar (Fill)', stroke: 'Warna Garis (Stroke)', border: 'Warna Border' };
         if (title) title.textContent = titles[type] || 'Palet Warna';
 
+        // v121: tombol "kosong" dipindah ke header (bukan di grid)
+        if (noneBtn) {
+            if (type === 'fill' || type === 'stroke' || type === 'border') {
+                noneBtn.style.display = '';
+                noneBtn.title = 'Hapus ' + (type === 'fill' ? 'latar' : 'garis');
+            } else {
+                noneBtn.style.display = 'none';
+            }
+        }
+
         // Bangun swatches
         while (body.firstChild) body.removeChild(body.firstChild);
 
-        // Group by family
-        var groups = [
-            { label: 'MERAH', colors: pondasiColors.slice(0, 3) },
-            { label: 'JINGGA', colors: pondasiColors.slice(3, 6) },
-            { label: 'KUNING', colors: pondasiColors.slice(6, 9) },
-            { label: 'HIJAU', colors: pondasiColors.slice(9, 12) },
-            { label: 'BIRU', colors: pondasiColors.slice(12, 15) },
-            { label: 'NILA', colors: pondasiColors.slice(15, 18) },
-            { label: 'UNGU', colors: pondasiColors.slice(18, 21) },
-            { label: 'GRAYSCALE', colors: pondasiColors.slice(21) }
+        // v129: Section title "Warna Pondasi"
+        var titleDefault = P.el('div', { class: 'pondasi-palette-section-title', text: 'Warna Pondasi' });
+        body.appendChild(titleDefault);
+
+        // v122: Grid 7 kolom × 4 baris (murni, tanpa spacer)
+        var grid = P.el('div', { class: 'pondasi-palette-grid' });
+
+        // Susun warna per tingkat (tua, normal, muda)
+        var rows = [
+            [pondasiColors[2], pondasiColors[5], pondasiColors[8], pondasiColors[11], pondasiColors[14], pondasiColors[17], pondasiColors[20]],  // tua
+            [pondasiColors[1], pondasiColors[4], pondasiColors[7], pondasiColors[10], pondasiColors[13], pondasiColors[16], pondasiColors[19]],  // normal
+            [pondasiColors[0], pondasiColors[3], pondasiColors[6], pondasiColors[9], pondasiColors[12], pondasiColors[15], pondasiColors[18]]   // muda
         ];
 
-        // Tambah tombol "kosong" (untuk fill/stroke)
-        if (type === 'fill' || type === 'stroke' || type === 'border') {
-            var noneGroup = P.el('div', { class: 'pondasi-editor-palette-group' });
-            var noneLabel = P.el('div', { class: 'pondasi-editor-palette-label', text: 'KOSONG' });
-            noneGroup.appendChild(noneLabel);
-            var noneSwatches = P.el('div', { class: 'pondasi-palette-swatches' });
-            var noneBtn = P.el('button', {
-                class: 'pondasi-swatch pondasi-swatch-none',
-                text: 'kosong',
-                title: 'Hapus ' + (type === 'fill' ? 'latar' : 'garis')
-            });
-            noneBtn.dataset.color = '';
-            noneBtn.dataset.type = type;
-            noneSwatches.appendChild(noneBtn);
-            noneGroup.appendChild(noneSwatches);
-            body.appendChild(noneGroup);
-        }
-
-        groups.forEach(function (g) {
-            var grp = P.el('div', { class: 'pondasi-editor-palette-group' });
-            var lbl = P.el('div', { class: 'pondasi-editor-palette-label', text: g.label });
-            grp.appendChild(lbl);
-            var swatches = P.el('div', { class: 'pondasi-palette-swatches' });
-            g.colors.forEach(function (c) {
+        rows.forEach(function (rowColors) {
+            rowColors.forEach(function (c) {
                 var sw = P.el('button', { class: 'pondasi-swatch', title: c.name });
                 sw.style.backgroundColor = c.hex;
                 sw.dataset.color = c.hex;
                 sw.dataset.type = type;
                 if (c.hex === '#FFFFFF') sw.style.border = '1px solid #5A646E';
-                swatches.appendChild(sw);
+                grid.appendChild(sw);
             });
-            grp.appendChild(swatches);
-            body.appendChild(grp);
         });
 
+        // Baris 4: grayscale (7 warna, index 21-27)
+        for (var gi = 21; gi < 28; gi++) {
+            var c = pondasiColors[gi];
+            var sw = P.el('button', { class: 'pondasi-swatch', title: c.name });
+            sw.style.backgroundColor = c.hex;
+            sw.dataset.color = c.hex;
+            sw.dataset.type = type;
+            if (c.hex === '#FFFFFF') sw.style.border = '1px solid #5A646E';
+            grid.appendChild(sw);
+        }
+
+        body.appendChild(grid);
+
+        // v125: Clear selected swatch highlight (reset saat modal dibuka)
+        P.STATE.editMode.selectedColor = null;
+
+        // v122: Baris warna kustom user (jika ada)
+        var customColors = P.getCustomColors ? P.getCustomColors() : [];
+        if (customColors.length > 0) {
+            // v129: Section title "Warna Pengguna"
+            var titleCustom = P.el('div', { class: 'pondasi-palette-section-title pondasi-palette-custom-title', text: 'Warna Pengguna' });
+            body.appendChild(titleCustom);
+            var customRow = P.el('div', { class: 'pondasi-palette-grid pondasi-palette-custom-row' });
+            customColors.forEach(function (hex) {
+                // v140: Handle gradient entries sama seperti refreshCustomColorRow
+                var isGradient = hex.indexOf('#GRAD:') === 0;
+                var gradientClassName = isGradient ? hex.substring(6) : null;
+                var swWrap = P.el('div', { class: 'pondasi-swatch-wrap' });
+                var sw = P.el('button', { class: 'pondasi-swatch', title: isGradient ? 'Gradient: ' + gradientClassName : 'Kustom: ' + hex });
+                if (isGradient) {
+                    // v140: Render swatch dengan gradient background
+                    var cssBody = P.getGradientCSSBody ? P.getGradientCSSBody(gradientClassName) : '';
+                    if (cssBody) {
+                        sw.style.background = cssBody;
+                    } else {
+                        sw.style.backgroundColor = '#3C4650';  // fallback
+                    }
+                    sw.dataset.color = hex;
+                    sw.dataset.type = type;
+                    sw.dataset.gradientClass = gradientClassName;
+                } else {
+                    sw.style.backgroundColor = hex;
+                    sw.dataset.color = hex;
+                    sw.dataset.type = type;
+                    if (hex.toUpperCase() === '#FFFFFF') sw.style.border = '1px solid #5A646E';
+                }
+                swWrap.appendChild(sw);
+                var delBtn = P.el('button', {
+                    class: 'pondasi-swatch-del',
+                    title: 'Hapus ' + (isGradient ? 'gradient ' + gradientClassName : 'warna kustom ' + hex),
+                    html: P.icon('x', 8)
+                });
+                delBtn.dataset.delColor = hex;
+                delBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    P.removeCustomColor(hex);
+                });
+                swWrap.appendChild(delBtn);
+                customRow.appendChild(swWrap);
+            });
+            body.appendChild(customRow);
+        }
+
         modal.hidden = false;
+
+        // v134: Reset gradient ke flat saat modal dibuka
+        if (P.resetGradient) P.resetGradient();
     }
 
     P.closeSwatches = function() {
         var modal = document.getElementById('swatches-modal');
         if (modal) modal.hidden = true;
         P.STATE.editMode.paletteOpen = null;
-        // Restore selection supaya user bisa lanjut ngetik
+        // v126: baru null-kan savedSelection saat modal CLOSE
         if (P.STATE.editMode.savedSelection) {
             P.restoreSelection(P.STATE.editMode.savedSelection);
             P.STATE.editMode.savedSelection = null;
         }
+        // Clear selected color
+        P.STATE.editMode.selectedColor = null;
     }
 
-    /* Apply swatch — auto close modal setelah pilih */
+    /* v126: Refresh baris custom colors tanpa re-render seluruh modal */
+    /* Supaya savedSelection tidak hilang */
+    P.refreshCustomColorRow = function(type) {
+        var body = document.getElementById('swatches-body');
+        if (!body) return;
+        // Hapus baris kustom lama + title lama (jika ada)
+        var oldCustomRow = body.querySelector('.pondasi-palette-custom-row');
+        if (oldCustomRow) oldCustomRow.parentNode.removeChild(oldCustomRow);
+        var oldTitle = body.querySelector('.pondasi-palette-custom-title');
+        if (oldTitle) oldTitle.parentNode.removeChild(oldTitle);
+        // Render baris kustom baru
+        var customColors = P.getCustomColors ? P.getCustomColors() : [];
+        if (customColors.length === 0) return;
+        // v129: Section title "Warna Pengguna"
+        var titleCustom = P.el('div', { class: 'pondasi-palette-section-title pondasi-palette-custom-title', text: 'Warna Pengguna' });
+        body.appendChild(titleCustom);
+        var customRow = P.el('div', { class: 'pondasi-palette-grid pondasi-palette-custom-row' });
+        customColors.forEach(function (hex) {
+            // v137: Cek apakah ini gradient entry
+            var isGradient = hex.indexOf('#GRAD:') === 0;
+            var gradientClassName = isGradient ? hex.substring(6) : null;
+
+            var swWrap = P.el('div', { class: 'pondasi-swatch-wrap' });
+            var sw = P.el('button', { class: 'pondasi-swatch', title: isGradient ? 'Gradient: ' + gradientClassName : 'Kustom: ' + hex });
+            if (isGradient) {
+                // v137: Render swatch dengan gradient background
+                sw.style.background = P.getGradientCSSBody(gradientClassName);
+                sw.dataset.color = hex;  // pakai #GRAD:classname sebagai color identifier
+                sw.dataset.type = type;
+                sw.dataset.gradientClass = gradientClassName;
+            } else {
+                sw.style.backgroundColor = hex;
+                sw.dataset.color = hex;
+                sw.dataset.type = type;
+                if (hex.toUpperCase() === '#FFFFFF') sw.style.border = '1px solid #5A646E';
+            }
+            swWrap.appendChild(sw);
+            // Tombol hapus
+            var delBtn = P.el('button', {
+                class: 'pondasi-swatch-del',
+                title: 'Hapus ' + (isGradient ? 'gradient ' + gradientClassName : 'warna kustom ' + hex),
+                html: P.icon('x', 8)
+            });
+            delBtn.dataset.delColor = hex;
+            delBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                P.removeCustomColor(hex);
+            });
+            swWrap.appendChild(delBtn);
+            customRow.appendChild(swWrap);
+        });
+        body.appendChild(customRow);
+    }
+
+    /* v125: Select swatch — highlight + update hex, TIDAK apply langsung */
+    /* User harus klik "Terapkan" untuk apply */
+    /* v132: JANGAN sync ke color wheel untuk warna default — HSL round-trip tidak presisi */
+    /* v135: Dalam gradient mode, auto-update active stop color (eyedropper behavior) */
+    P.selectSwatch = function(color, type) {
+        // Update hex input dengan warna ASLI
+        var hexInput = document.getElementById('swatches-hex');
+        if (hexInput) hexInput.value = color ? color.toUpperCase() : '';
+
+        // v135: Dalam gradient mode, auto-update active stop color
+        if (P.isGradientMode && P.isGradientMode() && color && color.indexOf('#GRAD:') !== 0) {
+            P.setActiveStopColor(color);
+            return;
+        }
+
+        // v137: Jika color = #GRAD:classname, load gradient data + apply ke block
+        if (color && color.indexOf('#GRAD:') === 0) {
+            var gradClassName = color.substring(6);
+
+            // v141: Load gradient data ke UI (stops, angle, type, tab)
+            if (P.loadGradientFromCSS) P.loadGradientFromCSS(gradClassName);
+
+            // Apply gradient class ke block
+            var bid = P.STATE.editMode.selectedBlockId;
+            if (bid) {
+                var blk = P.cariBlockById(bid);
+                if (blk) {
+                    if (!blk.classes) blk.classes = [];
+                    blk.classes = blk.classes.filter(function (c) { return c.indexOf('gradlin-') !== 0 && c.indexOf('gradrad-') !== 0; });
+                    blk.classes.push(gradClassName);
+                    if (blk.style) delete blk.style.backgroundColor;
+                    P.save();
+                    P.renderBlocks();
+                    P.renderPanel();
+                    P.flash('Gradient diterapkan: ' + gradClassName);
+                }
+            }
+
+            // v141: Highlight swatch gradient yang dipilih
+            var allSw = document.querySelectorAll('.pondasi-swatch');
+            for (var swi = 0; swi < allSw.length; swi++) {
+                allSw[swi].classList.remove('pondasi-swatch-selected');
+                if (allSw[swi].dataset.color === color) {
+                    allSw[swi].classList.add('pondasi-swatch-selected');
+                }
+            }
+            return;
+        }
+
+        // Highlight swatch yang dipilih
+        var allSwatches = document.querySelectorAll('.pondasi-swatch');
+        for (var i = 0; i < allSwatches.length; i++) {
+            allSwatches[i].classList.remove('pondasi-swatch-selected');
+            if (color && allSwatches[i].dataset.color && allSwatches[i].dataset.color.toUpperCase() === color.toUpperCase()) {
+                allSwatches[i].classList.add('pondasi-swatch-selected');
+            }
+        }
+
+        // Simpan selected color untuk apply nanti
+        P.STATE.editMode.selectedColor = color;
+        P.STATE.editMode.selectedColorType = type;
+    }
+
+    /* Apply swatch — v125: apply warna, TIDAK auto-close modal */
     P.applySwatch = function(color, type) {
         if (!P.STATE.editMode.active) return;
 
@@ -252,7 +429,6 @@ var P = P || {};
             if (P.applySwatchState) {
                 P.applySwatchState(color);
             }
-            P.closeSwatches();
             return;
         }
 
@@ -266,7 +442,6 @@ var P = P || {};
                     P.renderPanel();
                 }
             }
-            P.closeSwatches();
             return;
         }
 
@@ -274,16 +449,17 @@ var P = P || {};
         if (type && type.indexOf('block-') === 0) {
             var field = type.slice('block-'.length);
             P.applySwatchBlock(color, field);
-            P.closeSwatches();
             return;
         }
 
         var regionEl = document.querySelector('.pondasi-region[data-id="' + P.STATE.editMode.regionId + '"]');
         if (!regionEl) return;
         regionEl.focus();
+        // v126: Restore saved selection SETIAP kali apply (jangan null-kan)
+        // User bisa apply berkali-kali tanpa close modal
         if (P.STATE.editMode.savedSelection) {
             P.restoreSelection(P.STATE.editMode.savedSelection);
-            P.STATE.editMode.savedSelection = null;
+            // JANGAN null-kan savedSelection — keep alive sampai modal close
         }
 
         if (type === 'text') {
@@ -345,8 +521,8 @@ var P = P || {};
             }
             P.handleEditorInput();
         }
-        // Auto-close
-        P.closeSwatches();
+        // v125: TIDAK auto-close modal — user bisa apply warna lain atau close manual
+        P.flash('Warna diterapkan: ' + (color || 'kosong'));
     }
 
     /* Aksi kustom (insert-link, insert-image, dll) */
@@ -358,7 +534,7 @@ var P = P || {};
 
         if (P.STATE.editMode.savedSelection) {
             P.restoreSelection(P.STATE.editMode.savedSelection);
-            P.STATE.editMode.savedSelection = null;
+            // v126: jangan null-kan — keep alive untuk multi-apply
         }
 
         switch (action) {
@@ -417,6 +593,10 @@ var P = P || {};
             case 'close-swatches':
                 P.closeSwatches();
                 break;
+            case 'apply-none':
+                // v125: select kosong dulu, apply via "Terapkan"
+                P.selectSwatch('', P.STATE.editMode.paletteOpen);
+                break;
             case 'apply-hex':
                 P.applyHexFromInput();
                 break;
@@ -433,17 +613,68 @@ var P = P || {};
     }
 
     /* Apply hex dari input hex / color picker */
+    /* v126: apply + tambahkan ke custom colors + update baris kustom tanpa re-render seluruh modal */
     P.applyHexFromInput = function() {
         var hexInput = document.getElementById('swatches-hex');
         if (!hexInput) return;
         var val = hexInput.value.trim();
-        if (!val) return;
-        // Validasi hex
-        if (!/^#[0-9a-fA-F]{3,7}$/.test(val)) {
+        if (!val) {
+            if (P.STATE.editMode.selectedColor === '') {
+                val = '';
+            } else {
+                return;
+            }
+        }
+        // Validasi hex (kecuali kosong)
+        if (val && !/^#[0-9a-fA-F]{3,7}$/.test(val)) {
             P.flash('Hex tidak valid (mis. #FF3232)');
             return;
         }
+        // Normalize
+        if (val) {
+            val = val.toUpperCase();
+            if (val.length === 4) {
+                val = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
+            }
+        }
+        // v126: Apply warna ke canvas — savedSelection masih alive karena tidak ditimpa
+        // v135: Dalam gradient mode, "Terapkan" hanya apply gradient ke block
+        // Stop colors sudah auto-update dari wheel/swatch (eyedropper behavior)
+        if (P.isGradientMode && P.isGradientMode()) {
+            // Apply gradient class ke block
+            var blockId = P.STATE.editMode.selectedBlockId;
+            if (blockId) {
+                var gradCls = P.applyGradientToBlock ? P.applyGradientToBlock(blockId, 'latar') : null;
+                P.renderBlocks();
+                P.renderPanel();
+                // v138: Refresh baris "Warna Pengguna" supaya swatch gradient langsung muncul
+                if (P.refreshCustomColorRow) P.refreshCustomColorRow(P.STATE.editMode.paletteOpen);
+                // v141: Highlight swatch gradient yang baru di-apply
+                if (gradCls) {
+                    var gradColor = '#GRAD:' + gradCls;
+                    P.selectSwatch(gradColor, P.STATE.editMode.paletteOpen);
+                }
+                P.flash('Gradient diterapkan');
+                return;
+            }
+            P.applySwatch(val, P.STATE.editMode.paletteOpen);
+            return;
+        }
+        // Mode flat (existing behavior)
         P.applySwatch(val, P.STATE.editMode.paletteOpen);
+        // v130: tambahkan ke custom colors HANYA jika bukan palette default
+        if (val && P.addCustomColor) {
+            var wasAdded = P.addCustomColor(val);
+            if (wasAdded) {
+                // Hanya refresh baris custom jika warna baru benar-benar ditambahkan
+                P.refreshCustomColorRow(P.STATE.editMode.paletteOpen);
+            }
+            // Highlight swatch yang baru di-apply (baik default maupun custom)
+            P.selectSwatch(val, P.STATE.editMode.paletteOpen);
+        } else if (!val) {
+            // val kosong (apply none) — tetap highlight
+            P.selectSwatch('', P.STATE.editMode.paletteOpen);
+        }
     }
 
     /* Sisipkan tabel sederhana */
@@ -826,6 +1057,55 @@ var P = P || {};
 
         // Tentukan isi default berdasarkan jenis block
         var isiDefault = '';
+
+        // === FORM BLOCKS ===
+        // Form blocks pakai tag 'div'/'label' (wrapper), bukan 'input'/'textarea'/'select'.
+        // renderIsiBlock akan generate inner HTML via 'form-input'/'pilihan' case.
+        var formJenis = ['input-teks', 'input-pencarian', 'textarea', 'select',
+            'checkbox', 'radio', 'saklar', 'slider', 'stepper',
+            'input-file', 'input-warna', 'fieldset', 'label-form'];
+        if (formJenis.indexOf(jenisBlock) >= 0) {
+            // Form blocks: isi kosong, renderIsiBlock akan generate
+            isiDefault = '';
+            // Tapi set properti default
+            var formProperti = {};
+            if (jenisBlock === 'input-teks') { formProperti.tipe = 'text'; formProperti.placeholder = ''; formProperti.label = 'Label'; }
+            else if (jenisBlock === 'input-pencarian') { formProperti.tipe = 'search'; formProperti.placeholder = ''; formProperti.label = 'Cari'; }
+            else if (jenisBlock === 'textarea') { formProperti.label = 'Pesan'; formProperti.baris = 3; }
+            else if (jenisBlock === 'select') { formProperti.label = 'Pilih'; formProperti.items = ['Opsi 1', 'Opsi 2']; }
+            else if (jenisBlock === 'checkbox') { formProperti.label = 'Pilih'; formProperti.nilai = 'ya'; }
+            else if (jenisBlock === 'radio') { formProperti.label = 'Pilih'; formProperti.items = ['Opsi 1', 'Opsi 2']; }
+            else if (jenisBlock === 'saklar') { formProperti.label = 'Aktifkan'; }
+            else if (jenisBlock === 'slider') { formProperti.min = 0; formProperti.max = 100; formProperti.step = 1; formProperti.nilai = 50; formProperti.label = 'Volume'; }
+            else if (jenisBlock === 'stepper') { formProperti.min = 0; formProperti.step = 1; formProperti.nilai = 0; formProperti.label = 'Jumlah'; }
+            else if (jenisBlock === 'input-file') { formProperti.tipe = 'file'; formProperti.label = 'Pilih berkas'; }
+            else if (jenisBlock === 'input-warna') { formProperti.tipe = 'color'; formProperti.nilai = '#00AAD4'; formProperti.label = 'Pilih warna'; }
+            else if (jenisBlock === 'fieldset') { formProperti.judul = 'Informasi Pribadi'; }
+            else if (jenisBlock === 'label-form') { formProperti.untuk = ''; }
+
+            var blockForm = {
+                id: P.genBlockId(),
+                tag: tag,
+                kelas: kelas,
+                isi: isiDefault,
+                properti: formProperti,
+                style: {},
+                aksi: {},
+                jenis: jenisBlock
+            };
+            // Set block.items untuk select dan radio (dipakai oleh renderIsiBlock)
+            if (jenisBlock === 'select' || jenisBlock === 'radio') {
+                blockForm.items = formProperti.items || [];
+            }
+            if (!node.blocks) node.blocks = [];
+            node.blocks.push(blockForm);
+            P.save();
+            P.renderBlocks();
+            P.flash(skema.nama + ' ditambahkan');
+            return;
+        }
+
+        // === NON-FORM BLOCKS ===
         if (tag === 'p') isiDefault = 'Ketik paragraf...';
         else if (tag === 'h1' || tag === 'h2' || tag === 'h3' || tag === 'h4' || tag === 'h5' || tag === 'h6') isiDefault = 'Ketik heading...';
         else if (tag === 'blockquote') isiDefault = 'Ketik kutipan...';
@@ -838,69 +1118,56 @@ var P = P || {};
         else if (tag === 'span') isiDefault = 'Teks';
         else if (tag === 'ul' || tag === 'ol') isiDefault = '<li>Item 1</li><li>Item 2</li>';
         else if (tag === 'dl') isiDefault = '<dt>Istilah</dt><dd>Definisi</dd>';
-        else if (tag === 'img') {
-            // Untuk img, prompt URL
-            var url = prompt('URL gambar:', 'https://');
-            if (!url) return;
-            var properti = { src: url, alt: 'Gambar' };
-            var block = {
-                id: P.genBlockId(),
-                tag: tag,
-                kelas: kelas,
-                isi: '',
-                properti: properti,
-                style: {},
-                aksi: {},
-                jenis: jenisBlock
-            };
-            if (!node.blocks) node.blocks = [];
-            node.blocks.push(block);
-            P.save();
-            P.renderBlocks();
-            P.flash(skema.nama + ' ditambahkan');
+        else if (tag === 'img' || tag === 'figure') {
+            // Untuk gambar/figure: tampilkan dialog pilih sumber
+            P._imageInsertType = jenisBlock;
+            P._imageInsertNode = node;
+            P._imageInsertSkema = skema;
+            // v117: tambah opsi pilih dari Asset Manager
+            P.tampilkanDialog('Sumber Gambar',
+                'Pilih sumber gambar:\n\n• Dari Asset Manager — pilih gambar yang sudah diupload\n• File dari Harddisk — upload baru lalu pakai\n• URL — masukkan link gambar dari internet',
+                'Dari Assets', 'Lainnya',
+                function(ok) {
+                    if (ok === true) {
+                        // Dari Asset Manager
+                        P.tampilkanAssetPicker(function (assetURL, assetName, assetMeta) {
+                            // Untuk mode file://, pakai relative path 'gambar/nama.jpg'
+                            // Saat export, gambar akan disertakan di folder gambar/
+                            var relPath = 'gambar/' + assetName;
+                            P._insertImageBlock(node, tag, kelas, jenisBlock, relPath, assetMeta.alt || 'Gambar', skema);
+                        });
+                    } else if (ok === 'Lainnya') {
+                        // Pilih antara file harddisk atau URL
+                        P.tampilkanDialog('Sumber Lain',
+                            'Pilih:\n\n• File dari Harddisk (akan diupload ke Assets + dikompres)\n• URL — link dari internet',
+                            'File Harddisk', 'URL',
+                            function(ok2) {
+                                if (ok2 === true) {
+                                    // File dari harddisk → upload ke Assets, lalu pakai
+                                    var fileInput = document.getElementById('image-pick-file');
+                                    if (fileInput) {
+                                        fileInput.value = '';
+                                        // Set flag supaya handler tahu ini untuk insert block
+                                        fileInput.dataset.purpose = 'insert-block';
+                                        try { fileInput.click(); } catch (e) {}
+                                    }
+                                } else if (ok2 === 'URL') {
+                                    var url = prompt('URL gambar:', 'https://');
+                                    if (url) {
+                                        P._insertImageBlock(node, tag, kelas, jenisBlock, url, 'Gambar', skema);
+                                    }
+                                }
+                            });
+                    } else if (ok === false) {
+                        // Cancel
+                    }
+                });
             return;
         }
-        else if (tag === 'figure') isiDefault = '<img src="https://" alt="Gambar"><figcaption>Keterangan gambar</figcaption>';
         else if (tag === 'hr') isiDefault = '';
         else if (tag === 'table') isiDefault = '<thead><tr><th>Judul 1</th><th>Judul 2</th></tr></thead><tbody><tr><td>Isi 1</td><td>Isi 2</td></tr></tbody>';
         else if (tag === 'button') isiDefault = 'Tombol';
-        else if (tag === 'input') {
-            // Input butuh properti type
-            var tipe = 'text';
-            if (jenisBlock === 'input-pencarian') tipe = 'search';
-            else if (jenisBlock === 'input-file') tipe = 'file';
-            else if (jenisBlock === 'input-warna') tipe = 'color';
-            else if (jenisBlock === 'slider') tipe = 'range';
-            else if (jenisBlock === 'stepper') tipe = 'number';
-            else if (jenisBlock === 'checkbox') tipe = 'checkbox';
-            else if (jenisBlock === 'radio') tipe = 'radio';
-            else if (jenisBlock === 'saklar') tipe = 'checkbox';
-            var propertiInput = { type: tipe, placeholder: ' ' };
-            if (tipe === 'range') { propertiInput.min = '0'; propertiInput.max = '100'; propertiInput.value = '50'; }
-            if (tipe === 'color') propertiInput.value = '#000000';
-            if (tipe === 'number') propertiInput.value = '0';
-            var blockInput = {
-                id: P.genBlockId(),
-                tag: tag,
-                kelas: kelas,
-                isi: '',
-                properti: propertiInput,
-                style: {},
-                aksi: {},
-                jenis: jenisBlock
-            };
-            if (!node.blocks) node.blocks = [];
-            node.blocks.push(blockInput);
-            P.save();
-            P.renderBlocks();
-            P.flash(skema.nama + ' ditambahkan');
-            return;
-        }
-        else if (tag === 'textarea') isiDefault = '';
-        else if (tag === 'select') isiDefault = '<option>Pilih</option><option>Opsi 1</option><option>Opsi 2</option>';
-        else if (tag === 'label') isiDefault = 'Label';
-        else if (tag === 'fieldset') isiDefault = '<legend>Informasi Pribadi</legend>';
-        else if (tag === 'details') isiDefault = '<summary>Bagian 1</summary><p>Isi bagian 1.</p>';
+        // (Form blocks: input/textarea/select sudah di-handle di form blocks section di atas)
         else if (tag === 'progress') {
             var blockProgress = {
                 id: P.genBlockId(),
@@ -995,6 +1262,81 @@ var P = P || {};
         P.flash(skema.nama + ' ditambahkan');
     }
 
+    // Helper: insert image block dengan URL atau data URL
+    P._insertImageBlock = function(node, tag, kelas, jenisBlock, src, alt, skema) {
+        var block;
+        if (tag === 'figure') {
+            // Figure: tag figure, isi berisi <img> + <figcaption>
+            block = {
+                id: P.genBlockId(),
+                tag: tag,
+                kelas: kelas,
+                isi: '<img src="' + src + '" alt="' + (alt || 'Gambar') + '"><figcaption>Keterangan gambar</figcaption>',
+                properti: { src: src, alt: alt || 'Gambar', judul: 'Keterangan gambar' },
+                style: {},
+                aksi: {},
+                jenis: jenisBlock
+            };
+        } else {
+            // Gambar biasa: tag img
+            block = {
+                id: P.genBlockId(),
+                tag: tag,
+                kelas: kelas,
+                isi: '',
+                properti: { src: src, alt: alt || 'Gambar' },
+                style: {},
+                aksi: {},
+                jenis: jenisBlock
+            };
+        }
+        if (!node.blocks) node.blocks = [];
+        node.blocks.push(block);
+        P.save();
+        P.renderBlocks();
+        P.flash((skema ? skema.nama : 'Gambar') + ' ditambahkan');
+    };
+
+    // Handler: file gambar dipilih dari harddisk
+    P.handleImageFileDipilih = function() {
+        var fileInput = document.getElementById('image-pick-file');
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) return;
+        var file = fileInput.files[0];
+
+        // Validasi tipe file
+        if (!file.type.match(/^image\//)) {
+            P.flash('Berkas harus berupa gambar');
+            return;
+        }
+
+        // Cek ukuran — gambar > 2MB akan warning (data URL bisa besar di localStorage)
+        if (file.size > 2 * 1024 * 1024) {
+            P.konfirmasi('Ukuran gambar ' + Math.round(file.size / 1024) + ' KB cukup besar. Data URL akan disimpan di localStorage. Lanjutkan?', function(ok) {
+                if (ok) P._bacaFileGambar(file);
+            }, 'Gambar Besar', 'Lanjutkan', 'Batal');
+            return;
+        }
+
+        P._bacaFileGambar(file);
+    };
+
+    // Baca file gambar → data URL → insert block
+    P._bacaFileGambar = function(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var dataUrl = e.target.result;
+            var altText = file.name.replace(/\.[^.]+$/, ''); // nama file tanpa ekstensi
+            var node = P._imageInsertNode;
+            var tag = P._imageInsertType === 'figure' ? 'figure' : 'img';
+            var kelas = P._imageInsertSkema ? (P._imageInsertSkema.kelasDefault || '') : '';
+            P._insertImageBlock(node, tag, kelas, P._imageInsertType, dataUrl, altText, P._imageInsertSkema);
+        };
+        reader.onerror = function() {
+            P.flash('Gagal membaca gambar');
+        };
+        reader.readAsDataURL(file);
+    };
+
     // Duplikasi objek sederhana
     P.duplikasiObjek = function(obj) {
         return JSON.parse(JSON.stringify(obj));
@@ -1017,7 +1359,13 @@ var P = P || {};
             node.blocks.forEach(function (block, idx) {
                 var el = document.createElement(block.tag);
                 el.setAttribute('data-block-id', block.id);
-                el.className = (block.kelas || '') + ' pondasi-block';
+                // v135: Gabungkan block.kelas + block.classes (untuk gradient class dll)
+                var allClasses = (block.kelas || '');
+                if (block.classes && block.classes.length > 0) {
+                    allClasses += (allClasses ? ' ' : '') + block.classes.join(' ');
+                }
+                allClasses += (allClasses ? ' ' : '') + 'pondasi-block';
+                el.className = allClasses;
                 // contentEditable = false (default), hanya true setelah double-click
                 el.contentEditable = false;
 
@@ -1119,9 +1467,60 @@ var P = P || {};
                 wrapper.appendChild(menu);
                 wrapper.setAttribute('data-block-wrapper', block.id);
 
+                // v115: tampilkan indikator inherited/override dari master page
+                var curPage = P.getCurrentPage ? P.getCurrentPage() : null;
+                if (curPage && curPage.inheritFrom) {
+                    if (block._inherited === true) {
+                        // Inherited — read-only, cyan dashed border + M badge
+                        wrapper.className += ' pondasi-block-inherited';
+                        // Tambah unlock button
+                        var unlockBtn = document.createElement('button');
+                        unlockBtn.type = 'button';
+                        unlockBtn.className = 'pondasi-block-unlock-btn';
+                        unlockBtn.title = 'Unlock block — jadikan override lokal (bisa diedit)';
+                        unlockBtn.innerHTML = P.icon('lock-open');
+                        var rid = region.id;
+                        var bid = block.id;
+                        unlockBtn.onclick = function (e) {
+                            e.stopPropagation();
+                            P.konfirmasi('Jadikan block ini override lokal? Block bisa diedit, tidak akan ikut berubah saat master diubah.', function (ok) {
+                                if (ok) P.unlockBlockOverride(rid, bid);
+                            }, 'Unlock Block', 'Unlock', 'Batal');
+                        };
+                        wrapper.appendChild(unlockBtn);
+                    } else if (block._inherited === false && block._originBlockId) {
+                        // Override — orange dashed border + O badge + reset button
+                        wrapper.className += ' pondasi-block-overridden';
+                        var resetBtn = document.createElement('button');
+                        resetBtn.type = 'button';
+                        resetBtn.className = 'pondasi-block-unlock-btn';
+                        resetBtn.title = 'Reset ke versi master';
+                        resetBtn.style.color = '#FF9500';
+                        resetBtn.style.borderColor = '#FF9500';
+                        resetBtn.innerHTML = P.icon('rotate-left');
+                        var rid2 = region.id;
+                        var bid2 = block.id;
+                        resetBtn.onclick = function (e) {
+                            e.stopPropagation();
+                            P.konfirmasi('Reset block ini ke versi master? Perubahan lokal akan hilang.', function (ok) {
+                                if (ok) P.resetBlockOverride(rid2, bid2);
+                            }, 'Reset ke Master', 'Reset', 'Batal');
+                        };
+                        wrapper.appendChild(resetBtn);
+                    }
+                }
+
                 // Hover untuk tampilkan menu
                 wrapper.onmouseenter = function () { menu.style.display = 'block'; };
                 wrapper.onmouseleave = function () { menu.style.display = 'none'; };
+
+                // v115: enable drag untuk cross-page copy
+                wrapper.setAttribute('draggable', 'true');
+                wrapper.addEventListener('dragstart', function (e) {
+                    e.dataTransfer.effectAllowed = 'copy';
+                    e.dataTransfer.setData('text/block-id', block.id);
+                    e.dataTransfer.setData('text/plain', 'block:' + block.id);
+                });
 
                 regionEl.appendChild(wrapper);
             });
@@ -1957,6 +2356,9 @@ var P = P || {};
             window.requestAnimationFrame(P.posisikanBarEditor);
         }
 
+        // Mulai auto-update untuk block dinamis (jam, tanggal, hitung-mundur)
+        P.startDinamisTimers();
+
         // Panel region sudah default visible — cukup re-render supaya seksi editable muncul
         P.renderPanel();
 
@@ -1966,6 +2368,61 @@ var P = P || {};
     /* === MASUK EDIT TEKS BLOCK (dipanggil saat Enter di block terseleksi) ===
        Sama seperti double-click block: aktifkan contentEditable + fokus + seleksi semua teks.
        */
+
+    // Auto-update timer untuk block dinamis (jam, tanggal, hitung-mundur) di canvas
+    P._dinamisTimerJam = null;
+    P._dinamisTimerTanggal = null;
+    P._dinamisTimerMundur = null;
+
+    P.startDinamisTimers = function() {
+        P.stopDinamisTimers(); // clear existing
+        var node = P.getById(P.STATE.editMode.regionId);
+        if (!node || !node.blocks) return;
+
+        var hasJam = false, hasTanggal = false, hasMundur = false;
+        node.blocks.forEach(function(block) {
+            if (block.jenis === 'jam') hasJam = true;
+            if (block.jenis === 'tanggal') hasTanggal = true;
+            if (block.jenis === 'hitung-mundur') hasMundur = true;
+        });
+
+        if (hasJam) {
+            P._dinamisTimerJam = setInterval(function() {
+                P._updateDinamisBlocks('jam');
+            }, 1000);
+        }
+        if (hasTanggal) {
+            P._dinamisTimerTanggal = setInterval(function() {
+                P._updateDinamisBlocks('tanggal');
+            }, 60000);
+        }
+        if (hasMundur) {
+            P._dinamisTimerMundur = setInterval(function() {
+                P._updateDinamisBlocks('hitung-mundur');
+            }, 1000);
+        }
+    };
+
+    P.stopDinamisTimers = function() {
+        if (P._dinamisTimerJam) { clearInterval(P._dinamisTimerJam); P._dinamisTimerJam = null; }
+        if (P._dinamisTimerTanggal) { clearInterval(P._dinamisTimerTanggal); P._dinamisTimerTanggal = null; }
+        if (P._dinamisTimerMundur) { clearInterval(P._dinamisTimerMundur); P._dinamisTimerMundur = null; }
+    };
+
+    // Update text content block dinamis tanpa full re-render (lebih efisien)
+    P._updateDinamisBlocks = function(jenis) {
+        var node = P.getById(P.STATE.editMode.regionId);
+        if (!node || !node.blocks) return;
+        node.blocks.forEach(function(block) {
+            if (block.jenis !== jenis) return;
+            var el = document.querySelector('[data-block-id="' + block.id + '"]');
+            if (!el) return;
+            // Pakai renderIsiBlock untuk dapat nilai terbaru
+            var html = P.renderIsiBlock(block);
+            if (html) el.innerHTML = html;
+        });
+    };
+
     P.masukEditTextBlock = function() {
         if (!P.STATE.editMode.selectedBlockId) { P.flash('Pilih block dulu'); return; }
         var blockEl = document.querySelector('[data-block-id="' + P.STATE.editMode.selectedBlockId + '"]');
@@ -2028,6 +2485,9 @@ var P = P || {};
         var btnProp = document.getElementById('btn-properti');
         if (btnProp) btnProp.classList.remove('pondasi-editor-bar-aktif');
         // Panel region tetap tampil — default visible inspector
+
+        // Stop auto-update timers untuk block dinamis
+        P.stopDinamisTimers();
 
         P.save();
         P.render();

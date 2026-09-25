@@ -24,7 +24,7 @@
     color: #5A646E;
     text-align: left;
     border-bottom: 1px solid #E1E6EB;
-    background-color: #FAFAFA;
+    background-color: #F5F7FA;
 }
 .tabel tbody td {
     display: table-cell;
@@ -42,7 +42,7 @@
 }
 /* Zebra striping */
 .tabel.tabel-zebra tbody tr:nth-child(odd) td {
-    background-color: #FAFAFA;
+    background-color: #F5F7FA;
 }
 /* Tabel rapat */
 .tabel.tabel-padat thead th,
@@ -58,16 +58,16 @@
 [data-tema="gelap"] .tabel thead th {
     color: #A0AAB4;
     border-bottom-color: #3C4650;
-    background-color: #2C3640;
+    background-color: #3C4650;
 }
 [data-tema="gelap"] .tabel tbody td {
     color: #FFFFFF;
     border-bottom-color: #3C4650;
 }
 [data-tema="gelap"] .tabel tbody tr:hover td {
-    background-color: #2C3640;
+    background-color: #3C4650;
 }
 [data-tema="gelap"] .tabel.tabel-zebra tbody tr:nth-child(odd) td {
-    background-color: #2C3640;
+    background-color: #3C4650;
 }
 

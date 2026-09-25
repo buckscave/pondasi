@@ -16,7 +16,7 @@ P.renderPanelBlock = function(badan, block, judulEl) {
 
     // classContext sudah di-set/di-validasi di renderPanel — jangan reset di sini
 
-    var kontenJudul = ['Konten', 'Item', 'Sumber', 'Struktur', 'Atribut', 'Aksi', 'Tombol', 'Trigger', 'Konten & Atribut'];
+    var kontenJudul = ['Konten', 'Item', 'Sumber', 'Struktur', 'Atribut', 'Aksi', 'Tombol', 'Konten & Atribut'];
     var tataLetakJudul = ['Ukuran', 'Posisi'];
     var tampilanJudul = ['Kelas', 'Tipografi', 'Status', 'Background', 'Warna', 'Posisi tooltip', 'Posisi popover'];
     // Catatan: 'Tampilan' sengaja TIDAK dimasukkan — field-nya (padding/margin/border/radius/warnaTeks/latar)
@@ -237,7 +237,7 @@ P.ambilNilaiBlock = function(block, fieldId) {
     // Catatan: 'nama' TIDAK ada di sini — 'nama' adalah block.nama (label readable), bukan HTML name attr.
     // Kalau user butuh HTML name attribute, pakai field 'name' di skema.
     var attrFields = ['src', 'alt', 'href', 'name', 'tipe', 'placeholder',
-        'label', 'nilai', 'min', 'max', 'step', 'required', 'checked', 'value'];
+        'label', 'nilai', 'untuk', 'terima', 'min', 'max', 'step', 'required', 'checked', 'value'];
     if (attrFields.indexOf(fieldId) >= 0) {
         if (block.properti && block.properti[fieldId] !== undefined) {
             return block.properti[fieldId];
@@ -334,27 +334,69 @@ P.terapkanStyleBlock = function(blockEl, block) {
 };
 
 P.terapkanAksiBlock = function(blockEl, block) {
-    if (!block.aksi || !block.aksi.klik) return;
-    var klik = block.aksi.klik;
-    if (klik.jenis === 'none' || !klik.jenis) return;
+    if (!block.aksi) return;
+    var hasKlik = block.aksi.klik && block.aksi.klik.jenis && block.aksi.klik.jenis !== 'none';
+    var hasScroll = block.aksi.scroll && block.aksi.scroll.jenis && block.aksi.scroll.jenis !== 'none';
 
-    blockEl.style.cursor = 'pointer';
+    if (!hasKlik && !hasScroll) return;
 
-    if (klik.jenis === 'link' && klik.url) {
-        blockEl.addEventListener('click', function(e) {
-            // Jangan trigger kalau lagi edit teks
-            if (blockEl.contentEditable === 'true') return;
-            e.preventDefault();
-            window.location.href = klik.url;
+    // Set data attributes (sama seperti export) supaya PondasiAksi bisa baca
+    var attrs = P.serialBlockAksi(block);
+    if (attrs) {
+        // Parse attrs string → set individual attributes
+        // attrs format: ' data-aksi-klik="..." data-aksi-target="..."'
+        var attrPairs = attrs.trim().split(/\s+(?=[a-z])/);
+        attrPairs.forEach(function(pair) {
+            var eqIdx = pair.indexOf('=');
+            if (eqIdx > 0) {
+                var attrName = pair.substring(0, eqIdx);
+                var attrVal = pair.substring(eqIdx + 2, pair.length - 1); // buang =" dan "
+                blockEl.setAttribute(attrName, attrVal);
+            }
         });
-    } else if (klik.jenis === 'alert' && klik.pesan) {
-        blockEl.addEventListener('click', function(e) {
-            if (blockEl.contentEditable === 'true') return;
-            e.preventDefault();
-            alert(klik.pesan);
-        });
-    } else if (klik.jenis === 'kustom' && klik.kode) {
-        blockEl.setAttribute('onclick', klik.kode);
+    }
+
+    // Klik: set cursor pointer
+    if (hasKlik) {
+        blockEl.style.cursor = 'pointer';
+    }
+
+    // Scroll: tambah class menunggu kalau muncul
+    if (hasScroll && block.aksi.scroll.jenis === 'muncul') {
+        blockEl.classList.add('pondasi-aksi-menunggu');
+        if (block.aksi.scroll.efek) {
+            blockEl.setAttribute('data-aksi-efek', block.aksi.scroll.efek);
+        }
+    }
+
+    // Init PondasiAksi untuk element ini (live preview)
+    if (typeof PondasiAksi !== 'undefined') {
+        PondasiAksi.bindKlik(blockEl.parentNode || document);
+        PondasiAksi.bindScroll(blockEl.parentNode || document);
+    }
+
+    // Dinamis: init langsung
+    if (block.jenis === 'jam' || block.jenis === 'tanggal' || block.jenis === 'hitung-mundur') {
+        // Set data-dinamis attribute
+        if (block.jenis === 'jam') {
+            blockEl.setAttribute('data-dinamis', 'jam');
+            if (block.properti && block.properti.format) {
+                blockEl.setAttribute('data-format', block.properti.format);
+            }
+        } else if (block.jenis === 'tanggal') {
+            blockEl.setAttribute('data-dinamis', 'tanggal');
+            if (block.properti && block.properti.format) {
+                blockEl.setAttribute('data-format', block.properti.format);
+            }
+        } else if (block.jenis === 'hitung-mundur') {
+            blockEl.setAttribute('data-dinamis', 'hitung-mundur');
+            if (block.properti && block.properti.target) {
+                blockEl.setAttribute('data-aksi-target', block.properti.target);
+            }
+        }
+        if (typeof PondasiAksi !== 'undefined') {
+            PondasiAksi.initDinamis(blockEl.parentNode || document);
+        }
     }
 };
 
@@ -384,20 +426,78 @@ P.serialBlockStyle = function(block) {
 };
 
 P.serialBlockAksi = function(block) {
-    if (!block.aksi || !block.aksi.klik) return '';
-    var klik = block.aksi.klik;
-    if (klik.jenis === 'link' && klik.url) {
-        // Untuk tombol, render sebagai <a href> saat export
-        return ' data-aksi="link" data-aksi-url="' + P.escAttr(klik.url) + '"';
+    if (!block.aksi) return '';
+    var attrs = '';
+
+    // === KLIK AKSI ===
+    if (block.aksi.klik && block.aksi.klik.jenis && block.aksi.klik.jenis !== 'none') {
+        var k = block.aksi.klik;
+        // Map klik jenis baru ke data-aksi-klik + data-aksi-modal/offcanvas/lightbox
+        if (k.jenis === 'buka-modal') {
+            attrs += ' data-aksi-modal="buka"';
+            if (k.target) attrs += ' data-aksi-target="' + P.escAttr(k.target) + '"';
+        } else if (k.jenis === 'tutup-modal') {
+            attrs += ' data-aksi-modal="tutup"';
+        } else if (k.jenis === 'buka-offcanvas') {
+            attrs += ' data-aksi-offcanvas="buka"';
+            if (k.target) attrs += ' data-aksi-target="' + P.escAttr(k.target) + '"';
+        } else if (k.jenis === 'tutup-offcanvas') {
+            attrs += ' data-aksi-offcanvas="tutup"';
+        } else if (k.jenis === 'buka-lightbox') {
+            attrs += ' data-aksi-lightbox="buka"';
+            if (k.src) attrs += ' data-aksi-src="' + P.escAttr(k.src) + '"';
+        } else {
+            // Standar klik aksi (link, alert, toggle-tampil, dll)
+            attrs += ' data-aksi-klik="' + P.escAttr(k.jenis) + '"';
+            if (k.target) attrs += ' data-aksi-target="' + P.escAttr(k.target) + '"';
+            if (k.kelas) attrs += ' data-aksi-kelas="' + P.escAttr(k.kelas) + '"';
+            if (k.url) attrs += ' data-aksi-url="' + P.escAttr(k.url) + '"';
+            if (k.pesan) attrs += ' data-aksi-pesan="' + P.escAttr(k.pesan) + '"';
+            if (k.teks) attrs += ' data-aksi-teks="' + P.escAttr(k.teks) + '"';
+            if (k.kode) attrs += ' data-aksi-kode="' + P.escAttr(k.kode) + '"';
+        }
     }
-    if (klik.jenis === 'alert' && klik.pesan) {
-        var pesanEsc = klik.pesan.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        return ' onclick="alert(\'' + pesanEsc + '\')"';
+
+    // === SCROLL AKSI ===
+    if (block.aksi.scroll && block.aksi.scroll.jenis && block.aksi.scroll.jenis !== 'none') {
+        var s = block.aksi.scroll;
+        attrs += ' data-aksi-scroll="' + P.escAttr(s.jenis) + '"';
+        if (s.efek) attrs += ' data-aksi-efek="' + P.escAttr(s.efek) + '"';
+        if (s.kecepatan) attrs += ' data-aksi-kecepatan="' + P.escAttr(s.kecepatan) + '"';
+        if (s.arah) attrs += ' data-aksi-arah="' + P.escAttr(s.arah) + '"';
     }
-    if (klik.jenis === 'kustom' && klik.kode) {
-        return ' onclick="' + P.escAttr(klik.kode) + '"';
+
+    // === DINAMIS (auto-update content) ===
+    if (block.aksi.dinamis && block.aksi.dinamis.jenis && block.aksi.dinamis.jenis !== 'none') {
+        var d = block.aksi.dinamis;
+        attrs += ' data-dinamis="' + P.escAttr(d.jenis) + '"';
+        if (d.format) attrs += ' data-format="' + P.escAttr(d.format) + '"';
+        if (d.target) attrs += ' data-aksi-target="' + P.escAttr(d.target) + '"';
     }
-    return '';
+
+    // === TAMBAHAN (sticky, carousel, tabs, accordion, typewriter, scroll-progress) ===
+    if (block.aksi.tambahan && block.aksi.tambahan.jenis && block.aksi.tambahan.jenis !== 'none') {
+        var t = block.aksi.tambahan;
+        if (t.jenis === 'sticky') {
+            attrs += ' data-aksi-sticky="true"';
+            if (t.shrinkAt) attrs += ' data-aksi-shrink-at="' + P.escAttr(t.shrinkAt) + '"';
+        } else if (t.jenis === 'carousel') {
+            attrs += ' data-aksi-carousel="true"';
+            if (t.interval) attrs += ' data-aksi-interval="' + P.escAttr(t.interval) + '"';
+        } else if (t.jenis === 'tabs') {
+            attrs += ' data-aksi-tabs="true"';
+        } else if (t.jenis === 'akordion') {
+            attrs += ' data-aksi-akordion="true"';
+        } else if (t.jenis === 'typewriter') {
+            attrs += ' data-aksi-typewriter="true"';
+            if (t.teks) attrs += ' data-aksi-teks="' + P.escAttr(t.teks) + '"';
+            if (t.speed) attrs += ' data-aksi-speed="' + P.escAttr(t.speed) + '"';
+        } else if (t.jenis === 'scroll-progress') {
+            attrs += ' data-aksi-scroll-progress="true"';
+        }
+    }
+
+    return attrs;
 };
 
 /* ======================================================================
@@ -441,7 +541,7 @@ P.renderIsiBlock = function(block) {
         // Render ikon kalau ada (field 'ikon' berisi class FontAwesome mis. 'fa-search')
         var teks = P.escHtml(block.isi || 'Tombol');
         if (block.ikon) {
-            var ikonHtml = '<i class="fa-solid ' + P.escAttr(block.ikon) + '" aria-hidden="true"></i>';
+            var ikonHtml = P.icon((block.ikon || '').replace(/^fa-/, ''));
             return ikonHtml + ' ' + teks;
         }
         return teks;
@@ -449,7 +549,7 @@ P.renderIsiBlock = function(block) {
     if (jenis === 'tombol-ikon') {
         // Tombol ikon: block.isi berisi nama ikon FontAwesome (mis. 'fa-search')
         var ikonCls = block.isi || 'fa-circle-question';
-        return '<i class="fa-solid ' + P.escAttr(ikonCls) + '" aria-hidden="true"></i>';
+        return P.icon((ikonCls || '').replace(/^fa-/, ''));
     }
     if (jenis === 'grup-tombol') {
         // Grup tombol: items berisi daftar teks tombol
@@ -476,7 +576,7 @@ P.renderIsiBlock = function(block) {
         var esJudul = block.judul || 'Belum ada data';
         var esIsi = block.isi || '';
         var esLabel = block.label || '';
-        var html = '<div class="kosong-ikon"><i class="fa-solid fa-inbox" aria-hidden="true"></i></div>';
+        var html = '<div class="kosong-ikon">' + P.icon('inbox') + '</div>';
         html += '<h3>' + P.escHtml(esJudul) + '</h3>';
         if (esIsi) html += '<p>' + P.escHtml(esIsi) + '</p>';
         if (esLabel) html += '<button type="button" class="tombol tombol-berisi">' + P.escHtml(esLabel) + '</button>';
@@ -602,6 +702,47 @@ P.renderIsiBlock = function(block) {
     }
     if (jenis === 'label-form') {
         return P.escHtml(block.isi || 'Label');
+    }
+    if (jenis === 'jam') {
+        var jamFormat = (block.properti && block.properti.format) || '24';
+        var d = new Date();
+        var h = d.getHours();
+        var m = d.getMinutes();
+        var s = d.getSeconds();
+        var suf = '';
+        if (jamFormat === '12') { suf = h >= 12 ? ' PM' : ' AM'; h = h % 12; if (h === 0) h = 12; }
+        return (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s + suf;
+    }
+    if (jenis === 'tanggal') {
+        var tglFormat = (block.properti && block.properti.format) || 'panjang';
+        var dd = new Date();
+        var hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+        var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+        if (tglFormat === 'angka') {
+            var t = (dd.getDate()<10?'0':'')+dd.getDate()+'/'+((dd.getMonth()+1)<10?'0':'')+(dd.getMonth()+1)+'/'+dd.getFullYear();
+            return t;
+        }
+        if (tglFormat === 'iso') return dd.toISOString().split('T')[0];
+        if (tglFormat === 'pendek') {
+            var hs = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+            var bs = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+            return hs[dd.getDay()] + ', ' + dd.getDate() + ' ' + bs[dd.getMonth()] + ' ' + dd.getFullYear();
+        }
+        return hari[dd.getDay()] + ', ' + dd.getDate() + ' ' + bulan[dd.getMonth()] + ' ' + dd.getFullYear();
+    }
+    if (jenis === 'hitung-mundur') {
+        var target = (block.properti && block.properti.target) || '2026-12-31T23:59:59';
+        var t2 = new Date(target).getTime();
+        var n2 = Date.now();
+        var diff = t2 - n2;
+        if (diff <= 0) return '00:00:00';
+        var hHari = Math.floor(diff / 86400000);
+        var hJam = Math.floor((diff % 86400000) / 3600000);
+        var hMenit = Math.floor((diff % 3600000) / 60000);
+        var hDetik = Math.floor((diff % 60000) / 1000);
+        var hStr = (hJam<10?'0':'')+hJam+':'+(hMenit<10?'0':'')+hMenit+':'+(hDetik<10?'0':'')+hDetik;
+        if (hHari > 0) return hHari + 'h ' + hStr;
+        return hStr;
     }
     if (jenis === 'toast') {
         var toastIsi = block.isi || '';
@@ -913,6 +1054,13 @@ P.applySwatchBlock = function(color, field) {
     else if (field === 'warnaNilai') cssProp = 'color';
     else cssProp = P.fieldToCssProp(field);
 
+    // v139: Saat apply flat color ke latar, hapus gradient class dari block
+    if (cssProp === 'backgroundColor' && block.classes && block.classes.length > 0) {
+        block.classes = block.classes.filter(function(c) {
+            return c.indexOf('gradlin-') !== 0 && c.indexOf('gradrad-') !== 0;
+        });
+    }
+
     if (color === '') {
         block.style[cssProp] = '';
     } else {
@@ -1069,6 +1217,43 @@ P.handlePanelClickDelegated = function(e) {
         return;
     }
 
+    // v118: Handler untuk tombol pick-gambar-asset (di field block gambar)
+    var pickGambarBtn = e.target.closest('[data-action="pick-gambar-asset"]');
+    if (pickGambarBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var fieldName = pickGambarBtn.dataset.field;
+        if (!P.tampilkanAssetPicker) {
+            P.flash('Asset Manager tidak tersedia');
+            return;
+        }
+        P.tampilkanAssetPicker(function (assetURL, assetName, assetMeta) {
+            if (!assetURL) return;  // user batal
+            // Update field input dengan relative path
+            var relPath = 'gambar/' + assetName;
+            var inputEl = document.querySelector('input[data-field="' + fieldName + '"]');
+            if (inputEl) {
+                inputEl.value = relPath;
+                // Trigger change event supaya terapkanPropertiBlock jalan
+                var evt = document.createEvent('Event');
+                evt.initEvent('change', true, true);
+                inputEl.dispatchEvent(evt);
+            }
+            // Update alt text juga (kalau ada field alt)
+            if (assetMeta && assetMeta.alt) {
+                var altInput = document.querySelector('input[data-field="alt"]');
+                if (altInput && !altInput.value) {
+                    altInput.value = assetMeta.alt;
+                    var evtAlt = document.createEvent('Event');
+                    evtAlt.initEvent('change', true, true);
+                    altInput.dispatchEvent(evtAlt);
+                }
+            }
+            P.flash('Gambar dipilih: ' + assetName);
+        });
+        return;
+    }
+
     var target = e.target.closest('[data-action]');
     if (!target) return;
     var action = target.dataset.action;
@@ -1076,8 +1261,9 @@ P.handlePanelClickDelegated = function(e) {
         var field = target.dataset.field;
         var mode = target.dataset.mode;
         if (mode === 'block') {
+            // v127: JANGAN null-kan savedSelection di sini
+            // Block-level color picker tidak butuh text selection — apply ke block.style
             P.STATE.editMode.paletteOpen = 'block-' + field;
-            P.STATE.editMode.savedSelection = null;
             P.openSwatches('block-' + field);
         } else {
             // Region mode: delegate ke existing handler
@@ -1187,8 +1373,8 @@ P.terapkanPropertiBlock = function(target) {
         }
         cur[parts[parts.length - 1]] = val;
 
-        // Jika aksi-jenis berubah, re-render panel (untuk show/hide URL/pesan/kode fields)
-        if (jenis === 'aksi-jenis') {
+        // Jika aksi-jenis/scroll-jenis/efek berubah, re-render panel (untuk show/hide fields)
+        if (jenis === 'aksi-jenis' || jenis === 'aksi-scroll-jenis' || jenis === 'aksi-tambahan-jenis') {
             P.renderPanel();
         }
         P.renderBlocks();
@@ -1242,8 +1428,9 @@ P.terapkanPropertiBlock = function(target) {
             block[field] = val;
         } else {
             // HTML attribute atau style field
-            var attrFields = ['src', 'alt', 'href', 'name', 'nama', 'tipe', 'placeholder',
-                'label', 'nilai'];
+            // Catatan: 'nama' TIDAK ada di sini — 'nama' adalah block.nama (label readable).
+            var attrFields = ['src', 'alt', 'href', 'name', 'tipe', 'placeholder',
+                'label', 'nilai', 'untuk', 'terima'];
             if (attrFields.indexOf(field) >= 0) {
                 if (!block.properti) block.properti = {};
                 block.properti[field] = val;
